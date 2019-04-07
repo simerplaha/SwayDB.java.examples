@@ -18,9 +18,9 @@
 */
 package swaydb.quickstart;
 
+import java.nio.charset.StandardCharsets;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.AbstractMap;
@@ -41,6 +41,9 @@ import org.junit.Test;
 import swaydb.base.TestBase;
 import swaydb.data.config.MMAP;
 import swaydb.data.config.RecoveryMode;
+import swaydb.data.slice.BytesReader;
+import swaydb.data.slice.Slice$;
+import swaydb.data.slice.Slice;
 
 public class QuickStartPersistentMapTest extends TestBase {
     
@@ -535,4 +538,54 @@ public class QuickStartPersistentMapTest extends TestBase {
         }
     }
     
+    @Test
+    public void memoryMapIntCustom() {
+
+        class MyData {
+            public String key;
+            public String value;
+            public MyData(String key, String value) {
+                this.key = key;
+                this.value = value;
+            }
+        }
+
+        class MyDataSerializer implements swaydb.serializers.Serializer<MyData> {
+            @Override
+            public Slice<Object> write(MyData data) {
+                return Slice$.MODULE$.ByteSliceImplicits(
+                    Slice$.MODULE$.ByteSliceImplicits(Slice$.MODULE$.create(data.key.length() + data.value.length(),
+                            scala.reflect.ClassTag$.MODULE$.Any()))
+                            .addString(data.key, StandardCharsets.UTF_8))
+                    .addString(data.value, StandardCharsets.UTF_8);
+            }
+
+            @Override
+            public MyData read(Slice<Object> data) {
+                final BytesReader reader = Slice$.MODULE$.ByteSliceImplicits(data).createReader();
+                return new MyData(reader.readString(3, StandardCharsets.UTF_8),
+                        reader.readString(3, StandardCharsets.UTF_8));
+            }
+        }
+
+        try (swaydb.persistent.Map<Integer, MyData> db = swaydb.persistent.Map
+                .<Integer, MyData>builder()
+                .withDirecory(Paths.get("disk1custom"))
+                .withKeySerializer(Integer.class)
+                .withValueSerializer(new MyDataSerializer())
+                .build()) {
+            // db.put(1, new MyData("one", "two")).get
+            MyData myData = new MyData("one", "two");
+            db.put(1, myData);
+            // db.get(1).get
+            MyData result = db.get(1);
+            assertThat("result contains value", result, notNullValue());
+            assertThat(result.key, equalTo("one"));
+            assertThat(result.value, equalTo("two"));
+            // db.remove(1).get
+            db.remove(1);
+            MyData result2 = db.get(1);
+            assertThat("Empty result", result2, nullValue());
+        }
+    }
 }

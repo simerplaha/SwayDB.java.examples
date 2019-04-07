@@ -289,8 +289,8 @@ public class Map<K, V> implements Closeable {
     }
 
     @SuppressWarnings("unchecked")
-    public static <K, V> swaydb.persistent.Map<K, V> create(Class<K> keySerializer,
-            Class<V> valueSerializer, Path dir) {
+    public static <K, V> swaydb.persistent.Map<K, V> create(Object keySerializer,
+            Object valueSerializer, Path dir) {
         int maxOpenSegments = swaydb.persistent.Map$.MODULE$.apply$default$2();
         int cacheSize = swaydb.persistent.Map$.MODULE$.apply$default$3();
         int mapSize = swaydb.persistent.Map$.MODULE$.apply$default$4();
@@ -351,8 +351,8 @@ public class Map<K, V> implements Closeable {
         private boolean deleteSegmentsEventually = swaydb.persistent.Map$.MODULE$.apply$default$16();
         private Option lastLevelGroupingStrategy = swaydb.persistent.Map$.MODULE$.apply$default$17();
         private Function1 acceleration = swaydb.persistent.Map$.MODULE$.apply$default$18();
-        private Class<?> keySerializer;
-        private Class<?> valueSerializer;
+        private Object keySerializer;
+        private Object valueSerializer;
 
         public Builder<K, V> withDirecory(Path dir) {
             this.dir = dir;
@@ -444,12 +444,12 @@ public class Map<K, V> implements Closeable {
             return this;
         }
 
-        public Builder<K, V> withKeySerializer(Class<?> keySerializer) {
+        public Builder<K, V> withKeySerializer(Object keySerializer) {
             this.keySerializer = keySerializer;
             return this;
         }
 
-        public Builder<K, V> withValueSerializer(Class<?> valueSerializer) {
+        public Builder<K, V> withValueSerializer(Object valueSerializer) {
             this.valueSerializer = valueSerializer;
             return this;
         }
