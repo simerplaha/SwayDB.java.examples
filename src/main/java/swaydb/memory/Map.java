@@ -78,8 +78,8 @@ public class Map<K, V> implements Closeable {
     public Duration timeLeft(K key) {
         Object result = database.timeLeft(key).get();
         if (result instanceof scala.Some) {
-            Deadline expiration = (Deadline) ((scala.Some) result).get();
-            return Duration.ofNanos(expiration.timeLeft().toNanos());
+            FiniteDuration duration = (FiniteDuration) ((scala.Some) result).get();
+            return Duration.ofNanos(duration.toNanos());
         }
         return null;
     }

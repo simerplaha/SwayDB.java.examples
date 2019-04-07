@@ -18,6 +18,7 @@
 */
 package swaydb.quickstart;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.AbstractMap;
@@ -303,15 +304,80 @@ public class QuickStartMemoryMapTest {
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
                         .build()) {
-            LocalDateTime expireAt = LocalDateTime.now().plusNanos(TimeUnit.MILLISECONDS.toNanos(100));
-            db.put(1, "one", expireAt);
-            assertThat(db.expiration(1).truncatedTo(ChronoUnit.SECONDS).toString(),
-                    equalTo(expireAt.truncatedTo(ChronoUnit.SECONDS).toString()));
+            db.put(1, "one", LocalDateTime.now().plusNanos(TimeUnit.MILLISECONDS.toNanos(100)));
             assertThat(db.entrySet().toString(), equalTo("[1=one]"));
             await().atMost(1200, TimeUnit.MILLISECONDS).until((Callable<Boolean>) () -> {
                 assertThat(db.get(1), nullValue());
                 return true;
             });
+        }
+    }
+
+    @Test
+    public void memoryMapIntStringExpiration() {  
+        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+                        .<Integer, String>builder()
+                        .withKeySerializer(Integer.class)
+                        .withValueSerializer(String.class)
+                        .build()) {
+            LocalDateTime expireAt = LocalDateTime.now().plusNanos(TimeUnit.MILLISECONDS.toNanos(100));
+            db.put(1, "one", expireAt);
+            assertThat(db.expiration(1).truncatedTo(ChronoUnit.SECONDS).toString(),
+                    equalTo(expireAt.truncatedTo(ChronoUnit.SECONDS).toString()));
+            assertThat(db.expiration(2), nullValue());
+        }
+    }
+
+    @Test
+    public void memoryMapIntStringTimeLeft() {  
+        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+                        .<Integer, String>builder()
+                        .withKeySerializer(Integer.class)
+                        .withValueSerializer(String.class)
+                        .build()) {
+            LocalDateTime expireAt = LocalDateTime.now().plusNanos(TimeUnit.MILLISECONDS.toNanos(100));
+            db.put(1, "one", expireAt);
+            assertThat(db.timeLeft(1).getSeconds(), equalTo(0L));
+            assertThat(db.timeLeft(2), nullValue());
+        }
+    }
+
+    @Test
+    public void memoryMapIntStringKeySize() {
+        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+                        .<Integer, String>builder()
+                        .withKeySerializer(Integer.class)
+                        .withValueSerializer(String.class)
+                        .build()) {
+            db.put(1, "one");
+            assertThat(db.keySize(1), equalTo(4));
+        }
+    }
+
+    @Test
+    public void memoryMapIntStringValueSize() {
+        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+                        .<Integer, String>builder()
+                        .withKeySerializer(Integer.class)
+                        .withValueSerializer(String.class)
+                        .build()) {
+            db.put(1, "one");
+            assertThat(db.valueSize("one"), equalTo(3));
+        }
+    }
+
+    @Test
+    public void memoryMapIntStringSizes() {
+        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+                        .<Integer, String>builder()
+                        .withKeySerializer(Integer.class)
+                        .withValueSerializer(String.class)
+                        .build()) {
+            db.put(1, "one");
+            assertThat(db.sizeOfSegments(), equalTo(0L));
+            assertThat(db.level0Meter().currentMapSize(), equalTo(4000000L));
+            assertThat(db.level1Meter().get().levelSize(), equalTo(0L));
+            assertThat(db.levelMeter(1).get().levelSize(), equalTo(0L));
         }
     }
 
@@ -359,6 +425,18 @@ public class QuickStartMemoryMapTest {
             db.put(1, "one");
             db.update(1, "one+1");
             assertThat(db.get(1), equalTo("one+1"));
+        }
+    }
+
+    @Test
+    public void memoryMapIntStringAsJava() {
+        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+                        .<Integer, String>builder()
+                        .withKeySerializer(Integer.class)
+                        .withValueSerializer(String.class)
+                        .build()) {
+            db.put(1, "one");
+            assertThat(db.asJava().size(), equalTo(1));
         }
     }
 
