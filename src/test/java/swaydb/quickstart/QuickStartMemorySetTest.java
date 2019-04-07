@@ -19,11 +19,13 @@
 package swaydb.quickstart;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import static org.awaitility.Awaitility.await;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import org.junit.Test;
 import swaydb.base.TestBase;
@@ -212,6 +214,59 @@ public class QuickStartMemorySetTest extends TestBase {
             assertThat(db.isEmpty(), equalTo(true));
             db.add(1);
             assertThat(db.isEmpty(), equalTo(false));
+        }
+    }
+
+    @Test
+    public void memorySetIntNonEmpty() {
+        try (swaydb.memory.Set<Integer> db = swaydb.memory.Set
+                        .<Integer>builder()
+                        .withKeySerializer(Integer.class)
+                        .build()) {
+            assertThat(db.nonEmpty(), equalTo(false));
+            db.add(1);
+            assertThat(db.nonEmpty(), equalTo(true));
+        }
+    }
+
+    @Test
+    public void memorySetIntExpiration() {  
+        try (swaydb.memory.Set<Integer> db = swaydb.memory.Set
+                        .<Integer>builder()
+                        .withKeySerializer(Integer.class)
+                        .build()) {
+            LocalDateTime expireAt = LocalDateTime.now().plusNanos(TimeUnit.MILLISECONDS.toNanos(100));
+            db.add(1, expireAt);
+            assertThat(db.expiration(1).truncatedTo(ChronoUnit.SECONDS).toString(),
+                    equalTo(expireAt.truncatedTo(ChronoUnit.SECONDS).toString()));
+            assertThat(db.expiration(2), nullValue());
+        }
+    }
+
+    @Test
+    public void memorySetIntTimeLeft() {  
+        try (swaydb.memory.Set<Integer> db = swaydb.memory.Set
+                        .<Integer>builder()
+                        .withKeySerializer(Integer.class)
+                        .build()) {
+            LocalDateTime expireAt = LocalDateTime.now().plusNanos(TimeUnit.MILLISECONDS.toNanos(100));
+            db.add(1, expireAt);
+            assertThat(db.timeLeft(1).getSeconds(), equalTo(0L));
+            assertThat(db.timeLeft(2), nullValue());
+        }
+    }
+
+    @Test
+    public void memorySetIntSizes() {
+        try (swaydb.memory.Set<Integer> db = swaydb.memory.Set
+                        .<Integer>builder()
+                        .withKeySerializer(Integer.class)
+                        .build()) {
+            db.add(1);
+            assertThat(db.sizeOfSegments(), equalTo(0L));
+            assertThat(db.level0Meter().currentMapSize(), equalTo(4000000L));
+            assertThat(db.level1Meter().get().levelSize(), equalTo(0L));
+            assertThat(db.levelMeter(1).get().levelSize(), equalTo(0L));
         }
     }
 
