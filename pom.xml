@@ -6,7 +6,7 @@
     <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
     <name>swaydb-java</name>
-    <description>SwayDB's java client library</description>
+    <description>Java wrapper for SwayDB</description>
     <url>https://github.com/simerplaha/SwayDB.java</url>
     <developers>
         <developer>
