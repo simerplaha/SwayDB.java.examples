@@ -39,6 +39,8 @@ import static org.junit.Assert.assertThat;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import swaydb.base.TestBase;
+import swaydb.data.config.MMAP;
+import swaydb.data.config.RecoveryMode;
 
 public class QuickStartPersistentMapTest extends TestBase {
     
@@ -428,6 +430,7 @@ public class QuickStartPersistentMapTest extends TestBase {
             assertThat(db.level0Meter().currentMapSize(), equalTo(4000000L));
             assertThat(db.level1Meter().get().levelSize(), equalTo(0L));
             assertThat(db.levelMeter(1).get().levelSize(), equalTo(0L));
+            assertThat(db.levelMeter(5).isPresent(), equalTo(true));
         }
     }
 
@@ -501,6 +504,22 @@ public class QuickStartPersistentMapTest extends TestBase {
                         .withDirecory(Paths.get("disk1builder"))
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
+                        .withMaxOpenSegments(1000)
+                        .withCacheSize(100000000)
+                        .withMapSize(4000000)
+                        .withMmapMaps(true)
+                        .withRecoveryMode(RecoveryMode.ReportFailure$.MODULE$)
+                        .withMmapAppendix(true)
+                        .withMmapSegments(MMAP.WriteAndRead$.MODULE$)
+                        .withSegmentSize(2000000)
+                        .withAppendixFlushCheckpointSize(2000000)
+                        .withOtherDirs(scala.collection.immutable.Nil$.MODULE$)
+                        .withCacheCheckDelay(scala.concurrent.duration.FiniteDuration.apply(5, TimeUnit.SECONDS))
+                        .withSegmentsOpenCheckDelay(
+                                scala.concurrent.duration.FiniteDuration.apply(5, TimeUnit.SECONDS))
+                        .withBloomFilterFalsePositiveRate(0.01)
+                        .withCompressDuplicateValues(true)
+                        .withDeleteSegmentsEventually(false)
                         .build()) {
             // db.put(1, "one").get
             db.put(1, "one");
