@@ -4,5 +4,5 @@
 [![Build Status](https://travis-ci.com/simerplaha/SwayDB.java.svg?branch=master)](https://travis-ci.com/simerplaha/SwayDB.java)
 [![codecov.io](http://codecov.io/github/simerplaha/SwayDB.java/coverage.svg?branch=master)](http://codecov.io/github/simerplaha/SwayDB.java?branch=master)
 
-Java wrapper library for [SwayDB](https://github.com/simerplaha/SwayDB).
+Java wrapper for [SwayDB](https://github.com/simerplaha/SwayDB).
 
