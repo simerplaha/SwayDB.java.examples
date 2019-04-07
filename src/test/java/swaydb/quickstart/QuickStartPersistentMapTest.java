@@ -20,6 +20,7 @@ package swaydb.quickstart;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.AbstractMap;
@@ -59,6 +60,7 @@ public class QuickStartPersistentMapTest extends TestBase {
         deleteDirectoryWalkTree(Paths.get("disk1expireAfter"));
         deleteDirectoryWalkTree(Paths.get("disk1expireAt"));
         deleteDirectoryWalkTree(Paths.get("disk1update"));
+        deleteDirectoryWalkTree(Paths.get("disk1asjava"));
     }
 
     @SuppressWarnings("unchecked")
@@ -348,13 +350,84 @@ public class QuickStartPersistentMapTest extends TestBase {
                         .build()) {
             LocalDateTime expireAt = LocalDateTime.now().plusNanos(TimeUnit.MILLISECONDS.toNanos(100));
             db.put(1, "one", expireAt);
-            assertThat(db.expiration(1).truncatedTo(ChronoUnit.SECONDS).toString(),
-                    equalTo(expireAt.truncatedTo(ChronoUnit.SECONDS).toString()));
             assertThat(db.entrySet().toString(), equalTo("[1=one]"));
             await().atMost(1800, TimeUnit.MILLISECONDS).until((Callable<Boolean>) () -> {
                 assertThat(db.get(1), nullValue());
                 return true;
             });
+        }
+    }
+
+    @Test
+    public void persistentMapIntStringExpiration() {  
+        try (swaydb.persistent.Map<Integer, String> db = swaydb.persistent.Map
+                        .<Integer, String>builder()
+                        .withDirecory(Paths.get("disk1expiration"))
+                        .withKeySerializer(Integer.class)
+                        .withValueSerializer(String.class)
+                        .build()) {
+            LocalDateTime expireAt = LocalDateTime.now().plusNanos(TimeUnit.MILLISECONDS.toNanos(100));
+            db.put(1, "one", expireAt);
+            assertThat(db.expiration(1).truncatedTo(ChronoUnit.SECONDS).toString(),
+                    equalTo(expireAt.truncatedTo(ChronoUnit.SECONDS).toString()));
+            assertThat(db.expiration(2), nullValue());
+        }
+    }
+
+    @Test
+    public void persistentMapIntStringTimeLeft() {  
+        try (swaydb.persistent.Map<Integer, String> db = swaydb.persistent.Map
+                        .<Integer, String>builder()
+                        .withDirecory(Paths.get("disk1timeleft"))
+                        .withKeySerializer(Integer.class)
+                        .withValueSerializer(String.class)
+                        .build()) {
+            LocalDateTime expireAt = LocalDateTime.now().plusNanos(TimeUnit.MILLISECONDS.toNanos(100));
+            db.put(1, "one", expireAt);
+            assertThat(db.timeLeft(1).getSeconds(), equalTo(0L));
+            assertThat(db.timeLeft(2), nullValue());
+        }
+    }
+
+    @Test
+    public void persistentMapIntStringKeySize() {
+        try (swaydb.persistent.Map<Integer, String> db = swaydb.persistent.Map
+                        .<Integer, String>builder()
+                        .withDirecory(Paths.get("disk1keysize"))
+                        .withKeySerializer(Integer.class)
+                        .withValueSerializer(String.class)
+                        .build()) {
+            db.put(1, "one");
+            assertThat(db.keySize(1), equalTo(4));
+        }
+    }
+
+    @Test
+    public void persistentMapIntStringValueSize() {
+        try (swaydb.persistent.Map<Integer, String> db = swaydb.persistent.Map
+                        .<Integer, String>builder()
+                        .withDirecory(Paths.get("disk1valuesize"))
+                        .withKeySerializer(Integer.class)
+                        .withValueSerializer(String.class)
+                        .build()) {
+            db.put(1, "one");
+            assertThat(db.valueSize("one"), equalTo(3));
+        }
+    }
+
+    @Test
+    public void persistentMapIntStringSizes() {
+        try (swaydb.persistent.Map<Integer, String> db = swaydb.persistent.Map
+                        .<Integer, String>builder()
+                        .withDirecory(Paths.get("disk1sizes"))
+                        .withKeySerializer(Integer.class)
+                        .withValueSerializer(String.class)
+                        .build()) {
+            db.put(1, "one");
+            assertThat(db.sizeOfSegments(), equalTo(0L));
+            assertThat(db.level0Meter().currentMapSize(), equalTo(4000000L));
+            assertThat(db.level1Meter().get().levelSize(), equalTo(0L));
+            assertThat(db.levelMeter(1).get().levelSize(), equalTo(0L));
         }
     }
 
@@ -405,6 +478,19 @@ public class QuickStartPersistentMapTest extends TestBase {
             db.put(1, "one");
             db.update(1, "one+1");
             assertThat(db.get(1), equalTo("one+1"));
+        }
+    }
+
+    @Test
+    public void persistentMapIntStringAsJava() {
+        try (swaydb.persistent.Map<Integer, String> db = swaydb.persistent.Map
+                        .<Integer, String>builder()
+                        .withDirecory(Paths.get("disk1asjava"))
+                        .withKeySerializer(Integer.class)
+                        .withValueSerializer(String.class)
+                        .build()) {
+            db.put(1, "one");
+            assertThat(db.asJava().size(), equalTo(1));
         }
     }
 
