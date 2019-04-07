@@ -32,6 +32,8 @@ import static org.junit.Assert.assertThat;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import swaydb.base.TestBase;
+import swaydb.data.config.MMAP;
+import swaydb.data.config.RecoveryMode;
 
 public class QuickStartPersistentSetTest extends TestBase {
 
@@ -330,6 +332,22 @@ public class QuickStartPersistentSetTest extends TestBase {
                 .<Integer>builder()
                 .withDirecory(Paths.get("disk3builder"))
                 .withKeySerializer(Integer.class)
+                .withMaxOpenSegments(1000)
+                .withCacheSize(100000000)
+                .withMapSize(4000000)
+                .withMmapMaps(true)
+                .withRecoveryMode(RecoveryMode.ReportFailure$.MODULE$)
+                .withMmapAppendix(true)
+                .withMmapSegments(MMAP.WriteAndRead$.MODULE$)
+                .withSegmentSize(2000000)
+                .withAppendixFlushCheckpointSize(2000000)
+                .withOtherDirs(scala.collection.immutable.Nil$.MODULE$)
+                .withCacheCheckDelay(scala.concurrent.duration.FiniteDuration.apply(5, TimeUnit.SECONDS))
+                .withSegmentsOpenCheckDelay(
+                        scala.concurrent.duration.FiniteDuration.apply(5, TimeUnit.SECONDS))
+                .withBloomFilterFalsePositiveRate(0.01)
+                .withCompressDuplicateValues(true)
+                .withDeleteSegmentsEventually(false)
                 .build();
         // db.add(1).get
         db.add(1);
