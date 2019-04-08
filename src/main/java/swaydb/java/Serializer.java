@@ -30,7 +30,10 @@ public class Serializer {
         CLASS_TO_TYPE.put(String.class, Default.StringSerializer$.MODULE$);
     }
 
-    public static swaydb.serializers.Serializer classToType(Class<?> clazz) {
+    public static swaydb.serializers.Serializer classToType(Object clazz) {
+        if (clazz instanceof swaydb.serializers.Serializer) {
+            return (swaydb.serializers.Serializer) clazz;
+        }
         return CLASS_TO_TYPE.getOrDefault(clazz, Default.StringSerializer$.MODULE$);
     }
 

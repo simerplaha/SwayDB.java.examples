@@ -291,7 +291,7 @@ public class Map<K, V> implements Closeable {
     }
 
     @SuppressWarnings("unchecked")
-    public static <K, V> swaydb.memory.Map<K, V> create(Class<K> keySerializer, Class<V> valueSerializer) {
+    public static <K, V> swaydb.memory.Map<K, V> create(Object keySerializer, Object valueSerializer) {
         int mapSize = Map$.MODULE$.apply$default$1();
         int segmentSize = Map$.MODULE$.apply$default$2();
         int cacheSize = Map$.MODULE$.apply$default$3();
@@ -328,8 +328,8 @@ public class Map<K, V> implements Closeable {
         private boolean deleteSegmentsEventually = Map$.MODULE$.apply$default$7();
         private Option<KeyValueGroupingStrategy> groupingStrategy = Map$.MODULE$.apply$default$8();
         private Function1<Level0Meter, Accelerator> acceleration = Map$.MODULE$.apply$default$9();
-        private Class<?> keySerializer;
-        private Class<?> valueSerializer;
+        private Object keySerializer;
+        private Object valueSerializer;
 
         public Builder<K, V> withMapSize(int mapSize) {
             this.mapSize = mapSize;
@@ -376,12 +376,12 @@ public class Map<K, V> implements Closeable {
             return this;
         }
 
-        public Builder<K, V> withKeySerializer(Class<?> keySerializer) {
+        public Builder<K, V> withKeySerializer(Object keySerializer) {
             this.keySerializer = keySerializer;
             return this;
         }
 
-        public Builder<K, V> withValueSerializer(Class<?> valueSerializer) {
+        public Builder<K, V> withValueSerializer(Object valueSerializer) {
             this.valueSerializer = valueSerializer;
             return this;
         }

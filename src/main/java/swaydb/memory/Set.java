@@ -219,7 +219,7 @@ public class Set<K> implements Closeable {
     }
 
     @SuppressWarnings("unchecked")
-    public static <K> swaydb.memory.Set<K> create(Class<K> keySerializer) {
+    public static <K> swaydb.memory.Set<K> create(Object keySerializer) {
         int mapSize = Map$.MODULE$.apply$default$1();
         int segmentSize = Map$.MODULE$.apply$default$2();
         int cacheSize = Map$.MODULE$.apply$default$3();
@@ -254,7 +254,7 @@ public class Set<K> implements Closeable {
         private boolean deleteSegmentsEventually = Map$.MODULE$.apply$default$7();
         private Option<KeyValueGroupingStrategy> groupingStrategy = Map$.MODULE$.apply$default$8();
         private Function1<Level0Meter, Accelerator> acceleration = Map$.MODULE$.apply$default$9();
-        private Class<?> keySerializer;
+        private Object keySerializer;
 
         public Builder<K> withMapSize(int mapSize) {
             this.mapSize = mapSize;
@@ -301,7 +301,7 @@ public class Set<K> implements Closeable {
             return this;
         }
 
-        public Builder<K> withKeySerializer(Class<?> keySerializer) {
+        public Builder<K> withKeySerializer(Object keySerializer) {
             this.keySerializer = keySerializer;
             return this;
         }

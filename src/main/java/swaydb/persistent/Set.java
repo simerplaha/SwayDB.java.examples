@@ -217,7 +217,7 @@ public class Set<K> implements Closeable {
     }
 
     @SuppressWarnings("unchecked")
-    public static <K> swaydb.persistent.Set<K> create(Class<K> keySerializer, Path dir) {
+    public static <K> swaydb.persistent.Set<K> create(Object keySerializer, Path dir) {
         int maxOpenSegments = swaydb.persistent.Map$.MODULE$.apply$default$2();
         int cacheSize = swaydb.persistent.Map$.MODULE$.apply$default$3();
         int mapSize = swaydb.persistent.Map$.MODULE$.apply$default$4();
@@ -278,7 +278,7 @@ public class Set<K> implements Closeable {
         private boolean deleteSegmentsEventually = swaydb.persistent.Map$.MODULE$.apply$default$16();
         private Option lastLevelGroupingStrategy = swaydb.persistent.Map$.MODULE$.apply$default$17();
         private Function1 acceleration = swaydb.persistent.Map$.MODULE$.apply$default$18();
-        private Class<?> keySerializer;
+        private Object keySerializer;
 
         public Builder<K> withDirecory(Path dir) {
             this.dir = dir;
@@ -370,7 +370,7 @@ public class Set<K> implements Closeable {
             return this;
         }
 
-        public Builder<K> withKeySerializer(Class<?> keySerializer) {
+        public Builder<K> withKeySerializer(Object keySerializer) {
             this.keySerializer = keySerializer;
             return this;
         }
