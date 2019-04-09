@@ -28,6 +28,12 @@ public class Serializer {
     static {
         CLASS_TO_TYPE.put(Integer.class, Default.IntSerializer$.MODULE$);
         CLASS_TO_TYPE.put(String.class, Default.StringSerializer$.MODULE$);
+        CLASS_TO_TYPE.put(Long.class, Default.LongSerializer$.MODULE$);
+        CLASS_TO_TYPE.put(Character.class, Default.CharSerializer$.MODULE$);
+        CLASS_TO_TYPE.put(Float.class, Default.FloatSerializer$.MODULE$);
+        CLASS_TO_TYPE.put(Short.class, Default.ShortSerializer$.MODULE$);
+        CLASS_TO_TYPE.put(byte[].class, Default.ArraySerializer$.MODULE$);
+        CLASS_TO_TYPE.put(Double.class, Default.DoubleSerializer$.MODULE$);
     }
 
     public static swaydb.serializers.Serializer classToType(Object clazz) {

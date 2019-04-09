@@ -289,6 +289,13 @@ public class QuickStartMemorySetTest extends TestBase {
         final swaydb.memory.Set<Integer> db = swaydb.memory.Set
                 .<Integer>builder()
                 .withKeySerializer(Integer.class)
+                .withMapSize(4000000)
+                .withSegmentSize(2000000)
+                .withCacheSize(100000000)
+                .withCacheCheckDelay(scala.concurrent.duration.FiniteDuration.apply(5, TimeUnit.SECONDS))
+                .withBloomFilterFalsePositiveRate(0.01)
+                .withCompressDuplicateValues(true)
+                .withDeleteSegmentsEventually(false)
                 .build();
         // db.add(1).get
         db.add(1);

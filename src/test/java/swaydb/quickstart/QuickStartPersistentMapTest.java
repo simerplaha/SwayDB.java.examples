@@ -374,7 +374,7 @@ public class QuickStartPersistentMapTest extends TestBase {
             LocalDateTime expireAt = LocalDateTime.now().plusNanos(TimeUnit.MILLISECONDS.toNanos(100));
             db.put(1, "one", expireAt);
             assertThat(db.expiration(1).truncatedTo(ChronoUnit.SECONDS).toString(),
-                    equalTo(expireAt.truncatedTo(ChronoUnit.SECONDS).toString()));
+                equalTo(expireAt.truncatedTo(ChronoUnit.SECONDS).toString()));
             assertThat(db.expiration(2), nullValue());
         }
     }
