@@ -433,7 +433,7 @@ public class QuickStartPersistentMapTest extends TestBase {
             assertThat(db.level0Meter().currentMapSize(), equalTo(4000000L));
             assertThat(db.level1Meter().get().levelSize(), equalTo(0L));
             assertThat(db.levelMeter(1).get().levelSize(), equalTo(0L));
-            assertThat(db.levelMeter(5).isPresent(), equalTo(true));
+            assertThat(db.levelMeter(8).isPresent(), equalTo(false));
         }
     }
 
