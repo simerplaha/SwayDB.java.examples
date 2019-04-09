@@ -313,6 +313,30 @@ public class QuickStartPersistentSetTest extends TestBase {
     }
 
     @Test
+    public void persistentSetIntMightContain() {  
+        try (swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
+                        .<Integer>builder()
+                        .withDirecory(Paths.get("disk3mightContain"))
+                        .withKeySerializer(Integer.class)
+                        .build()) {
+            db.add(1);
+            assertThat(db.mightContain(1), equalTo(true));
+        }
+    }
+
+    @Test
+    public void persistentSetIntAsJava() {
+        try (swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
+                        .<Integer>builder()
+                        .withDirecory(Paths.get("disk3asjava"))
+                        .withKeySerializer(Integer.class)
+                        .build()) {
+            db.add(1);
+            assertThat(db.asJava().size(), equalTo(1));
+        }
+    }
+
+    @Test
     public void persistentSetIntClear() {
         try (swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
                         .<Integer>builder()

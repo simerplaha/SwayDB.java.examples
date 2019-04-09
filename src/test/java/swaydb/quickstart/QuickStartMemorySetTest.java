@@ -272,6 +272,28 @@ public class QuickStartMemorySetTest extends TestBase {
     }
 
     @Test
+    public void memorySetIntMightContain() {  
+        try (swaydb.memory.Set<Integer> db = swaydb.memory.Set
+                        .<Integer>builder()
+                        .withKeySerializer(Integer.class)
+                        .build()) {
+            db.add(1);
+            assertThat(db.mightContain(1), equalTo(true));
+        }
+    }
+
+    @Test
+    public void memorySetIntAsJava() {
+        try (swaydb.memory.Set<Integer> db = swaydb.memory.Set
+                        .<Integer>builder()
+                        .withKeySerializer(Integer.class)
+                        .build()) {
+            db.add(1);
+            assertThat(db.asJava().size(), equalTo(1));
+        }
+    }
+
+    @Test
     public void memorySetIntClear() {
         try (swaydb.memory.Set<Integer> db = swaydb.memory.Set
                         .<Integer>builder()
