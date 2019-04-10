@@ -33,8 +33,6 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import org.junit.Test;
-import swaydb.data.config.MMAP;
-import swaydb.data.config.RecoveryMode;
 import swaydb.data.slice.BytesReader;
 import swaydb.data.slice.Slice$;
 import swaydb.data.slice.Slice;
@@ -124,7 +122,7 @@ public class QuickStartMemoryMapTest {
     }
 
     @Test
-    public void memoryMapIntStringisEmpty() {
+    public void memoryMapIntStringIsEmpty() {
         try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
@@ -459,6 +457,8 @@ public class QuickStartMemoryMapTest {
                 .withBloomFilterFalsePositiveRate(0.01)
                 .withCompressDuplicateValues(true)
                 .withDeleteSegmentsEventually(false)
+                .withGroupingStrategy(scala.Option.empty())
+                .withAcceleration(swaydb.memory.Map$.MODULE$.apply$default$9())
                 .build()) {
             // db.put(1, "one").get
             db.put(1, "one");

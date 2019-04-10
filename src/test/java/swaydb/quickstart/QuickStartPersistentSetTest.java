@@ -209,6 +209,8 @@ public class QuickStartPersistentSetTest extends TestBase {
             db.addAll(Arrays.asList(2));
             db.retainAll(Arrays.asList(1));
             assertThat(db.containsAll(Arrays.asList(1)), equalTo(true));
+            db.retainAll(Arrays.asList(3));
+            assertThat(db.containsAll(Arrays.asList(1)), equalTo(true));
         }
     }
     
@@ -373,6 +375,8 @@ public class QuickStartPersistentSetTest extends TestBase {
                 .withBloomFilterFalsePositiveRate(0.01)
                 .withCompressDuplicateValues(true)
                 .withDeleteSegmentsEventually(false)
+                .withLastLevelGroupingStrategy(scala.Option.empty())
+                .withAcceleration(swaydb.persistent.Map$.MODULE$.apply$default$18())
                 .build();
         // db.add(1).get
         db.add(1);

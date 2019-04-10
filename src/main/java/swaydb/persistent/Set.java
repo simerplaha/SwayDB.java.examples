@@ -129,9 +129,9 @@ public class Set<K> implements Closeable {
     }
 
     @SuppressWarnings("unchecked")
-    public boolean retainAll(Collection<?> collection) {
+    public boolean retainAll(Collection<K> collection) {
         collection.stream()
-                .filter(elem -> !(boolean) database.contains((K) elem).get())
+                .filter(elem -> !(boolean) database.contains(elem).get())
                 .forEach(this::remove);
         return true;
     }

@@ -151,6 +151,7 @@ public class QuickStartPersistentMapTest extends TestBase {
                         .build()) {
             db.put(1, "one");
             assertThat(db.isEmpty(), equalTo(false));
+            assertThat(db.nonEmpty(), equalTo(true));
         }
     }
 
@@ -523,6 +524,8 @@ public class QuickStartPersistentMapTest extends TestBase {
                         .withBloomFilterFalsePositiveRate(0.01)
                         .withCompressDuplicateValues(true)
                         .withDeleteSegmentsEventually(false)
+                        .withLastLevelGroupingStrategy(scala.Option.empty())
+                        .withAcceleration(swaydb.persistent.Map$.MODULE$.apply$default$18())
                         .build()) {
             // db.put(1, "one").get
             db.put(1, "one");
