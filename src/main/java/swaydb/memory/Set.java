@@ -120,9 +120,9 @@ public class Set<K> implements Closeable {
     }
 
     @SuppressWarnings("unchecked")
-    public boolean containsAll(Collection<?> collection) {
+    public boolean containsAll(Collection<K> collection) {
         return collection.stream()
-                .allMatch(elem -> (boolean) database.contains((K) elem).get());
+                .allMatch(elem -> (boolean) database.contains(elem).get());
     }
 
     public boolean addAll(Collection<? extends K> collection) {
@@ -132,9 +132,14 @@ public class Set<K> implements Closeable {
 
     @SuppressWarnings("unchecked")
     public boolean retainAll(Collection<K> collection) {
-        collection.stream()
-                .filter(elem -> !(boolean) database.contains(elem).get())
-                .forEach(this::remove);
+        Seq<K> entries = database.asScala().toSeq();
+        java.util.List<K> result = new ArrayList<>();
+        for (int index = 0; index < entries.size(); index += 1) {
+            result.add(entries.apply(index));
+        }
+        result.stream()
+                .filter(elem -> !collection.contains(elem))
+                .forEach(database::remove);
         return true;
     }
 

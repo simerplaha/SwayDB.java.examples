@@ -20,7 +20,9 @@ package swaydb.quickstart;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import static org.awaitility.Awaitility.await;
@@ -176,10 +178,31 @@ public class QuickStartMemorySetTest extends TestBase {
             db.retainAll(Arrays.asList(1));
             assertThat(db.containsAll(Arrays.asList(1)), equalTo(true));
             db.retainAll(Arrays.asList(3));
-            assertThat(db.containsAll(Arrays.asList(1)), equalTo(true));
+            assertThat(db.containsAll(Arrays.asList(1)), equalTo(false));
         }
     }
-    
+
+    @Test
+    public void memorySetIntRetainAll2() {  
+        try (swaydb.memory.Set<String> boxes = swaydb.memory.Set
+                        .<String>builder()
+                        .withKeySerializer(String.class)
+                        .build()) {
+            List<String> bags = new ArrayList<>(); 
+            bags.add("pen");
+            bags.add("pencil");
+            bags.add("paper");
+
+            boxes.add("pen");
+            boxes.add("paper");
+            boxes.add("books");
+            boxes.add("rubber");
+
+            boxes.retainAll(bags); 
+            assertThat(Arrays.toString(boxes.toArray()), equalTo("[paper, pen]"));
+        }
+    }
+
     @Test
     public void memorySetIntRemoveAll() {  
         try (swaydb.memory.Set<Integer> db = swaydb.memory.Set
