@@ -444,6 +444,23 @@ public class QuickStartMemoryMapTest {
             assertThat(db.asJava().size(), equalTo(1));
         }
     }
+    
+    @Test
+    public void memoryMapStringIntRegisterApplyFunction() {
+        try (swaydb.memory.Map<String, Integer> likesMap = swaydb.memory.Map
+                .<String, Integer>builder()
+                .withKeySerializer(String.class)
+                .withValueSerializer(Integer.class)
+                .build()) {
+            // initial entry with 0 likes.
+            likesMap.put("SwayDB", 0);
+
+            String likesFunctionId = likesMap.registerFunction(
+                    "increment likes counts", (likesCount) -> likesCount + 1);
+            IntStream.rangeClosed(1, 100).forEach(index -> likesMap.applyFunction("SwayDB", likesFunctionId));
+            assertThat(likesMap.get("SwayDB"), equalTo(100));
+        }
+    }    
 
     @Test
     public void memoryMapIntStringFromBuilder() {

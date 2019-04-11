@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 import scala.Function1;
 import scala.Option;
 import scala.Tuple2;
@@ -38,6 +39,8 @@ import scala.collection.JavaConverters;
 import scala.collection.Seq;
 import scala.concurrent.duration.Deadline;
 import scala.concurrent.duration.FiniteDuration;
+import scala.runtime.AbstractFunction1;
+import swaydb.Apply;
 import swaydb.Prepare;
 import swaydb.data.IO;
 import swaydb.data.accelerate.Level0Meter;
@@ -275,6 +278,18 @@ public class Map<K, V> implements Closeable {
         return JavaConverters.mapAsJavaMapConverter(database.asScala()).asJava();
     }
 
+    public K registerFunction(K functionId, Function<V, V> function) {
+        return (K) database.registerFunction(functionId, new AbstractFunction1<V,swaydb.Apply.Map<V>>() {
+            @Override
+            public Apply.Map<V> apply(V value) {
+                return swaydb.Apply.Update$.MODULE$.apply(function.apply(value));
+            }
+        });
+    }
+
+    public void applyFunction(K key, K functionId) {
+        database.applyFunction(key, functionId);
+    }
     @Override
     public void close() {
         database.closeDatabase().get();
