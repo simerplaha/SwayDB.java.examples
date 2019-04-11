@@ -504,6 +504,24 @@ public class QuickStartPersistentMapTest extends TestBase {
     }
 
     @Test
+    public void persistentMapStringIntRegisterApplyFunction() {
+        try (swaydb.persistent.Map<String, Integer> likesMap = swaydb.persistent.Map
+                .<String, Integer>builder()
+                .withDirecory(Paths.get("disk1registerapplyfunction"))
+                .withKeySerializer(String.class)
+                .withValueSerializer(Integer.class)
+                .build()) {
+            // initial entry with 0 likes.
+            likesMap.put("SwayDB", 0);
+
+            String likesFunctionId = likesMap.registerFunction(
+                    "increment likes counts", (likesCount) -> likesCount + 1);
+            IntStream.rangeClosed(1, 100).forEach(index -> likesMap.applyFunction("SwayDB", likesFunctionId));
+            assertThat(likesMap.get("SwayDB"), equalTo(100));
+        }
+    }  
+
+    @Test
     public void persistentMapIntStringFromBuilder() {
         try (swaydb.persistent.Map<Integer, String> db = swaydb.persistent.Map
                         .<Integer, String>builder()
