@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
-import org.apache.commons.lang3.SerializationUtils;
 import static org.awaitility.Awaitility.await;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -38,6 +37,7 @@ import org.junit.Test;
 import swaydb.data.slice.BytesReader;
 import swaydb.data.slice.Slice$;
 import swaydb.data.slice.Slice;
+import swaydb.java.ApacheSerializer;
 
 public class QuickStartMemoryMapTest {
 
@@ -539,35 +539,13 @@ public class QuickStartMemoryMapTest {
         }
     }
 
-    class MyDataSerializer implements swaydb.serializers.Serializer<MyData> {
-
-        @Override
-        public Slice<Object> write(MyData myData) {
-            byte[] data = SerializationUtils.serialize(myData);
-            return Slice$.MODULE$.ByteSliceImplicits(Slice$.MODULE$.create(data.length,
-                    scala.reflect.ClassTag$.MODULE$.Any()))
-                    .addBytes(Slice$.MODULE$.apply(data, scala.reflect.ClassTag$.MODULE$.Any()));
-        }
-
-        @Override
-        public MyData read(Slice<Object> data) {
-            Slice<Object> byteSlice = Slice$.MODULE$.ByteSliceImplicits(data).createReader()
-                    .readRemaining();
-            byte[] result = new byte[byteSlice.size()];
-            for (int index = 0; index < byteSlice.size(); index += 1) {
-                result[index] = (byte) byteSlice.apply(index);
-            }
-            return SerializationUtils.deserialize(result);
-        }
-    }
-
     @Test
-    public void memoryMapIntCustomBytes() {
+    public void memoryMapIntApacheSerializer() {
 
         try (swaydb.memory.Map<Integer, MyData> db = swaydb.memory.Map
                 .<Integer, MyData>builder()
                 .withKeySerializer(Integer.class)
-                .withValueSerializer(new MyDataSerializer())
+                .withValueSerializer(new ApacheSerializer<>())
                 .build()) {
             // db.put(1, new MyData("one", "two")).get
             MyData myData = new MyData("one", "two");

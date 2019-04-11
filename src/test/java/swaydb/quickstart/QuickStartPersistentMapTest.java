@@ -20,6 +20,7 @@ package swaydb.quickstart;
 
 import java.nio.charset.StandardCharsets;
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -44,6 +45,7 @@ import swaydb.data.config.RecoveryMode;
 import swaydb.data.slice.BytesReader;
 import swaydb.data.slice.Slice$;
 import swaydb.data.slice.Slice;
+import swaydb.java.ApacheSerializer;
 
 public class QuickStartPersistentMapTest extends TestBase {
     
@@ -542,7 +544,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     }
     
     @Test
-    public void memoryMapIntCustom() {
+    public void persistentMapIntCustom() {
 
         class MyData {
             public String key;
@@ -576,6 +578,41 @@ public class QuickStartPersistentMapTest extends TestBase {
                 .withDirecory(Paths.get("disk1custom"))
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(new MyDataSerializer())
+                .build()) {
+            // db.put(1, new MyData("one", "two")).get
+            MyData myData = new MyData("one", "two");
+            db.put(1, myData);
+            // db.get(1).get
+            MyData result = db.get(1);
+            assertThat("result contains value", result, notNullValue());
+            assertThat(result.key, equalTo("one"));
+            assertThat(result.value, equalTo("two"));
+            // db.remove(1).get
+            db.remove(1);
+            MyData result2 = db.get(1);
+            assertThat("Empty result", result2, nullValue());
+        }
+    }
+
+    static class MyData implements Serializable {
+
+        public String key;
+        public String value;
+
+        public MyData(String key, String value) {
+            this.key = key;
+            this.value = value;
+        }
+    }
+
+    @Test
+    public void persistentMapIntApacheSerializer() {
+
+        try (swaydb.persistent.Map<Integer, MyData> db = swaydb.persistent.Map
+                .<Integer, MyData>builder()
+                .withDirecory(Paths.get("disk1apache"))
+                .withKeySerializer(Integer.class)
+                .withValueSerializer(new ApacheSerializer<>())
                 .build()) {
             // db.put(1, new MyData("one", "two")).get
             MyData myData = new MyData("one", "two");
