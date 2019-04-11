@@ -18,6 +18,7 @@
  */
 package swaydb.quickstart;
 
+import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -27,6 +28,7 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
+import org.apache.commons.lang3.SerializationUtils;
 import static org.awaitility.Awaitility.await;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -69,8 +71,7 @@ public class QuickStartMemoryMapTest {
             assertThat(db.get(1), nullValue());
 
             //write 100 key-values atomically
-            IntStream.range(1, 100).forEach(index
-                -> db.put(index, String.valueOf(index)));
+            IntStream.range(1, 100).forEach(index -> db.put(index, String.valueOf(index)));
 
             // Iteration: fetch all key-values withing range 10 to 90, update values
             // and atomically write updated key-values
@@ -478,8 +479,10 @@ public class QuickStartMemoryMapTest {
     public void memoryMapIntCustom() {
 
         class MyData {
+
             public String key;
             public String value;
+
             public MyData(String key, String value) {
                 this.key = key;
                 this.value = value;
@@ -487,13 +490,14 @@ public class QuickStartMemoryMapTest {
         }
 
         class MyDataSerializer implements swaydb.serializers.Serializer<MyData> {
+
             @Override
             public Slice<Object> write(MyData data) {
                 return Slice$.MODULE$.ByteSliceImplicits(
-                    Slice$.MODULE$.ByteSliceImplicits(Slice$.MODULE$.create(data.key.length() + data.value.length(),
-                            scala.reflect.ClassTag$.MODULE$.Any()))
-                            .addString(data.key, StandardCharsets.UTF_8))
-                    .addString(data.value, StandardCharsets.UTF_8);
+                        Slice$.MODULE$.ByteSliceImplicits(Slice$.MODULE$.create(data.key.length() + data.value.length(),
+                                scala.reflect.ClassTag$.MODULE$.Any()))
+                                .addString(data.key, StandardCharsets.UTF_8))
+                        .addString(data.value, StandardCharsets.UTF_8);
             }
 
             @Override
@@ -503,6 +507,62 @@ public class QuickStartMemoryMapTest {
                         reader.readString(3, StandardCharsets.UTF_8));
             }
         }
+
+        try (swaydb.memory.Map<Integer, MyData> db = swaydb.memory.Map
+                .<Integer, MyData>builder()
+                .withKeySerializer(Integer.class)
+                .withValueSerializer(new MyDataSerializer())
+                .build()) {
+            // db.put(1, new MyData("one", "two")).get
+            MyData myData = new MyData("one", "two");
+            db.put(1, myData);
+            // db.get(1).get
+            MyData result = db.get(1);
+            assertThat("result contains value", result, notNullValue());
+            assertThat(result.key, equalTo("one"));
+            assertThat(result.value, equalTo("two"));
+            // db.remove(1).get
+            db.remove(1);
+            MyData result2 = db.get(1);
+            assertThat("Empty result", result2, nullValue());
+        }
+    }
+
+    static class MyData implements Serializable {
+
+        public String key;
+        public String value;
+
+        public MyData(String key, String value) {
+            this.key = key;
+            this.value = value;
+        }
+    }
+
+    class MyDataSerializer implements swaydb.serializers.Serializer<MyData> {
+
+        @Override
+        public Slice<Object> write(MyData myData) {
+            byte[] data = SerializationUtils.serialize(myData);
+            return Slice$.MODULE$.ByteSliceImplicits(Slice$.MODULE$.create(data.length,
+                    scala.reflect.ClassTag$.MODULE$.Any()))
+                    .addBytes(Slice$.MODULE$.apply(data, scala.reflect.ClassTag$.MODULE$.Any()));
+        }
+
+        @Override
+        public MyData read(Slice<Object> data) {
+            Slice<Object> byteSlice = Slice$.MODULE$.ByteSliceImplicits(data).createReader()
+                    .readRemaining();
+            byte[] result = new byte[byteSlice.size()];
+            for (int index = 0; index < byteSlice.size(); index += 1) {
+                result[index] = (byte) byteSlice.apply(index);
+            }
+            return SerializationUtils.deserialize(result);
+        }
+    }
+
+    @Test
+    public void memoryMapIntCustomBytes() {
 
         try (swaydb.memory.Map<Integer, MyData> db = swaydb.memory.Map
                 .<Integer, MyData>builder()
