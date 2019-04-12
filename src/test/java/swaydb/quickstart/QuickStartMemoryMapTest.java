@@ -19,7 +19,6 @@
 package swaydb.quickstart;
 
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.AbstractMap;
@@ -34,10 +33,9 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import org.junit.Test;
-import swaydb.data.slice.BytesReader;
-import swaydb.data.slice.Slice$;
 import swaydb.data.slice.Slice;
 import swaydb.java.ApacheSerializer;
+import swaydb.java.BytesReader;
 
 public class QuickStartMemoryMapTest {
 
@@ -510,18 +508,22 @@ public class QuickStartMemoryMapTest {
 
             @Override
             public Slice<Object> write(MyData data) {
-                return Slice$.MODULE$.ByteSliceImplicits(
-                        Slice$.MODULE$.ByteSliceImplicits(Slice$.MODULE$.create(data.key.length() + data.value.length(),
-                                scala.reflect.ClassTag$.MODULE$.Any()))
-                                .addString(data.key, StandardCharsets.UTF_8))
-                        .addString(data.value, StandardCharsets.UTF_8);
+                return swaydb.java.Slice.create(4 + data.key.length() + 4 + data.value.length())
+                        .addInt(data.key.length())
+                        .addString(data.key)
+                        .addInt(data.value.length())
+                        .addString(data.value)
+                        .close();
             }
 
             @Override
             public MyData read(Slice<Object> data) {
-                final BytesReader reader = Slice$.MODULE$.ByteSliceImplicits(data).createReader();
-                return new MyData(reader.readString(3, StandardCharsets.UTF_8),
-                        reader.readString(3, StandardCharsets.UTF_8));
+                final swaydb.java.BytesReader reader = BytesReader.create(data);
+                int keyLength = reader.readInt();
+                String key = reader.readString(keyLength);
+                int valueLength = reader.readInt();
+                String value = reader.readString(valueLength);
+                return new MyData(key, value);
             }
         }
 
