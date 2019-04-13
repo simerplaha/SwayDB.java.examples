@@ -546,10 +546,17 @@ public class QuickStartMemoryMapTest {
 
             public String key;
             public String value;
+            public long longValue;
+            public byte byteValue;
+            public boolean boolValue;
 
-            public MyData(String key, String value) {
+            public MyData(String key, String value,
+                    long longValue, byte byteValue, boolean boolValue) {
                 this.key = key;
                 this.value = value;
+                this.longValue = longValue;
+                this.byteValue = byteValue;
+                this.boolValue = boolValue;
             }
         }
 
@@ -557,11 +564,14 @@ public class QuickStartMemoryMapTest {
 
             @Override
             public Slice<Object> write(MyData data) {
-                return swaydb.java.Slice.create(4 + data.key.length() + 4 + data.value.length())
+                return swaydb.java.Slice.create(4 + data.key.length() + 4 + data.value.length() + 10)
                         .addInt(data.key.length())
                         .addString(data.key)
                         .addInt(data.value.length())
                         .addString(data.value)
+                        .addLong(data.longValue)
+                        .addByte(data.byteValue)
+                        .addBoolean(data.boolValue)
                         .close();
             }
 
@@ -572,7 +582,10 @@ public class QuickStartMemoryMapTest {
                 String key = reader.readString(keyLength);
                 int valueLength = reader.readInt();
                 String value = reader.readString(valueLength);
-                return new MyData(key, value);
+                long longValue = reader.readLong();
+                byte byteValue = reader.readByte();
+                boolean boolValue = reader.readBoolean();
+                return new MyData(key, value, longValue, byteValue, boolValue);
             }
         }
 
@@ -582,17 +595,24 @@ public class QuickStartMemoryMapTest {
                 .withValueSerializer(new MyDataSerializer())
                 .build()) {
             // db.put(1, new MyData("one", "two")).get
-            MyData myData = new MyData("one", "two");
+            MyData myData = new MyData("one", "two", 10L, (byte) 100, true);
             db.put(1, myData);
             // db.get(1).get
             MyData result = db.get(1);
             assertThat("result contains value", result, notNullValue());
             assertThat(result.key, equalTo("one"));
             assertThat(result.value, equalTo("two"));
+            assertThat(result.longValue, equalTo(10L));
+            assertThat(result.byteValue, equalTo((byte) 100));
+            assertThat(result.boolValue, equalTo(true));
             // db.remove(1).get
             db.remove(1);
             MyData result2 = db.get(1);
             assertThat("Empty result", result2, nullValue());
+            MyData myData2 = new MyData("one", "two", 10L, (byte) 100, false);
+            db.put(1, myData2);
+            MyData result3 = db.get(1);
+            assertThat(result3.boolValue, equalTo(false));
         }
     }
 

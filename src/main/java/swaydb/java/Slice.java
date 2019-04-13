@@ -25,7 +25,7 @@ public class Slice {
 
     private swaydb.data.slice.Slice<Object> slice;
 
-    public Slice(int size) {
+    private Slice(int size) {
         slice = Slice$.MODULE$.create(size, scala.reflect.ClassTag$.MODULE$.Any());
     }
 
@@ -41,6 +41,21 @@ public class Slice {
 
     public Slice addInt(int value) {
         slice = Slice$.MODULE$.ByteSliceImplicits(slice).addInt(value);
+        return this;
+    }
+
+    public Slice addLong(long value) {
+        slice = Slice$.MODULE$.ByteSliceImplicits(slice).addLong(value);
+        return this;
+    }
+
+    public Slice addByte(byte value) {
+        slice = Slice$.MODULE$.ByteSliceImplicits(slice).addByte(value);
+        return this;
+    }
+    
+    public Slice addBoolean(boolean value) {
+        slice = Slice$.MODULE$.ByteSliceImplicits(slice).addBoolean(value);
         return this;
     }
 

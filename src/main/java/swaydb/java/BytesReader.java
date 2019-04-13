@@ -41,4 +41,16 @@ public class BytesReader {
     public int readInt() {
         return reader.readInt();
     }
+
+    public long readLong() {
+        return reader.readLong();
+    }
+
+    public byte readByte() {
+        return (byte) reader.read(1).apply(0);
+    }
+
+    public boolean readBoolean() {
+        return (byte) reader.read(1).apply(0) == 1;
+    }
 }
