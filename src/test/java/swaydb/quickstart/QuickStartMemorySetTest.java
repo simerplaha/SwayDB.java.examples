@@ -162,7 +162,7 @@ public class QuickStartMemorySetTest extends TestBase {
                         .withKeySerializer(Integer.class)
                         .build()) {
             db.add(1);
-            db.addAll(Arrays.asList(2));
+            db.add(Arrays.asList(2));
             assertThat(db.containsAll(Arrays.asList(1, 2)), equalTo(true));
         }
     }
@@ -174,7 +174,7 @@ public class QuickStartMemorySetTest extends TestBase {
                         .withKeySerializer(Integer.class)
                         .build()) {
             db.add(1);
-            db.addAll(Arrays.asList(2));
+            db.add(Arrays.asList(2));
             db.retainAll(Arrays.asList(1));
             assertThat(db.containsAll(Arrays.asList(1)), equalTo(true));
             db.retainAll(Arrays.asList(3));
@@ -210,7 +210,7 @@ public class QuickStartMemorySetTest extends TestBase {
                         .withKeySerializer(Integer.class)
                         .build()) {
             db.add(1);
-            db.addAll(Arrays.asList(2));
+            db.add(Arrays.asList(2));
             db.removeAll(Arrays.asList(1));
             assertThat(Arrays.toString(db.toArray()), equalTo("[2]"));
         }
@@ -223,7 +223,7 @@ public class QuickStartMemorySetTest extends TestBase {
                         .withKeySerializer(Integer.class)
                         .build()) {
             db.add(1);
-            db.addAll(Arrays.asList(2));
+            db.add(Arrays.asList(2));
             assertThat(db.size(), equalTo(2));
             db.removeAll(Arrays.asList(1));
             assertThat(db.size(), equalTo(1));

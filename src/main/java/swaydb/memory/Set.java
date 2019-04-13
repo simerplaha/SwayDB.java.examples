@@ -33,6 +33,7 @@ import scala.Option;
 import scala.collection.Iterable;
 import scala.collection.JavaConverters;
 import scala.collection.Seq;
+import scala.collection.mutable.Buffer;
 import scala.concurrent.ExecutionContext;
 import scala.concurrent.duration.Deadline;
 import scala.concurrent.duration.FiniteDuration;
@@ -125,8 +126,9 @@ public class Set<K> implements Closeable {
                 .allMatch(elem -> (boolean) database.contains(elem).get());
     }
 
-    public boolean addAll(Collection<? extends K> collection) {
-        collection.forEach(this::add);
+    public boolean add(List<? extends K> list) {
+        Buffer<? extends K> entries = scala.collection.JavaConverters.asScalaBufferConverter(list).asScala();
+        database.add(entries.toSet()).get();
         return true;
     }
 

@@ -219,7 +219,7 @@ public class QuickStartMemoryMapTest {
     }
 
     @Test
-    public void memoryMapIntStringisPutAll() {
+    public void memoryMapIntStringPutMap() {
         try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
@@ -227,13 +227,13 @@ public class QuickStartMemoryMapTest {
                 .build()) {
             Map<Integer, String> data = new LinkedHashMap<>();
             data.put(1, "one");
-            db.putAll(data);
+            db.put(data);
             assertThat(db.containsValue("one"), equalTo(true));
         }
     }
 
     @Test
-    public void memoryMapIntStringisUpdateAll() {
+    public void memoryMapIntStringUpdateMap() {
         try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
@@ -242,7 +242,7 @@ public class QuickStartMemoryMapTest {
             db.put(1, "zerro");
             Map<Integer, String> data = new LinkedHashMap<>();
             data.put(1, "one");
-            db.updateAll(data);
+            db.update(data);
             assertThat(db.containsValue("one"), equalTo(true));
         }
     }

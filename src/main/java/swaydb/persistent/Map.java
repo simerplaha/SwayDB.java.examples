@@ -152,12 +152,16 @@ public class Map<K, V> implements Closeable {
         return values().contains(value);
     }
 
-    public void putAll(java.util.Map<? extends K, ? extends V> map) {
-        map.forEach((key, value) -> database.put(key, value));
+    public void put(java.util.Map<? extends K, ? extends V> map) {
+        scala.collection.mutable.Map<? extends K, ? extends V> entries =
+                scala.collection.JavaConverters.mapAsScalaMapConverter(map).asScala();
+        database.put(entries.toSet()).get();
     }
 
-    public void updateAll(java.util.Map<? extends K, ? extends V> map) {
-        map.forEach((key, value) -> database.update(key, value));
+    public void update(java.util.Map<? extends K, ? extends V> map) {
+        scala.collection.mutable.Map<? extends K, ? extends V> entries =
+                scala.collection.JavaConverters.mapAsScalaMapConverter(map).asScala();
+        database.update(entries.toSet()).get();
     }
 
     public void clear() {
@@ -279,7 +283,7 @@ public class Map<K, V> implements Closeable {
     }
 
     public K registerFunction(K functionId, Function<V, V> function) {
-        return (K) database.registerFunction(functionId, new AbstractFunction1<V,swaydb.Apply.Map<V>>() {
+        return (K) database.registerFunction(functionId, new AbstractFunction1<V, Apply.Map<V>>() {
             @Override
             public Apply.Map<V> apply(V value) {
                 return swaydb.Apply.Update$.MODULE$.apply(function.apply(value));

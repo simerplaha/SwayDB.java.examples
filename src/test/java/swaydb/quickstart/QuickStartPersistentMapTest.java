@@ -215,7 +215,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     }
 
     @Test
-    public void persistentMapIntStringPutAll() {  
+    public void persistentMapIntStringPutMap() {
         try (swaydb.persistent.Map<Integer, String> db = swaydb.persistent.Map
                         .<Integer, String>builder()
                         .withDirecory(Paths.get("disk1builderPutAll"))
@@ -224,13 +224,13 @@ public class QuickStartPersistentMapTest extends TestBase {
                         .build()) {
             Map<Integer, String> data = new LinkedHashMap<>();
             data.put(1, "one");
-            db.putAll(data);
+            db.put(data);
             assertThat(db.containsValue("one"), equalTo(true));
         }
     }
 
     @Test
-    public void persistentMapIntStringisUpdateAll() {  
+    public void persistentMapIntStringUpdateMap() {  
         try (swaydb.persistent.Map<Integer, String> db = swaydb.persistent.Map
                         .<Integer, String>builder()
                         .withDirecory(Paths.get("disk1builderUpdateAll"))
@@ -240,7 +240,7 @@ public class QuickStartPersistentMapTest extends TestBase {
             db.put(1, "zerro");
             Map<Integer, String> data = new LinkedHashMap<>();
             data.put(1, "one");
-            db.updateAll(data);
+            db.update(data);
             assertThat(db.containsValue("one"), equalTo(true));
         }
     }
