@@ -284,11 +284,11 @@ public class Map<K, V> implements Closeable {
         return JavaConverters.mapAsJavaMapConverter(database.asScala()).asJava();
     }
 
-    public K registerFunction(K functionId, Function<V, V> function) {
+    public K registerFunction(K functionId, Function<V, Apply.Map<V>> function) {
         return (K) database.registerFunction(functionId, new AbstractFunction1<V, Apply.Map<V>>() {
             @Override
             public Apply.Map<V> apply(V value) {
-                return swaydb.Apply.Update$.MODULE$.apply(function.apply(value));
+                return function.apply(value);
             }
         });
     }

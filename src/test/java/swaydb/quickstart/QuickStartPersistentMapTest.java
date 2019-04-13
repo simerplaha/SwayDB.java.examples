@@ -43,6 +43,7 @@ import swaydb.data.config.MMAP;
 import swaydb.data.config.RecoveryMode;
 import swaydb.data.slice.Slice;
 import swaydb.java.ApacheSerializer;
+import swaydb.java.Apply;
 import swaydb.java.BytesReader;
 
 public class QuickStartPersistentMapTest extends TestBase {
@@ -502,7 +503,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     }
 
     @Test
-    public void persistentMapStringIntRegisterApplyFunction() {
+    public void persistentMapStringIntRegisterApplyFunctionUpdate() {
         try (swaydb.persistent.Map<String, Integer> likesMap = swaydb.persistent.Map
                 .<String, Integer>builder()
                 .withDirecory(Paths.get("disk1registerapplyfunction"))
@@ -513,7 +514,7 @@ public class QuickStartPersistentMapTest extends TestBase {
             likesMap.put("SwayDB", 0);
 
             String likesFunctionId = likesMap.registerFunction(
-                    "increment likes counts", (likesCount) -> likesCount + 1);
+                    "increment likes counts", (Integer likesCount) -> Apply.update(likesCount + 1));
             IntStream.rangeClosed(1, 100).forEach(index -> likesMap.applyFunction("SwayDB", likesFunctionId));
             assertThat(likesMap.get("SwayDB"), equalTo(100));
         }

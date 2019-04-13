@@ -35,6 +35,7 @@ import static org.junit.Assert.assertThat;
 import org.junit.Test;
 import swaydb.data.slice.Slice;
 import swaydb.java.ApacheSerializer;
+import swaydb.java.Apply;
 import swaydb.java.BytesReader;
 
 public class QuickStartMemoryMapTest {
@@ -444,7 +445,7 @@ public class QuickStartMemoryMapTest {
     }
     
     @Test
-    public void memoryMapStringIntRegisterApplyFunction() {
+    public void memoryMapStringIntRegisterApplyFunctionUpdate() {
         try (swaydb.memory.Map<String, Integer> likesMap = swaydb.memory.Map
                 .<String, Integer>builder()
                 .withKeySerializer(String.class)
@@ -454,11 +455,59 @@ public class QuickStartMemoryMapTest {
             likesMap.put("SwayDB", 0);
 
             String likesFunctionId = likesMap.registerFunction(
-                    "increment likes counts", (likesCount) -> likesCount + 1);
+                    "increment likes counts", (Integer likesCount) -> Apply.update(likesCount + 1));
             IntStream.rangeClosed(1, 100).forEach(index -> likesMap.applyFunction("SwayDB", likesFunctionId));
             assertThat(likesMap.get("SwayDB"), equalTo(100));
         }
     }    
+
+    @Test
+    public void memoryMapStringIntRegisterApplyFunctionExpire() {
+        try (swaydb.memory.Map<String, Integer> likesMap = swaydb.memory.Map
+                .<String, Integer>builder()
+                .withKeySerializer(String.class)
+                .withValueSerializer(Integer.class)
+                .build()) {
+            likesMap.put("SwayDB", 0);
+
+            String likesFunctionId = likesMap.registerFunction(
+                    "expire likes counts", (Integer likesCount) -> Apply.expire(LocalDateTime.now()));
+            IntStream.rangeClosed(1, 100).forEach(index -> likesMap.applyFunction("SwayDB", likesFunctionId));
+            assertThat(likesMap.get("SwayDB"), equalTo(null));
+        }
+    }
+
+    @Test
+    public void memoryMapStringIntRegisterApplyFunctionRemove() {
+        try (swaydb.memory.Map<String, Integer> likesMap = swaydb.memory.Map
+                .<String, Integer>builder()
+                .withKeySerializer(String.class)
+                .withValueSerializer(Integer.class)
+                .build()) {
+            likesMap.put("SwayDB", 0);
+
+            String likesFunctionId = likesMap.registerFunction(
+                    "remove likes counts", (Integer likesCount) -> Apply.remove());
+            IntStream.rangeClosed(1, 100).forEach(index -> likesMap.applyFunction("SwayDB", likesFunctionId));
+            assertThat(likesMap.get("SwayDB"), equalTo(null));
+        }
+    }
+
+    @Test
+    public void memoryMapStringIntRegisterApplyFunctionNothing() {
+        try (swaydb.memory.Map<String, Integer> likesMap = swaydb.memory.Map
+                .<String, Integer>builder()
+                .withKeySerializer(String.class)
+                .withValueSerializer(Integer.class)
+                .build()) {
+            likesMap.put("SwayDB", 0);
+
+            String likesFunctionId = likesMap.registerFunction(
+                    "nothing likes counts", (Integer likesCount) -> Apply.nothing());
+            IntStream.rangeClosed(1, 100).forEach(index -> likesMap.applyFunction("SwayDB", likesFunctionId));
+            assertThat(likesMap.get("SwayDB"), equalTo(0));
+        }
+    }
 
     @Test
     public void memoryMapIntStringFromBuilder() {
