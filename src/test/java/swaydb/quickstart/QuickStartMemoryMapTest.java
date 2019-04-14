@@ -26,6 +26,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import static org.awaitility.Awaitility.await;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -69,8 +70,10 @@ public class QuickStartMemoryMapTest {
             assertThat(db.get(2), equalTo("two value"));
             assertThat(db.get(1), nullValue());
 
-            //write 100 key-values atomically
-            IntStream.range(1, 100).forEach(index -> db.put(index, String.valueOf(index)));
+            // write 100 key-values atomically
+            db.put(IntStream.rangeClosed(1, 100)
+                    .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
+                    .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue())));
 
             // Iteration: fetch all key-values withing range 10 to 90, update values
             // and atomically write updated key-values
