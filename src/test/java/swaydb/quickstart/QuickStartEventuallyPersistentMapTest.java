@@ -451,7 +451,7 @@ public class QuickStartEventuallyPersistentMapTest extends TestBase {
             db.put(1, "one");
             db.expire(1, 100, TimeUnit.MILLISECONDS);
             assertThat(db.entrySet().toString(), equalTo("[1=one]"));
-            await().atMost(1800, TimeUnit.MILLISECONDS).until((Callable<Boolean>) () -> {
+            await().atMost(2800, TimeUnit.MILLISECONDS).until((Callable<Boolean>) () -> {
                 assertThat(db.get(1), nullValue());
                 return true;
             });

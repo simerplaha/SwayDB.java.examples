@@ -120,7 +120,7 @@ public class QuickStartPersistentSetTest extends TestBase {
                         .build()) {
             db.add(1, 100, TimeUnit.MILLISECONDS);
             assertThat(db.contains(1), equalTo(true));
-            await().atMost(1800, TimeUnit.MILLISECONDS).until((Callable<Boolean>) () -> {
+            await().atMost(2800, TimeUnit.MILLISECONDS).until((Callable<Boolean>) () -> {
                 assertThat(db.contains(1), equalTo(false));
                 return true;
             });
@@ -153,7 +153,7 @@ public class QuickStartPersistentSetTest extends TestBase {
             db.add(1);
             db.expire(1, 100, TimeUnit.MILLISECONDS);
             assertThat(db.contains(1), equalTo(true));
-            await().atMost(1800, TimeUnit.MILLISECONDS).until((Callable<Boolean>) () -> {
+            await().atMost(2800, TimeUnit.MILLISECONDS).until((Callable<Boolean>) () -> {
                 assertThat(db.contains(1), equalTo(false));
                 return true;
             });
@@ -170,7 +170,7 @@ public class QuickStartPersistentSetTest extends TestBase {
             db.add(1);
             db.expire(1, LocalDateTime.now().plusNanos(TimeUnit.MILLISECONDS.toNanos(100)));
             assertThat(db.contains(1), equalTo(true));
-            await().atMost(1800, TimeUnit.MILLISECONDS).until((Callable<Boolean>) () -> {
+            await().atMost(2800, TimeUnit.MILLISECONDS).until((Callable<Boolean>) () -> {
                 assertThat(db.contains(1), equalTo(false));
                 return true;
             });

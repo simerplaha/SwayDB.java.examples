@@ -309,7 +309,7 @@ public class QuickStartMemoryMapTest {
                 .build()) {
             db.put(1, "one", LocalDateTime.now().plusNanos(TimeUnit.MILLISECONDS.toNanos(100)));
             assertThat(db.entrySet().toString(), equalTo("[1=one]"));
-            await().atMost(1200, TimeUnit.MILLISECONDS).until((Callable<Boolean>) () -> {
+            await().atMost(2800, TimeUnit.MILLISECONDS).until((Callable<Boolean>) () -> {
                 assertThat(db.get(1), nullValue());
                 return true;
             });
@@ -412,7 +412,7 @@ public class QuickStartMemoryMapTest {
             db.put(1, "one");
             db.expire(1, LocalDateTime.now().plusNanos(TimeUnit.MILLISECONDS.toNanos(100)));
             assertThat(db.entrySet().toString(), equalTo("[1=one]"));
-            await().atMost(1800, TimeUnit.MILLISECONDS).until((Callable<Boolean>) () -> {
+            await().atMost(2800, TimeUnit.MILLISECONDS).until((Callable<Boolean>) () -> {
                 assertThat(db.get(1), nullValue());
                 return true;
             });
