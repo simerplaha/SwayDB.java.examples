@@ -34,6 +34,8 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import org.junit.Test;
+import scala.collection.mutable.ListBuffer;
+import scala.runtime.AbstractFunction1;
 import swaydb.data.slice.Slice;
 import swaydb.java.ApacheSerializer;
 import swaydb.java.Apply;
@@ -77,11 +79,31 @@ public class QuickStartMemoryMapTest {
 
             // Iteration: fetch all key-values withing range 10 to 90, update values
             // and atomically write updated key-values
-            IntStream.rangeClosed(10, 90)
-                    .mapToObj(item -> new AbstractMap.SimpleEntry<>(item, item + "_updated"))
-                    .forEach(pair -> db.put(pair.getKey(), pair.getValue()));
+            ((swaydb.data.IO.Success) db
+                    .from(10)
+                    .takeWhile(new AbstractFunction1() {
+                        @Override
+                        public Object apply(Object t1) {
+                            return (Integer) ((scala.Tuple2) t1)._1() <= 90;
+                        }
+                    })
+                    .map(new AbstractFunction1() {
+                        @Override
+                        public Object apply(Object t1) {
+                            Integer key = (Integer) ((scala.Tuple2) t1)._1();
+                            String value = (String) ((scala.Tuple2) t1)._2();
+                            return scala.Tuple2.apply(key, value + "_updated");
+                        }
+                    })
+                    .materialize()).foreach(new AbstractFunction1<Object, Object>() {
+                        @Override
+                        public Object apply(Object t1) {
+                            db.put(((ListBuffer) t1).seq());
+                            return null;
+                        }
+                    });
 
-            //assert the key-values were updated
+            // assert the key-values were updated
             IntStream.rangeClosed(10, 90)
                     .mapToObj(item -> new AbstractMap.SimpleEntry<>(item, db.get(item)))
                     .forEach(pair -> assertThat(pair.getValue().endsWith("_updated"), equalTo(true)));
