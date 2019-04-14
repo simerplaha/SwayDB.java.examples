@@ -471,9 +471,14 @@ public class QuickStartMemoryMapTest {
             likesMap.put("SwayDB", 0);
 
             String likesFunctionId = likesMap.registerFunction(
-                    "expire likes counts", (Integer likesCount) -> Apply.expire(LocalDateTime.now()));
-            IntStream.rangeClosed(1, 100).forEach(index -> likesMap.applyFunction("SwayDB", likesFunctionId));
-            assertThat(likesMap.get("SwayDB"), equalTo(null));
+                    "expire likes counts", (Integer likesCount) ->
+                            Apply.expire(LocalDateTime.now().plusNanos(TimeUnit.MILLISECONDS.toNanos(100))));
+            likesMap.applyFunction("SwayDB", likesFunctionId);
+            assertThat(likesMap.get("SwayDB"), equalTo(0));
+            await().atMost(1200, TimeUnit.MILLISECONDS).until((Callable<Boolean>) () -> {
+                assertThat(likesMap.get("SwayDB"), nullValue());
+                return true;
+            });
         }
     }
 
@@ -488,7 +493,7 @@ public class QuickStartMemoryMapTest {
 
             String likesFunctionId = likesMap.registerFunction(
                     "remove likes counts", (Integer likesCount) -> Apply.remove());
-            IntStream.rangeClosed(1, 100).forEach(index -> likesMap.applyFunction("SwayDB", likesFunctionId));
+            likesMap.applyFunction("SwayDB", likesFunctionId);
             assertThat(likesMap.get("SwayDB"), equalTo(null));
         }
     }
@@ -504,7 +509,7 @@ public class QuickStartMemoryMapTest {
 
             String likesFunctionId = likesMap.registerFunction(
                     "nothing likes counts", (Integer likesCount) -> Apply.nothing());
-            IntStream.rangeClosed(1, 100).forEach(index -> likesMap.applyFunction("SwayDB", likesFunctionId));
+            likesMap.applyFunction("SwayDB", likesFunctionId);
             assertThat(likesMap.get("SwayDB"), equalTo(0));
         }
     }
