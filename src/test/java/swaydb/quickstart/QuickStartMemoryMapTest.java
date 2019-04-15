@@ -23,7 +23,9 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.AbstractMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -107,6 +109,37 @@ public class QuickStartMemoryMapTest {
             IntStream.rangeClosed(10, 90)
                     .mapToObj(item -> new AbstractMap.SimpleEntry<>(item, db.get(item)))
                     .forEach(pair -> assertThat(pair.getValue().endsWith("_updated"), equalTo(true)));
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void memoryMapIntStringKeys() {
+        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map.create(
+                Integer.class, String.class)) {
+            // write 100 key-values atomically
+            db.put(IntStream.rangeClosed(1, 100)
+                    .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
+                    .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue())));
+
+            final Set<Integer> result = new LinkedHashSet<>();
+            ((swaydb.data.IO.Success) db
+                    .keys()
+                    .reverse()
+                    .fromOrBefore(10)
+                    .take(5)
+                    .materialize())
+                    .foreach(new AbstractFunction1() {
+                        @Override
+                        public Object apply(Object t1) {
+                            scala.collection.Seq<Integer> entries = ((ListBuffer) t1).seq();
+                            for (int index = 0; index < entries.size(); index += 1) {
+                                result.add(entries.apply(index));
+                            }
+                            return null;
+                        }
+                    });
+            assertThat(result.toString(), equalTo("[10, 9, 8, 7, 6]"));
         }
     }
 

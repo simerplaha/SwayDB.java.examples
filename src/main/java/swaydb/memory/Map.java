@@ -305,6 +305,18 @@ public class Map<K, V> implements Closeable {
         return database.from(key);
     }
 
+    public swaydb.Map<K, V, IO> fromOrAfter(K key) {
+        return database.fromOrAfter(key);
+    }
+
+    public swaydb.Map<K, V, IO> fromOrBefore(K key) {
+        return database.fromOrBefore(key);
+    }
+
+    public swaydb.Set<K, IO> keys() {
+        return database.keys();
+    }
+
     @Override
     public void close() {
         database.closeDatabase().get();
