@@ -158,6 +158,10 @@ public class Map<K, V> implements Closeable {
         database.put(entries.toSet()).get();
     }
 
+    public void put(scala.collection.mutable.Seq seq) {
+        database.put(seq);
+    }
+
     public void update(java.util.Map<? extends K, ? extends V> map) {
         scala.collection.mutable.Map<? extends K, ? extends V> entries =
                 scala.collection.JavaConverters.mapAsScalaMapConverter(map).asScala();
@@ -294,6 +298,11 @@ public class Map<K, V> implements Closeable {
     public void applyFunction(K key, K functionId) {
         database.applyFunction(key, functionId);
     }
+
+    public swaydb.Map<K, V, IO> from(K key) {
+        return database.from(key);
+    }
+
     @Override
     public void close() {
         database.closeDatabase().get();

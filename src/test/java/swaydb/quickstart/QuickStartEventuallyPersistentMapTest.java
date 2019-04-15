@@ -39,6 +39,8 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import scala.collection.mutable.ListBuffer;
+import scala.runtime.AbstractFunction1;
 import swaydb.base.TestBase;
 import swaydb.data.config.MMAP;
 import swaydb.data.config.RecoveryMode;
@@ -73,7 +75,7 @@ public class QuickStartEventuallyPersistentMapTest extends TestBase {
     @SuppressWarnings("unchecked")
     @Test
     public void persistentMapIntString() {
-        // Create a eventually persistent database. If the directories do not exist, they will be created.
+        // Create an eventually persistent database. If the directories do not exist, they will be created.
         // val db = eventually.persistent.Map[Int, String](dir = dir.resolve("disk2")).get
         try (swaydb.eventually.persistent.Map<Integer, String> db =
                 swaydb.eventually.persistent.Map.<Integer, String>create(
@@ -102,9 +104,29 @@ public class QuickStartEventuallyPersistentMapTest extends TestBase {
 
             //Iteration: fetch all key-values withing range 10 to 90, update values and
             // atomically write updated key-values
-            IntStream.rangeClosed(10, 90)
-                    .mapToObj(item -> new AbstractMap.SimpleEntry<>(item, item + "_updated"))
-                    .forEach(pair -> db.put(pair.getKey(), pair.getValue()));
+            ((swaydb.data.IO.Success) db
+                    .from(10)
+                    .takeWhile(new AbstractFunction1() {
+                        @Override
+                        public Object apply(Object t1) {
+                            return (Integer) ((scala.Tuple2) t1)._1() <= 90;
+                        }
+                    })
+                    .map(new AbstractFunction1() {
+                        @Override
+                        public Object apply(Object t1) {
+                            Integer key = (Integer) ((scala.Tuple2) t1)._1();
+                            String value = (String) ((scala.Tuple2) t1)._2();
+                            return scala.Tuple2.apply(key, value + "_updated");
+                        }
+                    })
+                    .materialize()).foreach(new AbstractFunction1<Object, Object>() {
+                        @Override
+                        public Object apply(Object t1) {
+                            db.put(((ListBuffer) t1).seq());
+                            return null;
+                        }
+                    });
             //assert the key-values were updated
             IntStream.rangeClosed(10, 90)
                     .mapToObj(item -> new AbstractMap.SimpleEntry<>(item, db.get(item)))
