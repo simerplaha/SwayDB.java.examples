@@ -71,6 +71,8 @@ public class QuickStartPersistentMapTest extends TestBase {
         deleteDirectoryWalkTree(Paths.get("disk1expireAt"));
         deleteDirectoryWalkTree(Paths.get("disk1update"));
         deleteDirectoryWalkTree(Paths.get("disk1asjava"));
+        deleteDirectoryWalkTree(Paths.get("disk1apache"));
+        deleteDirectoryWalkTree(Paths.get("disk1registerapplyfunction"));
     }
 
     @SuppressWarnings("unchecked")

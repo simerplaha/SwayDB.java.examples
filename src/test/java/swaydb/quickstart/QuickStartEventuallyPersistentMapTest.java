@@ -26,6 +26,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
@@ -53,7 +54,7 @@ public class QuickStartEventuallyPersistentMapTest extends TestBase {
     
     @BeforeClass
     public static void beforeClass() throws IOException {
-        deleteDirectoryWalkTree(Paths.get("disk2"));
+        deleteDirectoryWalkTree(Paths.get("disk2From"));
         deleteDirectoryWalkTree(Paths.get("disk2builder"));
         deleteDirectoryWalkTree(Paths.get("disk2builderClear"));
         deleteDirectoryWalkTree(Paths.get("disk2builderContainsValue"));
@@ -74,12 +75,12 @@ public class QuickStartEventuallyPersistentMapTest extends TestBase {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void persistentMapIntString() {
+    public void persistentMapIntStringFrom() {
         // Create an eventually persistent database. If the directories do not exist, they will be created.
         // val db = eventually.persistent.Map[Int, String](dir = dir.resolve("disk2")).get
         try (swaydb.eventually.persistent.Map<Integer, String> db =
                 swaydb.eventually.persistent.Map.<Integer, String>create(
-                        Integer.class, String.class, Paths.get("disk2"))) {
+                        Integer.class, String.class, Paths.get("disk2From"))) {
             // db.put(1, "one").get
             db.put(1, "one");
             // db.get(1).get
@@ -91,19 +92,24 @@ public class QuickStartEventuallyPersistentMapTest extends TestBase {
             db.remove(1);
             String result2 = db.get(1);
             assertThat("Empty result", result2, nullValue());
+            // db.put(1, "one value").get
+            db.put(1, "one value");
+
             db.commit(
                     new swaydb.java.Prepare<Integer, String>().put(2, "two value"),
                     new swaydb.java.Prepare().remove(1)
             );
+
             assertThat(db.get(2), equalTo("two value"));
             assertThat(db.get(1), nullValue());
+
             // write 100 key-values atomically
             db.put(IntStream.rangeClosed(1, 100)
                     .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
                     .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue())));
 
-            //Iteration: fetch all key-values withing range 10 to 90, update values and
-            // atomically write updated key-values
+            // Iteration: fetch all key-values withing range 10 to 90, update values
+            // and atomically write updated key-values
             ((swaydb.data.IO.Success) db
                     .from(10)
                     .takeWhile(new AbstractFunction1() {
@@ -127,10 +133,127 @@ public class QuickStartEventuallyPersistentMapTest extends TestBase {
                             return null;
                         }
                     });
-            //assert the key-values were updated
+
+            // assert the key-values were updated
             IntStream.rangeClosed(10, 90)
                     .mapToObj(item -> new AbstractMap.SimpleEntry<>(item, db.get(item)))
                     .forEach(pair -> assertThat(pair.getValue().endsWith("_updated"), equalTo(true)));
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void persistentMapIntStringFromOrAfter() {
+        try (swaydb.eventually.persistent.Map<Integer, String> db =
+                swaydb.eventually.persistent.Map.<Integer, String>create(
+                        Integer.class, String.class, Paths.get("disk2FromOrAfter"))) {
+            // write 100 key-values atomically
+            db.put(IntStream.rangeClosed(1, 100)
+                    .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
+                    .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue())));
+
+            ((swaydb.data.IO.Success) db
+                    .fromOrAfter(10)
+                    .takeWhile(new AbstractFunction1() {
+                        @Override
+                        public Object apply(Object t1) {
+                            return (Integer) ((scala.Tuple2) t1)._1() <= 90;
+                        }
+                    })
+                    .map(new AbstractFunction1() {
+                        @Override
+                        public Object apply(Object t1) {
+                            Integer key = (Integer) ((scala.Tuple2) t1)._1();
+                            String value = (String) ((scala.Tuple2) t1)._2();
+                            return scala.Tuple2.apply(key, value + "_updated");
+                        }
+                    })
+                    .materialize()).foreach(new AbstractFunction1<Object, Object>() {
+                        @Override
+                        public Object apply(Object t1) {
+                            db.put(((ListBuffer) t1).seq());
+                            return null;
+                        }
+                    });
+
+            // assert the key-values were updated
+            IntStream.rangeClosed(10, 90)
+                    .mapToObj(item -> new AbstractMap.SimpleEntry<>(item, db.get(item)))
+                    .forEach(pair -> assertThat(pair.getValue().endsWith("_updated"), equalTo(true)));
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void persistentMapIntStringFromOrBefore() {
+        try (swaydb.eventually.persistent.Map<Integer, String> db =
+                swaydb.eventually.persistent.Map.<Integer, String>create(
+                        Integer.class, String.class, Paths.get("disk2FromOrBefore"))) {
+            // write 100 key-values atomically
+            db.put(IntStream.rangeClosed(1, 100)
+                    .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
+                    .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue())));
+
+            ((swaydb.data.IO.Success) db
+                    .fromOrBefore(10)
+                    .takeWhile(new AbstractFunction1() {
+                        @Override
+                        public Object apply(Object t1) {
+                            return (Integer) ((scala.Tuple2) t1)._1() <= 90;
+                        }
+                    })
+                    .map(new AbstractFunction1() {
+                        @Override
+                        public Object apply(Object t1) {
+                            Integer key = (Integer) ((scala.Tuple2) t1)._1();
+                            String value = (String) ((scala.Tuple2) t1)._2();
+                            return scala.Tuple2.apply(key, value + "_updated");
+                        }
+                    })
+                    .materialize()).foreach(new AbstractFunction1<Object, Object>() {
+                        @Override
+                        public Object apply(Object t1) {
+                            db.put(((ListBuffer) t1).seq());
+                            return null;
+                        }
+                    });
+
+            // assert the key-values were updated
+            IntStream.rangeClosed(10, 90)
+                    .mapToObj(item -> new AbstractMap.SimpleEntry<>(item, db.get(item)))
+                    .forEach(pair -> assertThat(pair.getValue().endsWith("_updated"), equalTo(true)));
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void persistentMapIntStringKeys() {
+        try (swaydb.eventually.persistent.Map<Integer, String> db =
+                swaydb.eventually.persistent.Map.<Integer, String>create(
+                        Integer.class, String.class, Paths.get("disk2Keys"))) {
+            // write 100 key-values atomically
+            db.put(IntStream.rangeClosed(1, 100)
+                    .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
+                    .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue())));
+
+            final Set<Integer> result = new LinkedHashSet<>();
+            ((swaydb.data.IO.Success) db
+                    .keys()
+                    .reverse()
+                    .fromOrBefore(10)
+                    .take(5)
+                    .materialize())
+                    .foreach(new AbstractFunction1() {
+                        @Override
+                        public Object apply(Object t1) {
+                            scala.collection.Seq<Integer> entries = ((ListBuffer) t1).seq();
+                            for (int index = 0; index < entries.size(); index += 1) {
+                                result.add(entries.apply(index));
+                            }
+                            return null;
+                        }
+                    });
+            assertThat(result.toString(), equalTo("[10, 9, 8, 7, 6]"));
         }
     }
     
