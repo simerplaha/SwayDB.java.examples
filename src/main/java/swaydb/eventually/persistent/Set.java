@@ -55,9 +55,8 @@ public class Set<K> implements Closeable {
         return (boolean) database.contains(elem).get();
     }
 
-    @SuppressWarnings("unchecked")
-    public boolean mightContain(Object key) {
-        return (boolean) database.mightContain((K) key).get();
+    public boolean mightContain(K key) {
+        return (boolean) database.mightContain(key).get();
     }
 
     public Iterator<K> iterator() {
@@ -143,9 +142,12 @@ public class Set<K> implements Closeable {
         return true;
     }
 
-    public boolean removeAll(Collection<?> collection) {
-        collection.forEach(this::remove);
-        return true;
+    public void remove(java.util.Set<K> keys) {
+        database.remove(scala.collection.JavaConverters.asScalaSetConverter(keys).asScala()).get();
+    }
+
+    public void remove(K from, K to) {
+        database.remove(from, to).get();
     }
 
     @SuppressWarnings("unchecked")
@@ -200,9 +202,8 @@ public class Set<K> implements Closeable {
         database.asScala().clear();
     }
 
-    @SuppressWarnings("unchecked")
-    public boolean remove(Object key) {
-        Object result = database.remove((K) key).get();
+    public boolean remove(K key) {
+        Object result = database.remove(key).get();
         return result instanceof scala.Some;
     }
     

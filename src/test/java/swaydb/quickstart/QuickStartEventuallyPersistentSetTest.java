@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
@@ -241,7 +242,7 @@ public class QuickStartEventuallyPersistentSetTest extends TestBase {
     }
 
     @Test
-    public void persistentSetIntRemoveAll() {  
+    public void persistentSetIntRemove() {  
         try (swaydb.eventually.persistent.Set<Integer> db = swaydb.eventually.persistent.Set
                         .<Integer>builder()
                         .withDirecory(Paths.get("disk4removeall"))
@@ -249,7 +250,11 @@ public class QuickStartEventuallyPersistentSetTest extends TestBase {
                         .build()) {
             db.add(1);
             db.add(Arrays.asList(2));
-            db.removeAll(Arrays.asList(1));
+            db.remove(new HashSet<>(Arrays.asList(1)));
+            assertThat(Arrays.toString(db.toArray()), equalTo("[2]"));
+            db.add(3);
+            db.add(4);
+            db.remove(3, 4);
             assertThat(Arrays.toString(db.toArray()), equalTo("[2]"));
         }
     }
@@ -264,7 +269,7 @@ public class QuickStartEventuallyPersistentSetTest extends TestBase {
             db.add(1);
             db.add(Arrays.asList(2));
             assertThat(db.size(), equalTo(2));
-            db.removeAll(Arrays.asList(1));
+            db.remove(new HashSet<>(Arrays.asList(1)));
             assertThat(db.size(), equalTo(1));
         }
     }

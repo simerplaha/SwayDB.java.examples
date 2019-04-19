@@ -24,7 +24,9 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.AbstractMap;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -633,6 +635,27 @@ public class QuickStartPersistentMapTest extends TestBase {
             db.put(1, "one");
             db.update(1, "one+1");
             assertThat(db.get(1), equalTo("one+1"));
+        }
+    }
+
+    @Test
+    public void persistentMapIntStringRemove() {  
+        try (swaydb.persistent.Map<Integer, String> db = swaydb.persistent.Map
+                        .<Integer, String>builder()
+                        .withDirecory(Paths.get("disk1remove"))
+                        .withKeySerializer(Integer.class)
+                        .withValueSerializer(String.class)
+                        .build()) {
+            db.put(1, "one");
+            db.put(2, "two");
+            assertThat(db.size(), equalTo(2));
+            db.remove(1, 2);
+            assertThat(db.size(), equalTo(0));
+            db.put(3, "one");
+            db.put(4, "two");
+            assertThat(db.size(), equalTo(2));
+            db.remove(new HashSet<>(Arrays.asList(3, 4)));
+            assertThat(db.size(), equalTo(0));
         }
     }
 

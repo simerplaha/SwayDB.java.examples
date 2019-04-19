@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
@@ -204,15 +205,19 @@ public class QuickStartMemorySetTest extends TestBase {
     }
 
     @Test
-    public void memorySetIntRemoveAll() {  
+    public void memorySetIntRemove() {  
         try (swaydb.memory.Set<Integer> db = swaydb.memory.Set
                         .<Integer>builder()
                         .withKeySerializer(Integer.class)
                         .build()) {
             db.add(1);
-            db.add(Arrays.asList(2));
-            db.removeAll(Arrays.asList(1));
-            assertThat(Arrays.toString(db.toArray()), equalTo("[2]"));
+            db.add(2);
+            db.remove(new HashSet<>(Arrays.asList(1, 2)));
+            assertThat(Arrays.toString(db.toArray()), equalTo("[]"));
+            db.add(3);
+            db.add(4);
+            db.remove(3, 4);
+            assertThat(Arrays.toString(db.toArray()), equalTo("[]"));
         }
     }
 
@@ -225,7 +230,7 @@ public class QuickStartMemorySetTest extends TestBase {
             db.add(1);
             db.add(Arrays.asList(2));
             assertThat(db.size(), equalTo(2));
-            db.removeAll(Arrays.asList(1));
+            db.remove(1);
             assertThat(db.size(), equalTo(1));
         }
     }

@@ -22,6 +22,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.AbstractMap;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -581,6 +583,24 @@ public class QuickStartMemoryMapTest {
                 .build()) {
             db.put(1, "one");
             assertThat(db.asJava().size(), equalTo(1));
+        }
+    }
+    
+    @Test
+    public void memoryMapIntStringRemove() {
+        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+                .<Integer, String>builder()
+                .withKeySerializer(Integer.class)
+                .withValueSerializer(String.class)
+                .build()) {
+            db.put(1, "one");
+            db.put(2, "two");
+            db.remove(1, 2);
+            assertThat(db.asJava().size(), equalTo(0));
+            db.put(3, "three");
+            db.put(4, "four");
+            db.remove(new HashSet<>(Arrays.asList(3, 4)));
+            assertThat(db.asJava().size(), equalTo(0));
         }
     }
     

@@ -158,6 +158,7 @@ public class Map<K, V> implements Closeable {
         database.put(entries.toSet()).get();
     }
 
+    @SuppressWarnings("unchecked")
     public void put(scala.collection.mutable.Seq seq) {
         database.put(seq);
     }

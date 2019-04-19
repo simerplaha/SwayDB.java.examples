@@ -158,6 +158,7 @@ public class Map<K, V> implements Closeable {
         database.put(entries.toSet()).get();
     }
 
+    @SuppressWarnings("unchecked")
     public void put(scala.collection.mutable.Seq seq) {
         database.put(seq);
     }
@@ -280,6 +281,14 @@ public class Map<K, V> implements Closeable {
         V oldValue = get(key);
         database.remove(key).get();
         return oldValue;
+    }
+
+    public void remove(Set<K> keys) {
+        database.remove(scala.collection.JavaConverters.asScalaSetConverter(keys).asScala()).get();
+    }
+
+    public void remove(K from, K to) {
+        database.remove(from, to).get();
     }
 
     public java.util.Map<K, V> asJava() {
