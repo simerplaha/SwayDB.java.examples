@@ -1,11 +1,17 @@
 language: java
-dist: trusty
 
 jdk:
   - oraclejdk8
 
 script:
   - mvn -B clean test jacoco:report
+
+deploy:
+  provider: script
+  script: mvn -B -s .settings.xml -P release clean verify gpg:sign deploy:deploy
+  skip_cleanup: true
+  on:
+    tags: true
 
 addons:
    hosts:
@@ -14,6 +20,7 @@ addons:
 
 before_script:
   - pip install --user codecov
+  - echo $GPG_SECRET_KEYS | base64 --decode | gpg --import
 
 after_success:
   - codecov
