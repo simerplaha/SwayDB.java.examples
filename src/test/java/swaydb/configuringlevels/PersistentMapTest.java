@@ -21,11 +21,16 @@ package swaydb.configuringlevels;
 import java.nio.file.Paths;
 import org.junit.Test;
 import scala.Option;
+import scala.Predef$;
+import scala.collection.Seq;
+import scala.concurrent.ExecutionContext;
 import scala.runtime.AbstractFunction1;
 import swaydb.data.accelerate.Accelerator;
 import swaydb.data.accelerate.Level0Meter;
 import swaydb.data.compaction.LevelMeter;
 import swaydb.data.compaction.Throttle;
+import swaydb.data.config.Dir;
+import swaydb.data.config.MMAP;
 import swaydb.data.config.RecoveryMode;
 import swaydb.data.config.SwayDBPersistentConfig;
 import swaydb.java.ConfigWizard;
@@ -63,6 +68,31 @@ public class PersistentMapTest {
                                         : new swaydb.data.compaction.Throttle(
                                                 scala.concurrent.duration.Duration$.MODULE$.Zero(), 0);
                             }
+                        })
+                .addPersistentLevel(Paths.get("Disk1/myDB"),
+                        (Seq)Predef$.MODULE$.wrapRefArray((Object[])new Dir[]{
+                            swaydb.package$.MODULE$.pathStringToDir("/Disk2/myDB"),
+                            swaydb.package$.MODULE$.pathStringToDir("/Disk3/myDB")}),
+                        swaydb.package$.MODULE$.StorageDoubleImplicits(4.0).mb(),
+                        MMAP.WriteAndRead$.MODULE$, true, 0, true, 0, true, true, (Option) scala.None$.MODULE$, 
+                        new AbstractFunction1<LevelMeter, Throttle>(){
+                            public static final long serialVersionUID = 0L;
+                            public final Throttle apply(LevelMeter levelMeter) {
+                                return levelMeter.segmentsCount() > 100 ? new swaydb.data.compaction.Throttle(
+                                                scala.concurrent.duration.Duration$.MODULE$.Zero(), 10)
+                                            : new swaydb.data.compaction.Throttle(
+                                                    scala.concurrent.duration.Duration$.MODULE$.Zero(), 0);
+                            }
                         });
+//              Object ordering = swaydb.data.order.KeyOrder$.MODULE$.default();
+        ExecutionContext ec = swaydb.SwayDB$.MODULE$.defaultExecutionContext();
+//              swaydb.SwayDB$ db = swaydb.SwayDB$.MODULE$.apply(config, 1000, 
+//                  swaydb.package$.MODULE$.StorageDoubleImplicits(1.0).gb(),
+//                  new DurationInt(scala.concurrent.duration.package$.MODULE$.DurationInt(5)).seconds(),
+//                        new package.DurationInt(scala.concurrent.duration.package$.MODULE$.DurationInt(5)).seconds(),
+//                        (Serializer)Default.IntSerializer$.MODULE$, (Serializer)Default.StringSerializer$.MODULE$,
+//                        this.ordering(), this.ec());
+
+        
     }
 }
