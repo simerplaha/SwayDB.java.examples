@@ -32,7 +32,6 @@ import swaydb.data.accelerate.Accelerator;
 import swaydb.data.accelerate.Level0Meter;
 import swaydb.data.api.grouping.KeyValueGroupingStrategy;
 import swaydb.java.Serializer;
-import swaydb.extensions.memory.Map$;
 
 public class Map<K, V> implements Closeable {
 
