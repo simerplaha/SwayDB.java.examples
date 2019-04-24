@@ -31,6 +31,7 @@ import swaydb.Prepare;
 import swaydb.data.accelerate.Accelerator;
 import swaydb.data.accelerate.Level0Meter;
 import swaydb.data.api.grouping.KeyValueGroupingStrategy;
+import swaydb.extensions.Maps;
 import swaydb.java.Serializer;
 
 public class Map<K, V> implements Closeable {
@@ -42,7 +43,7 @@ public class Map<K, V> implements Closeable {
     }
 
     public int size() {
-        return database.baseMap().asScala().size();
+        return (int) database.baseMap().asScala().size();
     }
 
     public boolean isEmpty() {
@@ -51,6 +52,35 @@ public class Map<K, V> implements Closeable {
 
     public boolean nonEmpty() {
         return (boolean) database.baseMap().nonEmpty().get();
+    }
+
+    public V put(K key, V value) {
+        V oldValue = get(key);
+        database.put(key, value).get();
+        return oldValue;
+    }
+
+    @SuppressWarnings("unchecked")
+    public V get(K key) {
+        Object result = database.get(key).get();
+        if (result instanceof scala.Some) {
+            return (V) ((scala.Some) result).get();
+        }
+        return null;
+    }
+
+    public V remove(K key) {
+        V oldValue = get(key);
+        database.remove(key).get();
+        return oldValue;
+    }
+
+    public void clear() {
+        database.clear().get();
+    }
+
+    public Maps<K, V> maps() {
+        return database.maps();
     }
 
     @Override
