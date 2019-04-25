@@ -53,6 +53,15 @@ public class Map<K, V> implements Closeable {
     public boolean nonEmpty() {
         return (boolean) database.baseMap().nonEmpty().get();
     }
+    
+    public boolean containsKey(K key) {
+        return (boolean) database.contains(key).get();
+    }
+
+    @SuppressWarnings("unchecked")
+    public boolean mightContain(K key) {
+        return (boolean) database.mightContain(key).get();
+    }
 
     public V put(K key, V value) {
         V oldValue = get(key);

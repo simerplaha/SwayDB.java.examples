@@ -18,6 +18,7 @@
  */
 package swaydb.quickstart;
 
+import java.util.concurrent.TimeUnit;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -100,6 +101,48 @@ public class QuickStartextensionsMemoryMapTest {
                 .build()) {
             assertThat(db.isEmpty(), equalTo(false));
             assertThat(db.nonEmpty(), equalTo(true));
+        }
+    }
+
+    @Test
+    public void memoryMapIntStringisMightContain() {
+        try (swaydb.extensions.memory.Map<Integer, String> db = swaydb.extensions.memory.Map
+                .<Integer, String>builder()
+                .withKeySerializer(Integer.class)
+                .withValueSerializer(String.class)
+                .build()) {
+            db.put(1, "one");
+            assertThat(db.mightContain(1), equalTo(true));
+        }
+    }
+
+    @Test
+    public void memoryMapIntStringFromBuilder() {
+        try (swaydb.extensions.memory.Map<Integer, String> db = swaydb.extensions.memory.Map
+                        .<Integer, String>builder()
+                        .withKeySerializer(Integer.class)
+                        .withValueSerializer(String.class)
+                        .withMapSize(4000000)
+                        .withSegmentSize(2000000)
+                        .withCacheSize(100000000)
+                        .withCacheCheckDelay(scala.concurrent.duration.FiniteDuration.apply(5, TimeUnit.SECONDS))
+                        .withBloomFilterFalsePositiveRate(0.01)
+                        .withCompressDuplicateValues(true)
+                        .withDeleteSegmentsEventually(false)
+                        .withGroupingStrategy(scala.Option.empty())
+                        .withAcceleration(swaydb.memory.Map$.MODULE$.apply$default$9())
+                        .build()) {
+            // db.put(1, "one").get
+            db.put(1, "one");
+            // db.get(1).get
+            String result = db.get(1);
+            assertThat("result contains value", result, notNullValue());
+            assertThat("Key 1 is present", db.containsKey(1), equalTo(true));
+            assertThat(result, equalTo("one"));
+            // db.remove(1).get
+            db.remove(1);
+            String result2 = db.get(1);
+            assertThat("Empty result", result2, nullValue());
         }
     }
 
