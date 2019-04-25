@@ -105,7 +105,7 @@ public class QuickStartextensionsMemoryMapTest {
     }
 
     @Test
-    public void memoryMapIntStringisMightContain() {
+    public void memoryMapIntStringMightContain() {
         try (swaydb.extensions.memory.Map<Integer, String> db = swaydb.extensions.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
@@ -113,6 +113,22 @@ public class QuickStartextensionsMemoryMapTest {
                 .build()) {
             db.put(1, "one");
             assertThat(db.mightContain(1), equalTo(true));
+        }
+    }
+
+    @Test
+    public void memoryMapIntStringMaps() {
+        try (swaydb.extensions.memory.Map<String, String> rootMap = swaydb.extensions.memory.Map
+                .<String, String>builder()
+                .withKeySerializer(String.class)
+                .withValueSerializer(String.class)
+                .build()) {
+            swaydb.extensions.Map<String, String> subMap1 =
+                    rootMap.maps().put("sub map 1", "another map").get();
+            swaydb.extensions.Map<String, String> subMap2 = subMap1.maps().put("sub map 2", "another nested map").get();
+
+            assertThat(subMap1.contains("sub map 1").get(), equalTo(false));
+            assertThat(subMap2.contains("sub map 2").get(), equalTo(false));
         }
     }
 
