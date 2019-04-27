@@ -18,22 +18,25 @@
  */
 package swaydb.quickstart;
 
+import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import org.junit.Test;
+import swaydb.data.config.MMAP;
+import swaydb.data.config.RecoveryMode;
 
-public class QuickStartextensionsMemoryMapTest {
+public class QuickStartExtensionsPersistentMapTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void memoryMapIntStringFrom() {
-        // Create a memory database        
-        // val db = memory.Map[Int, String]().get
-        try (swaydb.extensions.memory.Map<Integer, String> db = swaydb.extensions.memory.Map.create(
-                Integer.class, String.class)) {
+    public void persistentMapIntStringFrom() {
+        // Create a persistent database. If the directories do not exist, they will be created.
+        // val db = persistent.Map[Int, String](dir = dir.resolve("disk1From")).get
+        try (swaydb.extensions.persistent.Map<Integer, String> db = swaydb.extensions.persistent.Map.create(
+                Integer.class, String.class, Paths.get("disk5From"))) {
             // db.put(1, "one").get
             db.put(1, "one");
             // db.get(1).get
@@ -58,10 +61,11 @@ public class QuickStartextensionsMemoryMapTest {
     }
     
     @Test
-    public void memoryMapIntStringClear() {
-        // Create a memory database        
-        try (swaydb.extensions.memory.Map<Integer, String> db = swaydb.extensions.memory.Map
+    public void persistentMapIntStringClear() {
+        // Create a persistent database        
+        try (swaydb.extensions.persistent.Map<Integer, String> db = swaydb.extensions.persistent.Map
                 .<Integer, String>builder()
+                .withDirecory(Paths.get("disk5builderClear"))
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
                 .build()) {
@@ -78,9 +82,10 @@ public class QuickStartextensionsMemoryMapTest {
     }
 
     @Test
-    public void memoryMapIntStringSize() {
-        try (swaydb.extensions.memory.Map<Integer, String> db = swaydb.extensions.memory.Map
+    public void persistentMapIntStringSize() {
+        try (swaydb.extensions.persistent.Map<Integer, String> db = swaydb.extensions.persistent.Map
                 .<Integer, String>builder()
+                .withDirecory(Paths.get("disk5builderSize"))
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
                 .build()) {
@@ -93,9 +98,10 @@ public class QuickStartextensionsMemoryMapTest {
     }
 
     @Test
-    public void memoryMapIntStringIsEmpty() {
-        try (swaydb.extensions.memory.Map<Integer, String> db = swaydb.extensions.memory.Map
+    public void persistentMapIntStringIsEmpty() {
+        try (swaydb.extensions.persistent.Map<Integer, String> db = swaydb.extensions.persistent.Map
                 .<Integer, String>builder()
+                .withDirecory(Paths.get("disk5builderIsEmpty"))
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
                 .build()) {
@@ -105,9 +111,10 @@ public class QuickStartextensionsMemoryMapTest {
     }
 
     @Test
-    public void memoryMapIntStringMightContain() {
-        try (swaydb.extensions.memory.Map<Integer, String> db = swaydb.extensions.memory.Map
+    public void persistentMapIntStringMightContain() {
+        try (swaydb.extensions.persistent.Map<Integer, String> db = swaydb.extensions.persistent.Map
                 .<Integer, String>builder()
+                .withDirecory(Paths.get("disk5builderMightContain"))
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
                 .build()) {
@@ -117,9 +124,10 @@ public class QuickStartextensionsMemoryMapTest {
     }
     
     @Test
-    public void memoryMapIntStringisHead() {
-        try (swaydb.extensions.memory.Map<Integer, String> db = swaydb.extensions.memory.Map
+    public void persistentMapIntStringHead() {
+        try (swaydb.extensions.persistent.Map<Integer, String> db = swaydb.extensions.persistent.Map
                 .<Integer, String>builder()
+                .withDirecory(Paths.get("disk5builderHead"))
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
                 .build()) {
@@ -132,9 +140,10 @@ public class QuickStartextensionsMemoryMapTest {
     }
 
     @Test
-    public void memoryMapIntStringisLast() {
-        try (swaydb.extensions.memory.Map<Integer, String> db = swaydb.extensions.memory.Map
+    public void persistentMapIntStringLast() {
+        try (swaydb.extensions.persistent.Map<Integer, String> db = swaydb.extensions.persistent.Map
                 .<Integer, String>builder()
+                .withDirecory(Paths.get("disk5builderLast"))
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
                 .build()) {
@@ -148,9 +157,10 @@ public class QuickStartextensionsMemoryMapTest {
     }
 
     @Test
-    public void memoryMapIntStringMaps() {
-        try (swaydb.extensions.memory.Map<String, String> rootMap = swaydb.extensions.memory.Map
+    public void persistentMapIntStringMaps() {
+        try (swaydb.extensions.persistent.Map<String, String> rootMap = swaydb.extensions.persistent.Map
                 .<String, String>builder()
+                .withDirecory(Paths.get("disk5builderMaps"))
                 .withKeySerializer(String.class)
                 .withValueSerializer(String.class)
                 .build()) {
@@ -164,20 +174,30 @@ public class QuickStartextensionsMemoryMapTest {
     }
 
     @Test
-    public void memoryMapIntStringFromBuilder() {
-        try (swaydb.extensions.memory.Map<Integer, String> db = swaydb.extensions.memory.Map
-                        .<Integer, String>builder()
+    public void persistentMapIntStringFromBuilder() {
+        try (swaydb.extensions.persistent.Map<Integer, String> db = swaydb.extensions.persistent.Map
+                        .<Integer, String>builder()                        
+                        .withDirecory(Paths.get("disk5builder"))
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
-                        .withMapSize(4000000)
-                        .withSegmentSize(2000000)
+                        .withMaxOpenSegments(1000)
                         .withCacheSize(100000000)
+                        .withMapSize(4000000)
+                        .withMmapMaps(true)
+                        .withRecoveryMode(RecoveryMode.ReportFailure$.MODULE$)
+                        .withMmapAppendix(true)
+                        .withMmapSegments(MMAP.WriteAndRead$.MODULE$)
+                        .withSegmentSize(2000000)
+                        .withAppendixFlushCheckpointSize(2000000)
+                        .withOtherDirs(scala.collection.immutable.Nil$.MODULE$)
                         .withCacheCheckDelay(scala.concurrent.duration.FiniteDuration.apply(5, TimeUnit.SECONDS))
+                        .withSegmentsOpenCheckDelay(
+                                scala.concurrent.duration.FiniteDuration.apply(5, TimeUnit.SECONDS))
                         .withBloomFilterFalsePositiveRate(0.01)
                         .withCompressDuplicateValues(true)
                         .withDeleteSegmentsEventually(false)
-                        .withGroupingStrategy(scala.Option.empty())
-                        .withAcceleration(swaydb.memory.Map$.MODULE$.apply$default$9())
+                        .withLastLevelGroupingStrategy(scala.Option.empty())
+                        .withAcceleration(swaydb.persistent.Map$.MODULE$.apply$default$18())
                         .build()) {
             // db.put(1, "one").get
             db.put(1, "one");
