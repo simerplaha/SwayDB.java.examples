@@ -115,6 +115,37 @@ public class QuickStartextensionsMemoryMapTest {
             assertThat(db.mightContain(1), equalTo(true));
         }
     }
+    
+    @Test
+    public void memoryMapIntStringisHead() {
+        try (swaydb.extensions.memory.Map<Integer, String> db = swaydb.extensions.memory.Map
+                .<Integer, String>builder()
+                .withKeySerializer(Integer.class)
+                .withValueSerializer(String.class)
+                .build()) {
+            db.put(1, "one");
+            assertThat(db.head().toString(), equalTo("1=one"));
+            assertThat(db.headOption().toString(), equalTo("Optional[1=one]"));
+            db.remove(1);
+            assertThat(db.head(), nullValue());
+        }
+    }
+
+    @Test
+    public void memoryMapIntStringisLast() {
+        try (swaydb.extensions.memory.Map<Integer, String> db = swaydb.extensions.memory.Map
+                .<Integer, String>builder()
+                .withKeySerializer(Integer.class)
+                .withValueSerializer(String.class)
+                .build()) {
+            db.put(1, "one");
+            db.put(2, "two");
+            assertThat(db.last().toString(), equalTo("2=two"));
+            assertThat(db.lastOption().toString(), equalTo("Optional[2=two]"));
+            db.clear();
+            assertThat(db.last(), nullValue());
+        }
+    }
 
     @Test
     public void memoryMapIntStringMaps() {

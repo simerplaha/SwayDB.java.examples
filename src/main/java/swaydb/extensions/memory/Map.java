@@ -19,8 +19,10 @@
 package swaydb.extensions.memory;
 
 import java.io.Closeable;
+import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import scala.Function1;
 import scala.Option;
 import scala.collection.Iterable;
@@ -61,6 +63,35 @@ public class Map<K, V> implements Closeable {
     @SuppressWarnings("unchecked")
     public boolean mightContain(K key) {
         return (boolean) database.mightContain(key).get();
+    }
+
+    @SuppressWarnings("unchecked")
+    public java.util.Map.Entry<K, V> head() {
+        Object result = database.headOption().get();
+        if (result instanceof scala.Some) {
+            scala.Tuple2<K, V> tuple2 = (scala.Tuple2<K, V>) ((scala.Some) result).get();
+            return new AbstractMap.SimpleEntry<>(tuple2._1(), tuple2._2());
+        }
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    public Optional<java.util.Map.Entry<K, V>> headOption() {
+        return Optional.ofNullable(head());
+    }
+
+    @SuppressWarnings("unchecked")
+    public java.util.Map.Entry<K, V> last() {
+        Object result = database.lastOption().get();
+        if (result instanceof scala.Some) {
+            scala.Tuple2<K, V> tuple2 = (scala.Tuple2<K, V>) ((scala.Some) result).get();
+            return new AbstractMap.SimpleEntry<>(tuple2._1(), tuple2._2());
+        }
+        return null;
+    }
+
+    public Optional<java.util.Map.Entry<K, V>> lastOption() {
+        return Optional.ofNullable(last());
     }
 
     public V put(K key, V value) {
