@@ -65,7 +65,7 @@ public class QuickStartExtensionsPersistentMapTest {
         // Create a persistent database        
         try (swaydb.extensions.persistent.Map<Integer, String> db = swaydb.extensions.persistent.Map
                 .<Integer, String>builder()
-                .withDirecory(Paths.get("disk5builderClear"))
+                .withDir(Paths.get("disk5builderClear"))
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
                 .build()) {
@@ -85,7 +85,7 @@ public class QuickStartExtensionsPersistentMapTest {
     public void persistentMapIntStringSize() {
         try (swaydb.extensions.persistent.Map<Integer, String> db = swaydb.extensions.persistent.Map
                 .<Integer, String>builder()
-                .withDirecory(Paths.get("disk5builderSize"))
+                .withDir(Paths.get("disk5builderSize"))
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
                 .build()) {
@@ -101,7 +101,7 @@ public class QuickStartExtensionsPersistentMapTest {
     public void persistentMapIntStringIsEmpty() {
         try (swaydb.extensions.persistent.Map<Integer, String> db = swaydb.extensions.persistent.Map
                 .<Integer, String>builder()
-                .withDirecory(Paths.get("disk5builderIsEmpty"))
+                .withDir(Paths.get("disk5builderIsEmpty"))
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
                 .build()) {
@@ -114,7 +114,7 @@ public class QuickStartExtensionsPersistentMapTest {
     public void persistentMapIntStringMightContain() {
         try (swaydb.extensions.persistent.Map<Integer, String> db = swaydb.extensions.persistent.Map
                 .<Integer, String>builder()
-                .withDirecory(Paths.get("disk5builderMightContain"))
+                .withDir(Paths.get("disk5builderMightContain"))
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
                 .build()) {
@@ -127,7 +127,7 @@ public class QuickStartExtensionsPersistentMapTest {
     public void persistentMapIntStringHead() {
         try (swaydb.extensions.persistent.Map<Integer, String> db = swaydb.extensions.persistent.Map
                 .<Integer, String>builder()
-                .withDirecory(Paths.get("disk5builderHead"))
+                .withDir(Paths.get("disk5builderHead"))
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
                 .build()) {
@@ -143,7 +143,7 @@ public class QuickStartExtensionsPersistentMapTest {
     public void persistentMapIntStringLast() {
         try (swaydb.extensions.persistent.Map<Integer, String> db = swaydb.extensions.persistent.Map
                 .<Integer, String>builder()
-                .withDirecory(Paths.get("disk5builderLast"))
+                .withDir(Paths.get("disk5builderLast"))
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
                 .build()) {
@@ -160,7 +160,7 @@ public class QuickStartExtensionsPersistentMapTest {
     public void persistentMapIntStringMaps() {
         try (swaydb.extensions.persistent.Map<String, String> rootMap = swaydb.extensions.persistent.Map
                 .<String, String>builder()
-                .withDirecory(Paths.get("disk5builderMaps"))
+                .withDir(Paths.get("disk5builderMaps"))
                 .withKeySerializer(String.class)
                 .withValueSerializer(String.class)
                 .build()) {
@@ -177,7 +177,7 @@ public class QuickStartExtensionsPersistentMapTest {
     public void persistentMapIntStringFromBuilder() {
         try (swaydb.extensions.persistent.Map<Integer, String> db = swaydb.extensions.persistent.Map
                         .<Integer, String>builder()                        
-                        .withDirecory(Paths.get("disk5builder"))
+                        .withDir(Paths.get("disk5builder"))
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
                         .withMaxOpenSegments(1000)

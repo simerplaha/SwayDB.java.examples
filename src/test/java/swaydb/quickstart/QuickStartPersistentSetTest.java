@@ -93,7 +93,7 @@ public class QuickStartPersistentSetTest extends TestBase {
     public void persistentSetIntIterator() {
         final swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
                 .<Integer>builder()
-                .withDirecory(Paths.get("disk3iterator"))
+                .withDir(Paths.get("disk3iterator"))
                 .withKeySerializer(Integer.class)
                 .build();
         db.add(1);
@@ -104,7 +104,7 @@ public class QuickStartPersistentSetTest extends TestBase {
     public void persistentSetIntToArray() {
         final swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
                 .<Integer>builder()
-                .withDirecory(Paths.get("disk3toarray"))
+                .withDir(Paths.get("disk3toarray"))
                 .withKeySerializer(Integer.class)
                 .build();
         db.add(1);
@@ -116,7 +116,7 @@ public class QuickStartPersistentSetTest extends TestBase {
     public void persistentSetIntAddExpireAfter() {  
         try (swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
                         .<Integer>builder()
-                        .withDirecory(Paths.get("disk3addexpireafter"))
+                        .withDir(Paths.get("disk3addexpireafter"))
                         .withKeySerializer(Integer.class)
                         .build()) {
             db.add(1, 100, TimeUnit.MILLISECONDS);
@@ -132,7 +132,7 @@ public class QuickStartPersistentSetTest extends TestBase {
     public void persistentSetIntAddExpireAt() {  
         try (swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
                         .<Integer>builder()
-                        .withDirecory(Paths.get("disk3addexpireat"))
+                        .withDir(Paths.get("disk3addexpireat"))
                         .withKeySerializer(Integer.class)
                         .build()) {
             db.add(1, LocalDateTime.now().plusNanos(TimeUnit.MILLISECONDS.toNanos(100)));
@@ -148,7 +148,7 @@ public class QuickStartPersistentSetTest extends TestBase {
     public void persistentSetIntExpireAfter() {  
         try (swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
                         .<Integer>builder()
-                        .withDirecory(Paths.get("disk3expireafter"))
+                        .withDir(Paths.get("disk3expireafter"))
                         .withKeySerializer(Integer.class)
                         .build()) {
             db.add(1);
@@ -165,7 +165,7 @@ public class QuickStartPersistentSetTest extends TestBase {
     public void persistentSetIntExpireAt() {  
         try (swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
                         .<Integer>builder()
-                        .withDirecory(Paths.get("disk3expireat"))
+                        .withDir(Paths.get("disk3expireat"))
                         .withKeySerializer(Integer.class)
                         .build()) {
             db.add(1);
@@ -182,7 +182,7 @@ public class QuickStartPersistentSetTest extends TestBase {
     public void persistentSetIntContainsAll() {  
         try (swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
                         .<Integer>builder()
-                        .withDirecory(Paths.get("disk3containsall"))
+                        .withDir(Paths.get("disk3containsall"))
                         .withKeySerializer(Integer.class)
                         .build()) {
             db.add(1);
@@ -194,7 +194,7 @@ public class QuickStartPersistentSetTest extends TestBase {
     public void persistentSetIntAddAll() {  
         try (swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
                         .<Integer>builder()
-                        .withDirecory(Paths.get("disk3addall"))
+                        .withDir(Paths.get("disk3addall"))
                         .withKeySerializer(Integer.class)
                         .build()) {
             db.add(1);
@@ -207,7 +207,7 @@ public class QuickStartPersistentSetTest extends TestBase {
     public void persistentSetIntRetainAll() {  
         try (swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
                         .<Integer>builder()
-                        .withDirecory(Paths.get("disk3retainall"))
+                        .withDir(Paths.get("disk3retainall"))
                         .withKeySerializer(Integer.class)
                         .build()) {
             db.add(1);
@@ -223,7 +223,7 @@ public class QuickStartPersistentSetTest extends TestBase {
     public void memorySetIntRetainAll2() {  
         try (swaydb.persistent.Set<String> boxes = swaydb.persistent.Set
                         .<String>builder()
-                        .withDirecory(Paths.get("disk3retainall2"))
+                        .withDir(Paths.get("disk3retainall2"))
                         .withKeySerializer(String.class)
                         .build()) {
             List<String> bags = new ArrayList<>(); 
@@ -245,7 +245,7 @@ public class QuickStartPersistentSetTest extends TestBase {
     public void persistentSetIntRemove() {  
         try (swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
                         .<Integer>builder()
-                        .withDirecory(Paths.get("disk3removeall"))
+                        .withDir(Paths.get("disk3removeall"))
                         .withKeySerializer(Integer.class)
                         .build()) {
             db.add(1);
@@ -263,7 +263,7 @@ public class QuickStartPersistentSetTest extends TestBase {
     public void persistentSetIntSize() {
         try (swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
                         .<Integer>builder()
-                        .withDirecory(Paths.get("disk3size"))
+                        .withDir(Paths.get("disk3size"))
                         .withKeySerializer(Integer.class)
                         .build()) {
             db.add(1);
@@ -278,7 +278,7 @@ public class QuickStartPersistentSetTest extends TestBase {
     public void persistentSetIntIsEmpty() {
         try (swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
                         .<Integer>builder()
-                        .withDirecory(Paths.get("disk3isempty"))
+                        .withDir(Paths.get("disk3isempty"))
                         .withKeySerializer(Integer.class)
                         .build()) {
             assertThat(db.isEmpty(), equalTo(true));
@@ -291,7 +291,7 @@ public class QuickStartPersistentSetTest extends TestBase {
     public void persistentSetIntNonEmpty() {
         try (swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
                         .<Integer>builder()
-                        .withDirecory(Paths.get("disk3nonempty"))
+                        .withDir(Paths.get("disk3nonempty"))
                         .withKeySerializer(Integer.class)
                         .build()) {
             assertThat(db.nonEmpty(), equalTo(false));
@@ -304,7 +304,7 @@ public class QuickStartPersistentSetTest extends TestBase {
     public void persistentSetIntExpiration() {  
         try (swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
                         .<Integer>builder()
-                        .withDirecory(Paths.get("disk3expiration"))
+                        .withDir(Paths.get("disk3expiration"))
                         .withKeySerializer(Integer.class)
                         .build()) {
             LocalDateTime expireAt = LocalDateTime.now().plusNanos(TimeUnit.MILLISECONDS.toNanos(100));
@@ -319,7 +319,7 @@ public class QuickStartPersistentSetTest extends TestBase {
     public void persistentSetIntTimeLeft() {  
         try (swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
                         .<Integer>builder()
-                        .withDirecory(Paths.get("disk3timeleft"))
+                        .withDir(Paths.get("disk3timeleft"))
                         .withKeySerializer(Integer.class)
                         .build()) {
             LocalDateTime expireAt = LocalDateTime.now().plusNanos(TimeUnit.MILLISECONDS.toNanos(100));
@@ -333,7 +333,7 @@ public class QuickStartPersistentSetTest extends TestBase {
     public void persistentSetIntSizes() {
         try (swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
                         .<Integer>builder()
-                        .withDirecory(Paths.get("disk3sizes"))
+                        .withDir(Paths.get("disk3sizes"))
                         .withKeySerializer(Integer.class)
                         .build()) {
             db.add(1);
@@ -349,7 +349,7 @@ public class QuickStartPersistentSetTest extends TestBase {
     public void persistentSetIntMightContain() {  
         try (swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
                         .<Integer>builder()
-                        .withDirecory(Paths.get("disk3mightContain"))
+                        .withDir(Paths.get("disk3mightContain"))
                         .withKeySerializer(Integer.class)
                         .build()) {
             db.add(1);
@@ -361,7 +361,7 @@ public class QuickStartPersistentSetTest extends TestBase {
     public void persistentSetIntAsJava() {
         try (swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
                         .<Integer>builder()
-                        .withDirecory(Paths.get("disk3asjava"))
+                        .withDir(Paths.get("disk3asjava"))
                         .withKeySerializer(Integer.class)
                         .build()) {
             db.add(1);
@@ -373,7 +373,7 @@ public class QuickStartPersistentSetTest extends TestBase {
     public void persistentSetIntClear() {
         try (swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
                         .<Integer>builder()
-                        .withDirecory(Paths.get("disk3clear"))
+                        .withDir(Paths.get("disk3clear"))
                         .withKeySerializer(Integer.class)
                         .build()) {
             db.add(1);
@@ -388,7 +388,7 @@ public class QuickStartPersistentSetTest extends TestBase {
         // val db = persistent.Set[Int](dir = dir.resolve("disk3builder")).get
         final swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
                 .<Integer>builder()
-                .withDirecory(Paths.get("disk3builder"))
+                .withDir(Paths.get("disk3builder"))
                 .withKeySerializer(Integer.class)
                 .withMaxOpenSegments(1000)
                 .withCacheSize(100000000)

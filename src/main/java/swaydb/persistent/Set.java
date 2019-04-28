@@ -288,7 +288,7 @@ public class Set<K> implements Closeable {
         private Function1 acceleration = swaydb.persistent.Map$.MODULE$.apply$default$18();
         private Object keySerializer;
 
-        public Builder<K> withDirecory(Path dir) {
+        public Builder<K> withDir(Path dir) {
             this.dir = dir;
             return this;
         }

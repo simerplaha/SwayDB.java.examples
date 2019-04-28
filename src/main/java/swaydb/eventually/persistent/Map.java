@@ -395,7 +395,7 @@ public class Map<K, V> implements Closeable {
         private Object keySerializer;
         private Object valueSerializer;
 
-        public Builder<K, V> withDirecory(Path dir) {
+        public Builder<K, V> withDir(Path dir) {
             this.dir = dir;
             return this;
         }
