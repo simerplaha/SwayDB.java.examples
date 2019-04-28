@@ -84,7 +84,7 @@ public class PersistentMapTest {
                                                     scala.concurrent.duration.Duration$.MODULE$.Zero(), 0);
                             }
                         });
-//              Object ordering = swaydb.data.order.KeyOrder$.MODULE$.default();
+//        Object ordering = swaydb.data.order.KeyOrder$.MODULE$.defaultJava();
         ExecutionContext ec = swaydb.SwayDB$.MODULE$.defaultExecutionContext();
 //              swaydb.SwayDB$ db = swaydb.SwayDB$.MODULE$.apply(config, 1000, 
 //                  swaydb.package$.MODULE$.StorageDoubleImplicits(1.0).gb(),
