@@ -117,7 +117,7 @@ public class QuickStartExtensionsMemoryMapTest {
     }
     
     @Test
-    public void memoryMapIntStringisHead() {
+    public void memoryMapIntStringHead() {
         try (swaydb.extensions.memory.Map<Integer, String> db = swaydb.extensions.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
@@ -132,7 +132,7 @@ public class QuickStartExtensionsMemoryMapTest {
     }
 
     @Test
-    public void memoryMapIntStringisLast() {
+    public void memoryMapIntStringLast() {
         try (swaydb.extensions.memory.Map<Integer, String> db = swaydb.extensions.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)

@@ -276,7 +276,7 @@ public class QuickStartMemoryMapTest {
     }
 
     @Test
-    public void memoryMapIntStringisContainsValue() {
+    public void memoryMapIntStringContainsValue() {
         try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
@@ -288,7 +288,7 @@ public class QuickStartMemoryMapTest {
     }
 
     @Test
-    public void memoryMapIntStringisMightContain() {
+    public void memoryMapIntStringMightContain() {
         try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
@@ -300,7 +300,7 @@ public class QuickStartMemoryMapTest {
     }
 
     @Test
-    public void memoryMapIntStringisHead() {
+    public void memoryMapIntStringHead() {
         try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
@@ -315,7 +315,7 @@ public class QuickStartMemoryMapTest {
     }
 
     @Test
-    public void memoryMapIntStringisKeysHead() {
+    public void memoryMapIntStringKeysHead() {
         try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
@@ -330,7 +330,7 @@ public class QuickStartMemoryMapTest {
     }
 
     @Test
-    public void memoryMapIntStringisKeysLast() {
+    public void memoryMapIntStringKeysLast() {
         try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
@@ -346,7 +346,7 @@ public class QuickStartMemoryMapTest {
     }
 
     @Test
-    public void memoryMapIntStringisLast() {
+    public void memoryMapIntStringLast() {
         try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
@@ -391,7 +391,7 @@ public class QuickStartMemoryMapTest {
     }
 
     @Test
-    public void memoryMapIntStringisKeySet() {
+    public void memoryMapIntStringKeySet() {
         try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
@@ -403,7 +403,7 @@ public class QuickStartMemoryMapTest {
     }
 
     @Test
-    public void memoryMapIntStringisValues() {
+    public void memoryMapIntStringValues() {
         try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
@@ -415,7 +415,7 @@ public class QuickStartMemoryMapTest {
     }
 
     @Test
-    public void memoryMapIntStringisEntrySet() {
+    public void memoryMapIntStringEntrySet() {
         try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
