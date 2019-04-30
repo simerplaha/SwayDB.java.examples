@@ -27,11 +27,11 @@ public class AcceleratorTest {
 
     @Test
     public void constructor() {
-        assertThat(new swaydb.java.Accelerator(), notNullValue());
+        assertThat(new Accelerator(), notNullValue());
     }
 
     @Test
     public void cruise() {
-        assertThat(swaydb.java.Accelerator.cruise(new Level0Meter(0, 0, 0)), notNullValue());
+        assertThat(Accelerator.cruise(new Level0Meter(0, 0, 0)), notNullValue());
     }
 }
