@@ -37,9 +37,9 @@ import swaydb.data.compaction.LevelMeter;
 import swaydb.data.compaction.Throttle;
 import swaydb.data.config.Dir;
 import swaydb.data.config.MMAP;
-import swaydb.data.config.RecoveryMode;
 import swaydb.data.config.SwayDBPersistentConfig;
 import swaydb.java.ConfigWizard;
+import swaydb.java.RecoveryMode;
 import swaydb.java.Serializer;
 
 public class PersistentMapTest extends TestBase {
@@ -58,7 +58,7 @@ public class PersistentMapTest extends TestBase {
                 swaydb.package$.MODULE$.StorageDoubleImplicits(4.0).mb(),
                 Paths.get("Disk1/myDB"),
                 true,
-                RecoveryMode.ReportFailure$.MODULE$,
+                RecoveryMode.ReportFailure.get(),
                 new AbstractFunction1<Level0Meter, Accelerator>() {
                     @Override
                     public Accelerator apply(Level0Meter level0Meter) {
