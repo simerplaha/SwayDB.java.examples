@@ -38,9 +38,7 @@ import swaydb.data.compaction.Throttle;
 import swaydb.data.config.Dir;
 import swaydb.data.config.MMAP;
 import swaydb.data.config.SwayDBPersistentConfig;
-import swaydb.java.ConfigWizard;
-import swaydb.java.RecoveryMode;
-import swaydb.java.Serializer;
+import swaydb.java.*;
 
 public class PersistentMapTest extends TestBase {
     
@@ -55,18 +53,18 @@ public class PersistentMapTest extends TestBase {
     @Test
     public void persistentMapIntStringConfig() {
         SwayDBPersistentConfig config = ConfigWizard.addPersistentLevel0(
-                swaydb.package$.MODULE$.StorageDoubleImplicits(4.0).mb(),
+                StorageDoubleImplicits.mb(4.0),
                 Paths.get("Disk1/myDB"),
                 true,
                 RecoveryMode.ReportFailure.get(),
                 new AbstractFunction1<Level0Meter, Accelerator>() {
                     @Override
                     public Accelerator apply(Level0Meter level0Meter) {
-                        return swaydb.data.accelerate.Accelerator$.MODULE$.cruise(level0Meter);
+                        return swaydb.java.Accelerator.cruise(level0Meter);
                     }
                 })
                 .addMemoryLevel1(
-                        swaydb.package$.MODULE$.StorageDoubleImplicits(4.0).mb(),
+                        StorageDoubleImplicits.mb(4.0),
                         false,
                         0.1,
                         true,
@@ -76,36 +74,36 @@ public class PersistentMapTest extends TestBase {
                             @Override
                             public final Throttle apply(LevelMeter levelMeter) {
                                 return levelMeter.levelSize()
-                                        > swaydb.package$.MODULE$.StorageDoubleImplicits(1.0).gb()
+                                        > StorageDoubleImplicits.gb(1.0)
                                         ? new swaydb.data.compaction.Throttle(
-                                                scala.concurrent.duration.Duration$.MODULE$.Zero(), 10)
+                                             Duration.zero(), 10)
                                         : new swaydb.data.compaction.Throttle(
-                                                scala.concurrent.duration.Duration$.MODULE$.Zero(), 0);
+                                             Duration.zero(), 0);
                             }
                     })
                 .addPersistentLevel(Paths.get("Disk1/myDB"),
                         (Seq) Predef$.MODULE$.wrapRefArray((Object[]) new Dir[]{
                     swaydb.package$.MODULE$.pathStringToDir("Disk2/myDB"),
                     swaydb.package$.MODULE$.pathStringToDir("Disk3/myDB")}),
-                        swaydb.package$.MODULE$.StorageDoubleImplicits(4.0).mb(),
+                        StorageDoubleImplicits.mb(4.0),
                         MMAP.WriteAndRead$.MODULE$, true, 0, true, 0, true, true, (Option) scala.None$.MODULE$,
                         new AbstractFunction1<LevelMeter, Throttle>() {
                             public static final long serialVersionUID = 0L;
 
                             public final Throttle apply(LevelMeter levelMeter) {
                                 return levelMeter.segmentsCount() > 100 ? new swaydb.data.compaction.Throttle(
-                                        scala.concurrent.duration.Duration$.MODULE$.Zero(), 10)
+                                             Duration.zero(), 10)
                                         : new swaydb.data.compaction.Throttle(
-                                                scala.concurrent.duration.Duration$.MODULE$.Zero(), 0);
+                                             Duration.zero(), 0);
                             }
                         });
 //        KeyOrder ordering = (KeyOrder) swaydb.data.order.KeyOrder$.MODULE$.defaultJava();
         ExecutionContext ec = swaydb.SwayDB$.MODULE$.defaultExecutionContext();
         
         swaydb.Map<Integer, String, swaydb.data.IO> db = (swaydb.Map<Integer, String, swaydb.data.IO>)
-            swaydb.SwayDB$.MODULE$.apply(config, 1000, swaydb.package$.MODULE$.StorageDoubleImplicits(1.0).gb(),
-            scala.concurrent.duration.Duration$.MODULE$.apply(5, TimeUnit.SECONDS),
-            scala.concurrent.duration.Duration$.MODULE$.apply(5, TimeUnit.SECONDS),
+            swaydb.SwayDB$.MODULE$.apply(config, 1000, StorageDoubleImplicits.gb(1.0),
+                  Duration.of(5, TimeUnit.SECONDS),
+                  Duration.of(5, TimeUnit.SECONDS),
             Serializer.classToType(Integer.class),
             Serializer.classToType(String.class), swaydb.data.order.KeyOrder$.MODULE$.reverse(), ec).get();
         db.put(1, "one");
