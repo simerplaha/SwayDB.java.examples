@@ -23,7 +23,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.AbstractMap;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
@@ -211,9 +211,9 @@ public class Map<K, V> implements Closeable {
         return Optional.ofNullable(keysLast());
     }
 
-    public Collection<V> values() {
+    public List<V> values() {
         Seq<Tuple2<K, V>> entries = database.asScala().toSeq();
-        Collection<V> result = new LinkedHashSet<>();
+        List<V> result = new ArrayList<>();
         for (int index = 0; index < entries.size(); index += 1) {
             Tuple2<K, V> tuple2 = entries.apply(index);
             result.add(tuple2._2());
