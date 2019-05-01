@@ -154,8 +154,8 @@ public class Map<K, V> implements Closeable {
         return values().contains(value);
     }
 
-    public void put(java.util.Map<? extends K, ? extends V> map) {
-        scala.collection.mutable.Map<? extends K, ? extends V> entries =
+    public void put(java.util.Map<K, V> map) {
+        scala.collection.mutable.Map<K, V> entries =
                 scala.collection.JavaConverters.mapAsScalaMapConverter(map).asScala();
         database.put(entries.toSet()).get();
     }
@@ -165,8 +165,8 @@ public class Map<K, V> implements Closeable {
         database.put(seq);
     }
 
-    public void update(java.util.Map<? extends K, ? extends V> map) {
-        scala.collection.mutable.Map<? extends K, ? extends V> entries =
+    public void update(java.util.Map<K, V> map) {
+        scala.collection.mutable.Map<K, V> entries =
                 scala.collection.JavaConverters.mapAsScalaMapConverter(map).asScala();
         database.update(entries.toSet()).get();
     }
@@ -272,7 +272,7 @@ public class Map<K, V> implements Closeable {
 
     @SuppressWarnings("unchecked")
     public V get(K key) {
-        Object result = database.get((K) key).get();
+        Object result = database.get(key).get();
         if (result instanceof scala.Some) {
             return (V) ((scala.Some) result).get();
         }
