@@ -51,7 +51,7 @@ public class Map<K, V> implements Closeable {
 
     private final swaydb.Map<K, V, IO> database;
 
-    private Map(swaydb.Map<K, V, IO> database) {
+    public Map(swaydb.Map<K, V, IO> database) {
         this.database = database;
     }
 
@@ -296,7 +296,7 @@ public class Map<K, V> implements Closeable {
     }
 
     public K registerFunction(K functionId, Function<V, Apply.Map<V>> function) {
-        return (K) database.registerFunction(functionId, new AbstractFunction1<V, Apply.Map<V>>() {
+        return database.registerFunction(functionId, new AbstractFunction1<V, Apply.Map<V>>() {
             @Override
             public Apply.Map<V> apply(V value) {
                 return function.apply(value);

@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -100,20 +101,22 @@ public class PersistentMapTest extends TestBase {
 //        KeyOrder ordering = (KeyOrder) swaydb.data.order.KeyOrder$.MODULE$.defaultJava();
         ExecutionContext ec = swaydb.SwayDB$.MODULE$.defaultExecutionContext();
         
-        swaydb.Map<Integer, String, swaydb.data.IO> db = (swaydb.Map<Integer, String, swaydb.data.IO>)
-            swaydb.SwayDB$.MODULE$.apply(config, 1000, StorageDoubleImplicits.gb(1.0),
-                  Duration.of(5, TimeUnit.SECONDS),
-                  Duration.of(5, TimeUnit.SECONDS),
-            Serializer.classToType(Integer.class),
-            Serializer.classToType(String.class), swaydb.data.order.KeyOrder$.MODULE$.reverse(), ec).get();
-        db.put(1, "one");
-        // db.get(1).get
-        String result = ((Option<String>) db.get(1).get()).get();
-        assertThat(result, equalTo("one"));
-        // db.remove(1).get
-        db.remove(1);
-        boolean result2 = ((Option<String>) db.get(1).get()).isEmpty();
-        assertThat("Empty result", result2, equalTo(true));
-        db.closeDatabase().get();
+        try (swaydb.persistent.Map<Integer, String> db = new swaydb.persistent.Map<>(
+              (swaydb.Map<Integer, String, swaydb.data.IO>)
+                    swaydb.SwayDB$.MODULE$.apply(config, 1000, StorageDoubleImplicits.gb(1.0),
+                          Duration.of(5, TimeUnit.SECONDS),
+                          Duration.of(5, TimeUnit.SECONDS),
+                          Serializer.classToType(Integer.class),
+                          Serializer.classToType(String.class),
+                          swaydb.data.order.KeyOrder$.MODULE$.reverse(), ec).get())) {
+            db.put(1, "one");
+            // db.get(1).get
+            String result = db.get(1);
+            assertThat(result, equalTo("one"));
+            // db.remove(1).get
+            db.remove(1);
+            String result2 = db.get(1);
+            assertThat("Empty result", result2, nullValue());
+        }
     }
 }
