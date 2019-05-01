@@ -255,7 +255,7 @@ public class Set<K> implements Closeable {
                 otherDirs, cacheCheckDelay, segmentsOpenCheckDelay,
                 bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
                 lastLevelGroupingStrategy, acceleration);
-        swaydb.persistent.Set<K> persistentSet = new swaydb.persistent.Set<>(
+        return new swaydb.persistent.Set<>(
                 (swaydb.Set<K, IO>) swaydb.persistent.Set$.MODULE$.apply(dir,
                 maxOpenSegments, cacheSize, mapSize, mmapMaps, recoveryMode,
                 mmapAppendix, mmapSegments, segmentSize, appendixFlushCheckpointSize, otherDirs,
@@ -263,7 +263,6 @@ public class Set<K> implements Closeable {
                 bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
                 lastLevelGroupingStrategy, acceleration, Serializer.classToType(keySerializer),
                 keyOrder, ec).get());
-        return persistentSet;
     }
 
     public static class Builder<K> {
@@ -397,7 +396,7 @@ public class Set<K> implements Closeable {
                     otherDirs, cacheCheckDelay, segmentsOpenCheckDelay,
                     bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
                     lastLevelGroupingStrategy, acceleration);
-            swaydb.persistent.Set<K> persistentSet = new swaydb.persistent.Set<>(
+            return new swaydb.persistent.Set<>(
                     (swaydb.Set<K, IO>) swaydb.persistent.Set$.MODULE$.apply(dir,
                     maxOpenSegments, cacheSize, mapSize, mmapMaps, recoveryMode,
                     mmapAppendix, mmapSegments, segmentSize, appendixFlushCheckpointSize, otherDirs,
@@ -405,7 +404,6 @@ public class Set<K> implements Closeable {
                     bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
                     lastLevelGroupingStrategy, acceleration, Serializer.classToType(keySerializer),
                     keyOrder, ec).get());
-            return persistentSet;
         }
     }
 

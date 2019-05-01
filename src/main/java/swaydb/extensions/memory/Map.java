@@ -237,12 +237,11 @@ public class Map<K, V> implements Closeable {
             final ExecutionContext ec = Map$.MODULE$.apply$default$13(mapSize, segmentSize, cacheSize,
                 cacheCheckDelay, bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
                 groupingStrategy, acceleration);
-            swaydb.extensions.memory.Map<K, V> memoryMap = new swaydb.extensions.memory.Map(
+            return new swaydb.extensions.memory.Map(
                 (swaydb.extensions.Map) Map$.MODULE$.apply(mapSize, segmentSize, cacheSize, cacheCheckDelay,
                         bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
                         groupingStrategy, acceleration, Serializer.classToType(keySerializer),
                         Serializer.classToType(valueSerializer), keyOrder, ec).get());
-            return memoryMap;
         }
     }
 

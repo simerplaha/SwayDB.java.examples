@@ -358,12 +358,11 @@ public class Map<K, V> implements Closeable {
                 cacheCheckDelay, bloomFilterFalsePositiveRate,
                 compressDuplicateValues, deleteSegmentsEventually, groupingStrategy, acceleration);
 
-        swaydb.memory.Map<K, V> memoryMap = new swaydb.memory.Map<>(
+        return new swaydb.memory.Map<>(
                 (swaydb.Map<K, V, IO>) Map$.MODULE$.apply(mapSize, segmentSize, cacheSize,
                         cacheCheckDelay, bloomFilterFalsePositiveRate, compressDuplicateValues,
                         deleteSegmentsEventually, groupingStrategy, acceleration, Serializer.classToType(keySerializer),
                         Serializer.classToType(valueSerializer), keyOrder, ec).get());
-        return memoryMap;
     }
 
     public static class Builder<K, V> {
@@ -443,13 +442,12 @@ public class Map<K, V> implements Closeable {
             ExecutionContext ec = Map$.MODULE$.apply$default$13(mapSize, segmentSize, cacheSize,
                     cacheCheckDelay, bloomFilterFalsePositiveRate,
                     compressDuplicateValues, deleteSegmentsEventually, groupingStrategy, acceleration);
-            swaydb.memory.Map<K, V> memoryMap = new swaydb.memory.Map<>(
+            return new swaydb.memory.Map<>(
                     (swaydb.Map<K, V, IO>) Map$.MODULE$.apply(mapSize, segmentSize, cacheSize,
                             cacheCheckDelay, bloomFilterFalsePositiveRate, compressDuplicateValues,
                             deleteSegmentsEventually, groupingStrategy, acceleration,
                             Serializer.classToType(keySerializer), Serializer.classToType(valueSerializer),
                             keyOrder, ec).get());
-            return memoryMap;
         }
     }
 

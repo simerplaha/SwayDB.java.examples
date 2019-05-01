@@ -243,12 +243,11 @@ public class Set<K> implements Closeable {
         ExecutionContext ec = Map$.MODULE$.apply$default$13(mapSize, segmentSize, cacheSize,
                 cacheCheckDelay, bloomFilterFalsePositiveRate,
                 compressDuplicateValues, deleteSegmentsEventually, groupingStrategy, acceleration);
-        swaydb.memory.Set<K> memorySet = new swaydb.memory.Set<>(
+        return new swaydb.memory.Set<>(
                 (swaydb.Set<K, IO>) Set$.MODULE$.apply(mapSize, segmentSize, cacheSize,
                 cacheCheckDelay, bloomFilterFalsePositiveRate, compressDuplicateValues,
                 deleteSegmentsEventually, groupingStrategy, acceleration, Serializer.classToType(keySerializer),
                 keyOrder, ec).get());
-        return memorySet;
     }
 
     public static class Builder<K> {
@@ -322,12 +321,11 @@ public class Set<K> implements Closeable {
             ExecutionContext ec = Map$.MODULE$.apply$default$13(mapSize, segmentSize, cacheSize,
                     cacheCheckDelay, bloomFilterFalsePositiveRate,
                     compressDuplicateValues, deleteSegmentsEventually, groupingStrategy, acceleration);
-            swaydb.memory.Set<K> memorySet = new swaydb.memory.Set<>(
+            return new swaydb.memory.Set<>(
                     (swaydb.Set<K, IO>) Set$.MODULE$.apply(mapSize, segmentSize, cacheSize,
                     cacheCheckDelay, bloomFilterFalsePositiveRate, compressDuplicateValues,
                     deleteSegmentsEventually, groupingStrategy, acceleration, Serializer.classToType(keySerializer),
                     keyOrder, ec).get());
-            return memorySet;
         }
     }
 

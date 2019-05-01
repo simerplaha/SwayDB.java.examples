@@ -361,7 +361,7 @@ public class Map<K, V> implements Closeable {
                 otherDirs, cacheCheckDelay, segmentsOpenCheckDelay,
                 bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
                 lastLevelGroupingStrategy, acceleration);
-        swaydb.eventually.persistent.Map<K, V> persistentMap = new swaydb.eventually.persistent.Map<>(
+        return new swaydb.eventually.persistent.Map<>(
                 (swaydb.Map<K, V, IO>) swaydb.persistent.Map$.MODULE$.apply(dir,
                 maxOpenSegments, cacheSize, mapSize, mmapMaps, recoveryMode,
                 mmapAppendix, mmapSegments, segmentSize, appendixFlushCheckpointSize, otherDirs,
@@ -369,7 +369,6 @@ public class Map<K, V> implements Closeable {
                 bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
                 lastLevelGroupingStrategy, acceleration,
                 Serializer.classToType(keySerializer), Serializer.classToType(valueSerializer), keyOrder, ec).get());
-        return persistentMap;
     }
 
     public static class Builder<K, V> {
@@ -509,7 +508,7 @@ public class Map<K, V> implements Closeable {
                     otherDirs, cacheCheckDelay, segmentsOpenCheckDelay,
                     bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
                     lastLevelGroupingStrategy, acceleration);
-            swaydb.eventually.persistent.Map<K, V> persistentMap = new swaydb.eventually.persistent.Map<>(
+            return new swaydb.eventually.persistent.Map<>(
                     (swaydb.Map<K, V, IO>) swaydb.persistent.Map$.MODULE$.apply(dir,
                             maxOpenSegments,
                             cacheSize, mapSize, mmapMaps, recoveryMode, mmapAppendix, mmapSegments, segmentSize,
@@ -517,7 +516,6 @@ public class Map<K, V> implements Closeable {
                             bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
                             lastLevelGroupingStrategy, acceleration, Serializer.classToType(keySerializer),
                             Serializer.classToType(valueSerializer), keyOrder, ec).get());
-            return persistentMap;
         }
     }
 
