@@ -44,7 +44,7 @@ public class Map<K, V> implements Closeable {
     }
 
     public int size() {
-        return (int) database.baseMap().asScala().size();
+        return database.baseMap().asScala().size();
     }
 
     public boolean isEmpty() {
@@ -132,7 +132,7 @@ public class Map<K, V> implements Closeable {
         List<Prepare<K, V>> preparesList = Arrays.asList(prepares);
         Iterable<Prepare<K, V>> prepareIterator
                 = JavaConverters.iterableAsScalaIterableConverter(preparesList).asScala();
-        return (Level0Meter) database.commit(prepareIterator).get();
+        return database.commit(prepareIterator).get();
     }
 
     @SuppressWarnings("unchecked")

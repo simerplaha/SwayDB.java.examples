@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import static org.awaitility.Awaitility.await;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -41,7 +40,7 @@ public class QuickStartMemorySetTest extends TestBase {
         // Create a memory set database.
         // val db = memory.Set[Int].get
 
-        final swaydb.memory.Set<Integer> db = swaydb.memory.Set.<Integer>create(
+        final swaydb.memory.Set<Integer> db = swaydb.memory.Set.create(
                 Integer.class);
         // db.add(1).get
         db.add(1);
@@ -91,7 +90,7 @@ public class QuickStartMemorySetTest extends TestBase {
                         .build()) {
             db.add(1, 100, TimeUnit.MILLISECONDS);
             assertThat(db.contains(1), equalTo(true));
-            await().atMost(1800, TimeUnit.MILLISECONDS).until((Callable<Boolean>) () -> {
+            await().atMost(1800, TimeUnit.MILLISECONDS).until(() -> {
                 assertThat(db.contains(1), equalTo(false));
                 return true;
             });
@@ -106,7 +105,7 @@ public class QuickStartMemorySetTest extends TestBase {
                         .build()) {
             db.add(1, LocalDateTime.now().plusNanos(TimeUnit.MILLISECONDS.toNanos(100)));
             assertThat(db.contains(1), equalTo(true));
-            await().atMost(1800, TimeUnit.MILLISECONDS).until((Callable<Boolean>) () -> {
+            await().atMost(1800, TimeUnit.MILLISECONDS).until(() -> {
                 assertThat(db.contains(1), equalTo(false));
                 return true;
             });
@@ -122,7 +121,7 @@ public class QuickStartMemorySetTest extends TestBase {
             db.add(1);
             db.expire(1, 100, TimeUnit.MILLISECONDS);
             assertThat(db.contains(1), equalTo(true));
-            await().atMost(1800, TimeUnit.MILLISECONDS).until((Callable<Boolean>) () -> {
+            await().atMost(1800, TimeUnit.MILLISECONDS).until(() -> {
                 assertThat(db.contains(1), equalTo(false));
                 return true;
             });
@@ -138,7 +137,7 @@ public class QuickStartMemorySetTest extends TestBase {
             db.add(1);
             db.expire(1, LocalDateTime.now().plusNanos(TimeUnit.MILLISECONDS.toNanos(100)));
             assertThat(db.contains(1), equalTo(true));
-            await().atMost(1800, TimeUnit.MILLISECONDS).until((Callable<Boolean>) () -> {
+            await().atMost(1800, TimeUnit.MILLISECONDS).until(() -> {
                 assertThat(db.contains(1), equalTo(false));
                 return true;
             });

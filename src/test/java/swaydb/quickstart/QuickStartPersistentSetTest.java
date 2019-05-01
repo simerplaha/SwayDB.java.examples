@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import static org.awaitility.Awaitility.await;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -121,7 +120,7 @@ public class QuickStartPersistentSetTest extends TestBase {
                         .build()) {
             db.add(1, 100, TimeUnit.MILLISECONDS);
             assertThat(db.contains(1), equalTo(true));
-            await().atMost(1800, TimeUnit.MILLISECONDS).until((Callable<Boolean>) () -> {
+            await().atMost(1800, TimeUnit.MILLISECONDS).until(() -> {
                 assertThat(db.contains(1), equalTo(false));
                 return true;
             });
@@ -137,7 +136,7 @@ public class QuickStartPersistentSetTest extends TestBase {
                         .build()) {
             db.add(1, LocalDateTime.now().plusNanos(TimeUnit.MILLISECONDS.toNanos(100)));
             assertThat(db.contains(1), equalTo(true));
-            await().atMost(1000, TimeUnit.MILLISECONDS).until((Callable<Boolean>) () -> {
+            await().atMost(1000, TimeUnit.MILLISECONDS).until(() -> {
                 assertThat(db.contains(1), equalTo(false));
                 return true;
             });
@@ -154,7 +153,7 @@ public class QuickStartPersistentSetTest extends TestBase {
             db.add(1);
             db.expire(1, 100, TimeUnit.MILLISECONDS);
             assertThat(db.contains(1), equalTo(true));
-            await().atMost(1800, TimeUnit.MILLISECONDS).until((Callable<Boolean>) () -> {
+            await().atMost(1800, TimeUnit.MILLISECONDS).until(() -> {
                 assertThat(db.contains(1), equalTo(false));
                 return true;
             });
@@ -171,7 +170,7 @@ public class QuickStartPersistentSetTest extends TestBase {
             db.add(1);
             db.expire(1, LocalDateTime.now().plusNanos(TimeUnit.MILLISECONDS.toNanos(100)));
             assertThat(db.contains(1), equalTo(true));
-            await().atMost(1800, TimeUnit.MILLISECONDS).until((Callable<Boolean>) () -> {
+            await().atMost(1800, TimeUnit.MILLISECONDS).until(() -> {
                 assertThat(db.contains(1), equalTo(false));
                 return true;
             });

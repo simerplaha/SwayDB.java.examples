@@ -28,7 +28,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -207,12 +206,12 @@ public class QuickStartMemoryMapTest {
                     .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue())));
 
             final Set<Integer> result = new LinkedHashSet<>();
-            ((swaydb.data.IO.Success) db
+            db
                     .keys()
                     .reverse()
                     .fromOrBefore(10)
                     .take(5)
-                    .materialize())
+                    .materialize()
                     .foreach(new AbstractFunction1() {
                         @Override
                         public Object apply(Object t1) {
@@ -435,7 +434,7 @@ public class QuickStartMemoryMapTest {
                 .build()) {
             db.put(1, "one", 100, TimeUnit.MILLISECONDS);
             assertThat(db.entrySet().toString(), equalTo("[1=one]"));
-            await().atMost(1600, TimeUnit.MILLISECONDS).until((Callable<Boolean>) () -> {
+            await().atMost(1600, TimeUnit.MILLISECONDS).until(() -> {
                 assertThat(db.get(1), nullValue());
                 return true;
             });
@@ -451,7 +450,7 @@ public class QuickStartMemoryMapTest {
                 .build()) {
             db.put(1, "one", LocalDateTime.now().plusNanos(TimeUnit.MILLISECONDS.toNanos(100)));
             assertThat(db.entrySet().toString(), equalTo("[1=one]"));
-            await().atMost(1200, TimeUnit.MILLISECONDS).until((Callable<Boolean>) () -> {
+            await().atMost(1200, TimeUnit.MILLISECONDS).until(() -> {
                 assertThat(db.get(1), nullValue());
                 return true;
             });
@@ -537,7 +536,7 @@ public class QuickStartMemoryMapTest {
             db.put(1, "one");
             db.expire(1, 100, TimeUnit.MILLISECONDS);
             assertThat(db.entrySet().toString(), equalTo("[1=one]"));
-            await().atMost(1800, TimeUnit.MILLISECONDS).until((Callable<Boolean>) () -> {
+            await().atMost(1800, TimeUnit.MILLISECONDS).until(() -> {
                 assertThat(db.get(1), nullValue());
                 return true;
             });
@@ -554,7 +553,7 @@ public class QuickStartMemoryMapTest {
             db.put(1, "one");
             db.expire(1, LocalDateTime.now().plusNanos(TimeUnit.MILLISECONDS.toNanos(100)));
             assertThat(db.entrySet().toString(), equalTo("[1=one]"));
-            await().atMost(1800, TimeUnit.MILLISECONDS).until((Callable<Boolean>) () -> {
+            await().atMost(1800, TimeUnit.MILLISECONDS).until(() -> {
                 assertThat(db.get(1), nullValue());
                 return true;
             });
@@ -635,7 +634,7 @@ public class QuickStartMemoryMapTest {
                             Apply.expire(LocalDateTime.now().plusNanos(TimeUnit.MILLISECONDS.toNanos(100))));
             likesMap.applyFunction("SwayDB", likesFunctionId);
             assertThat(likesMap.get("SwayDB"), equalTo(0));
-            await().atMost(1200, TimeUnit.MILLISECONDS).until((Callable<Boolean>) () -> {
+            await().atMost(1200, TimeUnit.MILLISECONDS).until(() -> {
                 assertThat(likesMap.get("SwayDB"), nullValue());
                 return true;
             });

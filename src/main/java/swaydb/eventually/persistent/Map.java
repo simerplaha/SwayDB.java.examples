@@ -270,7 +270,7 @@ public class Map<K, V> implements Closeable {
 
     @SuppressWarnings("unchecked")
     public V get(K key) {
-        Object result = database.get((K) key).get();
+        Object result = database.get(key).get();
         if (result instanceof scala.Some) {
             return (V) ((scala.Some) result).get();
         }
@@ -288,7 +288,7 @@ public class Map<K, V> implements Closeable {
     }
 
     public K registerFunction(K functionId, Function<V, Apply.Map<V>> function) {
-        return (K) database.registerFunction(functionId, new AbstractFunction1<V, Apply.Map<V>>() {
+        return database.registerFunction(functionId, new AbstractFunction1<V, Apply.Map<V>>() {
             @Override
             public Apply.Map<V> apply(V value) {
                 return function.apply(value);

@@ -29,7 +29,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -79,7 +78,7 @@ public class QuickStartEventuallyPersistentMapTest extends TestBase {
         // Create an eventually persistent database. If the directories do not exist, they will be created.
         // val db = eventually.persistent.Map[Int, String](dir = dir.resolve("disk2")).get
         try (swaydb.eventually.persistent.Map<Integer, String> db =
-                swaydb.eventually.persistent.Map.<Integer, String>create(
+                swaydb.eventually.persistent.Map.create(
                         Integer.class, String.class, Paths.get("disk2From"))) {
             // db.put(1, "one").get
             db.put(1, "one");
@@ -145,7 +144,7 @@ public class QuickStartEventuallyPersistentMapTest extends TestBase {
     @Test
     public void persistentMapIntStringFromOrAfter() {
         try (swaydb.eventually.persistent.Map<Integer, String> db =
-                swaydb.eventually.persistent.Map.<Integer, String>create(
+                swaydb.eventually.persistent.Map.create(
                         Integer.class, String.class, Paths.get("disk2FromOrAfter"))) {
             // write 100 key-values atomically
             db.put(IntStream.rangeClosed(1, 100)
@@ -187,7 +186,7 @@ public class QuickStartEventuallyPersistentMapTest extends TestBase {
     @Test
     public void persistentMapIntStringFromOrBefore() {
         try (swaydb.eventually.persistent.Map<Integer, String> db =
-                swaydb.eventually.persistent.Map.<Integer, String>create(
+                swaydb.eventually.persistent.Map.create(
                         Integer.class, String.class, Paths.get("disk2FromOrBefore"))) {
             // write 100 key-values atomically
             db.put(IntStream.rangeClosed(1, 100)
@@ -229,7 +228,7 @@ public class QuickStartEventuallyPersistentMapTest extends TestBase {
     @Test
     public void persistentMapIntStringKeys() {
         try (swaydb.eventually.persistent.Map<Integer, String> db =
-                swaydb.eventually.persistent.Map.<Integer, String>create(
+                swaydb.eventually.persistent.Map.create(
                         Integer.class, String.class, Paths.get("disk2Keys"))) {
             // write 100 key-values atomically
             db.put(IntStream.rangeClosed(1, 100)
@@ -237,12 +236,12 @@ public class QuickStartEventuallyPersistentMapTest extends TestBase {
                     .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue())));
 
             final Set<Integer> result = new LinkedHashSet<>();
-            ((swaydb.data.IO.Success) db
+            db
                     .keys()
                     .reverse()
                     .fromOrBefore(10)
                     .take(5)
-                    .materialize())
+                    .materialize()
                     .foreach(new AbstractFunction1() {
                         @Override
                         public Object apply(Object t1) {
@@ -489,7 +488,7 @@ public class QuickStartEventuallyPersistentMapTest extends TestBase {
                         .build()) {
             db.put(1, "one", 100, TimeUnit.MILLISECONDS);
             assertThat(db.entrySet().toString(), equalTo("[1=one]"));
-            await().atMost(1800, TimeUnit.MILLISECONDS).until((Callable<Boolean>) () -> {
+            await().atMost(1800, TimeUnit.MILLISECONDS).until(() -> {
                 assertThat(db.get(1), nullValue());
                 return true;
             });
@@ -507,7 +506,7 @@ public class QuickStartEventuallyPersistentMapTest extends TestBase {
             LocalDateTime expireAt = LocalDateTime.now().plusNanos(TimeUnit.MILLISECONDS.toNanos(100));
             db.put(1, "one", expireAt);
             assertThat(db.entrySet().toString(), equalTo("[1=one]"));
-            await().atMost(1800, TimeUnit.MILLISECONDS).until((Callable<Boolean>) () -> {
+            await().atMost(1800, TimeUnit.MILLISECONDS).until(() -> {
                 assertThat(db.get(1), nullValue());
                 return true;
             });
@@ -599,7 +598,7 @@ public class QuickStartEventuallyPersistentMapTest extends TestBase {
             db.put(1, "one");
             db.expire(1, 100, TimeUnit.MILLISECONDS);
             assertThat(db.entrySet().toString(), equalTo("[1=one]"));
-            await().atMost(1800, TimeUnit.MILLISECONDS).until((Callable<Boolean>) () -> {
+            await().atMost(1800, TimeUnit.MILLISECONDS).until(() -> {
                 assertThat(db.get(1), nullValue());
                 return true;
             });
@@ -617,7 +616,7 @@ public class QuickStartEventuallyPersistentMapTest extends TestBase {
             db.put(1, "one");
             db.expire(1, LocalDateTime.now().plusNanos(TimeUnit.MILLISECONDS.toNanos(100)));
             assertThat(db.entrySet().toString(), equalTo("[1=one]"));
-            await().atMost(1000, TimeUnit.MILLISECONDS).until((Callable<Boolean>) () -> {
+            await().atMost(1000, TimeUnit.MILLISECONDS).until(() -> {
                 assertThat(db.get(1), nullValue());
                 return true;
             });

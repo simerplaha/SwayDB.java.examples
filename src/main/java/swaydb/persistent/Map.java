@@ -270,7 +270,7 @@ public class Map<K, V> implements Closeable {
 
     @SuppressWarnings("unchecked")
     public V get(K key) {
-        Object result = database.get((K) key).get();
+        Object result = database.get(key).get();
         if (result instanceof scala.Some) {
             return (V) ((scala.Some) result).get();
         }
