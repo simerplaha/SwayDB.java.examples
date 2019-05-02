@@ -20,15 +20,11 @@ package swaydb.quickstart;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.AbstractMap;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -53,23 +49,7 @@ public class QuickStartEventuallyPersistentMapTest extends TestBase {
     
     @BeforeClass
     public static void beforeClass() throws IOException {
-        deleteDirectoryWalkTree(Paths.get("disk2From"));
-        deleteDirectoryWalkTree(Paths.get("disk2builder"));
-        deleteDirectoryWalkTree(Paths.get("disk2builderClear"));
-        deleteDirectoryWalkTree(Paths.get("disk2builderContainsValue"));
-        deleteDirectoryWalkTree(Paths.get("disk2builderMightContain"));
-        deleteDirectoryWalkTree(Paths.get("disk2builderEntries"));
-        deleteDirectoryWalkTree(Paths.get("disk2builderIsEmpty"));
-        deleteDirectoryWalkTree(Paths.get("disk2builderKeySet"));
-        deleteDirectoryWalkTree(Paths.get("disk2builderPutAll"));
-        deleteDirectoryWalkTree(Paths.get("disk2builderSize"));
-        deleteDirectoryWalkTree(Paths.get("disk2builderValues"));
-        deleteDirectoryWalkTree(Paths.get("disk2putExpireAfter"));
-        deleteDirectoryWalkTree(Paths.get("disk2putExpireAt"));
-        deleteDirectoryWalkTree(Paths.get("disk2expireAfter"));
-        deleteDirectoryWalkTree(Paths.get("disk2expireAt"));
-        deleteDirectoryWalkTree(Paths.get("disk2update"));
-        deleteDirectoryWalkTree(Paths.get("disk2asjava"));
+        deleteDirectoryWalkTreeStartsWith("disk2");
     }
 
     @SuppressWarnings("unchecked")

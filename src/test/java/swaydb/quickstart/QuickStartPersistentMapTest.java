@@ -52,28 +52,10 @@ import swaydb.java.Apply;
 import swaydb.java.BytesReader;
 
 public class QuickStartPersistentMapTest extends TestBase {
-    
+
     @BeforeClass
     public static void beforeClass() throws IOException {
-        deleteDirectoryWalkTree(Paths.get("disk1From"));
-        deleteDirectoryWalkTree(Paths.get("disk1builder"));
-        deleteDirectoryWalkTree(Paths.get("disk1builderClear"));
-        deleteDirectoryWalkTree(Paths.get("disk1builderContainsValue"));
-        deleteDirectoryWalkTree(Paths.get("disk1builderMightContain"));
-        deleteDirectoryWalkTree(Paths.get("disk1builderEntries"));
-        deleteDirectoryWalkTree(Paths.get("disk1builderIsEmpty"));
-        deleteDirectoryWalkTree(Paths.get("disk1builderKeySet"));
-        deleteDirectoryWalkTree(Paths.get("disk1builderPutAll"));
-        deleteDirectoryWalkTree(Paths.get("disk1builderSize"));
-        deleteDirectoryWalkTree(Paths.get("disk1builderValues"));
-        deleteDirectoryWalkTree(Paths.get("disk1putExpireAfter"));
-        deleteDirectoryWalkTree(Paths.get("disk1putExpireAt"));
-        deleteDirectoryWalkTree(Paths.get("disk1expireAfter"));
-        deleteDirectoryWalkTree(Paths.get("disk1expireAt"));
-        deleteDirectoryWalkTree(Paths.get("disk1update"));
-        deleteDirectoryWalkTree(Paths.get("disk1asjava"));
-        deleteDirectoryWalkTree(Paths.get("disk1apache"));
-        deleteDirectoryWalkTree(Paths.get("disk1registerapplyfunction"));
+        deleteDirectoryWalkTreeStartsWith("disk1");
     }
 
     @SuppressWarnings("unchecked")

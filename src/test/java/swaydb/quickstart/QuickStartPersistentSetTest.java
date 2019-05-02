@@ -41,23 +41,7 @@ public class QuickStartPersistentSetTest extends TestBase {
 
     @BeforeClass
     public static void beforeClass() throws IOException {
-        deleteDirectoryWalkTree(Paths.get("disk3"));
-        deleteDirectoryWalkTree(Paths.get("disk3builder"));
-        deleteDirectoryWalkTree(Paths.get("disk3addall"));
-        deleteDirectoryWalkTree(Paths.get("disk3addexpireafter"));
-        deleteDirectoryWalkTree(Paths.get("disk3addexpireat"));
-        deleteDirectoryWalkTree(Paths.get("disk3clear"));
-        deleteDirectoryWalkTree(Paths.get("disk3containsall"));
-        deleteDirectoryWalkTree(Paths.get("disk3expireafter"));
-        deleteDirectoryWalkTree(Paths.get("disk3expireat"));
-        deleteDirectoryWalkTree(Paths.get("disk3isempty"));
-        deleteDirectoryWalkTree(Paths.get("disk3nonempty"));
-        deleteDirectoryWalkTree(Paths.get("disk3iterator"));
-        deleteDirectoryWalkTree(Paths.get("disk3removeall"));
-        deleteDirectoryWalkTree(Paths.get("disk3retainall"));
-        deleteDirectoryWalkTree(Paths.get("disk3size"));
-        deleteDirectoryWalkTree(Paths.get("disk3sizes"));
-        deleteDirectoryWalkTree(Paths.get("disk3toarray"));
+        deleteDirectoryWalkTreeStartsWith("disk3");
     }
 
     @SuppressWarnings("unchecked")

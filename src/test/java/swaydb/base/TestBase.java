@@ -19,16 +19,12 @@
 package swaydb.base;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.FileVisitResult;
-import java.nio.file.FileVisitor;
 
 public class TestBase {
 
-    protected static void deleteDirectoryWalkTree(Path path) throws IOException {
+    protected static void deleteDirectoryWalkTree(Path path) {
         if (!path.toFile().exists()) {
             return;
         }
@@ -55,6 +51,21 @@ public class TestBase {
                 return FileVisitResult.CONTINUE;
             }
         };
-        Files.walkFileTree(path, visitor);
+        try {
+            Files.walkFileTree(path, visitor);
+        } catch (IOException ignored) {
+            // ignored
+        }
     }
+
+    protected static void deleteDirectoryWalkTreeStartsWith(String startName) throws IOException {
+        Files.walk(Paths.get("."))
+              .filter(file -> file.toFile().isDirectory())
+              .filter(s -> s.getNameCount() == 2)
+              .filter(s -> s.getName(1).toString().startsWith(startName))
+              .map(Path::getFileName)
+              .sorted()
+              .forEach(TestBase::deleteDirectoryWalkTree);
+    }
+
 }

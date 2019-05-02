@@ -18,17 +18,26 @@
  */
 package swaydb.quickstart;
 
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
+
+import org.junit.BeforeClass;
 import org.junit.Test;
+import swaydb.base.TestBase;
 import swaydb.data.config.MMAP;
 import swaydb.data.config.RecoveryMode;
 
-public class QuickStartExtensionsPersistentMapTest {
+public class QuickStartExtensionsPersistentMapTest extends TestBase {
+
+    @BeforeClass
+    public static void beforeClass() throws IOException {
+        deleteDirectoryWalkTreeStartsWith("disk5");
+    }
 
     @SuppressWarnings("unchecked")
     @Test
