@@ -42,6 +42,7 @@ import scala.concurrent.duration.FiniteDuration;
 import scala.runtime.AbstractFunction1;
 import swaydb.Apply;
 import swaydb.Prepare;
+import swaydb.Stream;
 import swaydb.data.IO;
 import swaydb.data.accelerate.Accelerator;
 import swaydb.data.accelerate.Level0Meter;
@@ -49,7 +50,7 @@ import swaydb.data.api.grouping.KeyValueGroupingStrategy;
 import swaydb.data.compaction.LevelMeter;
 import swaydb.java.Serializer;
 
-public class Map<K, V> implements Closeable {
+public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
 
     private final swaydb.Map<K, V, IO> database;
 
@@ -57,10 +58,12 @@ public class Map<K, V> implements Closeable {
         this.database = database;
     }
 
+    @Override
     public int size() {
         return database.asScala().size();
     }
 
+    @Override
     public boolean isEmpty() {
         return (boolean) database.isEmpty().get();
     }
@@ -232,6 +235,7 @@ public class Map<K, V> implements Closeable {
         return result;
     }
 
+    @Override
     public V put(K key, V value) {
         V oldValue = get(key);
         database.put(key, value).get();
@@ -271,6 +275,7 @@ public class Map<K, V> implements Closeable {
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public V get(K key) {
         Object result = database.get(key).get();
         if (result instanceof scala.Some) {
@@ -279,6 +284,7 @@ public class Map<K, V> implements Closeable {
         return null;
     }
 
+    @Override
     public V remove(K key) {
         V oldValue = get(key);
         database.remove(key).get();
@@ -297,6 +303,7 @@ public class Map<K, V> implements Closeable {
         return JavaConverters.mapAsJavaMapConverter(database.asScala()).asJava();
     }
 
+    @Override
     public K registerFunction(K functionId, Function<V, Apply.Map<V>> function) {
         return database.registerFunction(functionId, new AbstractFunction1<V, Apply.Map<V>>() {
             @Override
@@ -306,6 +313,7 @@ public class Map<K, V> implements Closeable {
         });
     }
 
+    @Override
     public void applyFunction(K key, K functionId) {
         database.applyFunction(key, functionId);
     }
@@ -326,12 +334,17 @@ public class Map<K, V> implements Closeable {
         return database.keys();
     }
 
+    public Stream<Object, IO> map(Function1<Tuple2<K, V>, Object> function) {
+        return database.map(function);
+    }
+
     @Override
     public void close() {
         database.closeDatabase().get();
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public Level0Meter commit(Prepare<K, V>... prepares) {
         List<Prepare<K, V>> preparesList = Arrays.asList(prepares);
         Iterable<Prepare<K, V>> prepareIterator
