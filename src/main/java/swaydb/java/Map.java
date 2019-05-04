@@ -29,23 +29,25 @@ import swaydb.data.accelerate.Level0Meter;
 public interface Map<K, V> {
 
     V put(K key, V value);
-    
+
     int size();
-    
+
     boolean isEmpty();
-    
+
     V get(K key);
-    
+
     V remove(K key);
-    
+
     K registerFunction(K functionId, Function<V, swaydb.Apply.Map<V>> function);
-    
+
     void applyFunction(K key, K functionId);
-    
+
     @SuppressWarnings("unchecked")
     Level0Meter commit(swaydb.Prepare<K, V>... prepares);
-    
+
     Stream<Object, IO> map(Function1<Tuple2<K, V>, Object> function);
-    
+
+    Stream<Tuple2<K, V>,IO> filter(Function1<Tuple2<K, V>, Object> function);
+
     Stream<BoxedUnit, IO> foreach(Function1<Tuple2<K, V>, Object> function);
 }

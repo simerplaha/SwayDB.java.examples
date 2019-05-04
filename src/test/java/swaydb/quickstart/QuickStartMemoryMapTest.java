@@ -264,6 +264,39 @@ public class QuickStartMemoryMapTest {
     
     @SuppressWarnings("unchecked")
     @Test
+    public void memoryMapIntStringFilter() {
+        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map.create(
+                Integer.class, String.class)) {
+            // write 10 key-values atomically
+            db.put(IntStream.rangeClosed(1, 10)
+                    .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
+                    .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue())));
+
+            final Set<scala.Tuple2<Integer, String>> result = new LinkedHashSet<>();
+            ((swaydb.data.IO.Success) db
+                    .filter(new AbstractFunction1<scala.Tuple2<Integer, String>, Object>() {
+                        @Override
+                        public Boolean apply(scala.Tuple2<Integer, String> item) {
+                            return item._1() < 5;
+                        }
+                    })
+                    .materialize()).foreach(
+                        new AbstractFunction1<ListBuffer<scala.Tuple2<Integer, String>>, Object>() {
+                            @Override
+                            public Object apply(ListBuffer<scala.Tuple2<Integer, String>> t1) {
+                                scala.collection.Seq<scala.Tuple2<Integer, String>> entries = t1.seq();
+                                for (int index = 0; index < entries.size(); index += 1) {
+                                    result.add(entries.apply(index));
+                                }
+                                return null;
+                            }
+                        });
+            assertThat(result.toString(), equalTo("[(1,1), (2,2), (3,3), (4,4)]"));
+        }
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test
     public void memoryMapIntStringForeach() {
         try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map.create(
                 Integer.class, String.class)) {

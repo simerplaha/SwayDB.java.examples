@@ -331,6 +331,11 @@ public class Map<K, V> implements  swaydb.java.Map<K, V>, Closeable {
     }
 
     @Override
+    public Stream<Tuple2<K, V>,IO> filter(Function1<Tuple2<K, V>, Object> function) {
+        return database.filter(function);
+    }
+
+    @Override
     public Stream<BoxedUnit, IO> foreach(Function1<Tuple2<K, V>, Object> function) {
         return database.foreach(function);
     }
