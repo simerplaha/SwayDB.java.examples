@@ -19,6 +19,11 @@
 package swaydb.java;
 
 import java.util.function.Function;
+import scala.Function1;
+import scala.Tuple2;
+import scala.runtime.BoxedUnit;
+import swaydb.Stream;
+import swaydb.data.IO;
 import swaydb.data.accelerate.Level0Meter;
 
 public interface Map<K, V> {
@@ -39,4 +44,8 @@ public interface Map<K, V> {
     
     @SuppressWarnings("unchecked")
     Level0Meter commit(swaydb.Prepare<K, V>... prepares);
+    
+    Stream<Object, IO> map(Function1<Tuple2<K, V>, Object> function);
+    
+    Stream<BoxedUnit, IO> foreach(Function1<Tuple2<K, V>, Object> function);
 }

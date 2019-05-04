@@ -335,10 +335,12 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
         return database.keys();
     }
 
+    @Override
     public Stream<Object, IO> map(Function1<Tuple2<K, V>, Object> function) {
         return database.map(function);
     }
 
+    @Override
     public Stream<BoxedUnit, IO> foreach(Function1<Tuple2<K, V>, Object> function) {
         return database.foreach(function);
     }
