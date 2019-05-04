@@ -40,6 +40,7 @@ import scala.concurrent.ExecutionContext;
 import scala.concurrent.duration.Deadline;
 import scala.concurrent.duration.FiniteDuration;
 import scala.runtime.AbstractFunction1;
+import scala.runtime.BoxedUnit;
 import swaydb.Apply;
 import swaydb.Prepare;
 import swaydb.Stream;
@@ -336,6 +337,10 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
 
     public Stream<Object, IO> map(Function1<Tuple2<K, V>, Object> function) {
         return database.map(function);
+    }
+
+    public Stream<BoxedUnit, IO> foreach(Function1<Tuple2<K, V>, Object> function) {
+        return database.foreach(function);
     }
 
     @Override

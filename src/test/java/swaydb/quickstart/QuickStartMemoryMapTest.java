@@ -262,6 +262,31 @@ public class QuickStartMemoryMapTest {
         }
     }
     
+    @SuppressWarnings("unchecked")
+    @Test
+    public void memoryMapIntStringForeach() {
+        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map.create(
+                Integer.class, String.class)) {
+            // write 10 key-values atomically
+            db.put(IntStream.rangeClosed(1, 10)
+                    .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
+                    .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue())));
+
+            final Set<scala.Tuple2<Integer, String>> result = new LinkedHashSet<>();
+            db
+                    .foreach(new AbstractFunction1<scala.Tuple2<Integer, String>, Object>() {
+                        @Override
+                        public Object apply(scala.Tuple2<Integer, String> entry) {
+                            result.add(entry);
+                            return null;
+                        }
+                    })
+                    .materialize();
+            assertThat(result.toString(), equalTo("[(1,1), (2,2), (3,3), (4,4), (5,5),"
+                    + " (6,6), (7,7), (8,8), (9,9), (10,10)]"));
+        }
+    }
+
     @Test
     public void memoryMapIntStringClear() {
         // Create a memory database        
