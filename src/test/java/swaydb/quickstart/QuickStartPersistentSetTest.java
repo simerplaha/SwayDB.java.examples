@@ -1,21 +1,21 @@
 /*
-* Copyright (c) 2019 Simer Plaha (@simerplaha)
-*
-* This file is a part of SwayDB.
-*
-* SwayDB is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as
-* published by the Free Software Foundation, either version 3 of the
-* License, or (at your option) any later version.
-*
-* SwayDB is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU Affero General Public License for more details.
-*
-* You should have received a copy of the GNU Affero General Public License
-* along with SwayDB. If not, see <https://www.gnu.org/licenses/>.
-*/
+ * Copyright (c) 2019 Simer Plaha (@simerplaha)
+ *
+ * This file is a part of SwayDB.
+ *
+ * SwayDB is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * SwayDB is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with SwayDB. If not, see <https://www.gnu.org/licenses/>.
+ */
 package swaydb.quickstart;
 
 import java.io.IOException;
@@ -71,7 +71,7 @@ public class QuickStartPersistentSetTest extends TestBase {
         assertThat("two value", db.contains(2), equalTo(true));
         assertThat(db.contains(1), equalTo(false));
     }
-    
+
     @Test
     public void persistentSetIntIterator() {
         final swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
@@ -94,9 +94,9 @@ public class QuickStartPersistentSetTest extends TestBase {
         assertThat(Arrays.toString(db.toArray()), equalTo("[1]"));
         assertThat(Arrays.toString(db.toArray(new Integer[]{})), equalTo("[1]"));
     }
-    
+
     @Test
-    public void persistentSetIntAddExpireAfter() {  
+    public void persistentSetIntAddExpireAfter() {
         try (swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
                         .<Integer>builder()
                         .withDir(Paths.get("disk3addexpireafter"))
@@ -112,7 +112,7 @@ public class QuickStartPersistentSetTest extends TestBase {
     }
 
     @Test
-    public void persistentSetIntAddExpireAt() {  
+    public void persistentSetIntAddExpireAt() {
         try (swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
                         .<Integer>builder()
                         .withDir(Paths.get("disk3addexpireat"))
@@ -128,7 +128,7 @@ public class QuickStartPersistentSetTest extends TestBase {
     }
 
     @Test
-    public void persistentSetIntExpireAfter() {  
+    public void persistentSetIntExpireAfter() {
         try (swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
                         .<Integer>builder()
                         .withDir(Paths.get("disk3expireafter"))
@@ -145,7 +145,7 @@ public class QuickStartPersistentSetTest extends TestBase {
     }
 
     @Test
-    public void persistentSetIntExpireAt() {  
+    public void persistentSetIntExpireAt() {
         try (swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
                         .<Integer>builder()
                         .withDir(Paths.get("disk3expireat"))
@@ -162,7 +162,7 @@ public class QuickStartPersistentSetTest extends TestBase {
     }
 
     @Test
-    public void persistentSetIntContainsAll() {  
+    public void persistentSetIntContainsAll() {
         try (swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
                         .<Integer>builder()
                         .withDir(Paths.get("disk3containsall"))
@@ -174,7 +174,7 @@ public class QuickStartPersistentSetTest extends TestBase {
     }
 
     @Test
-    public void persistentSetIntAddAll() {  
+    public void persistentSetIntAddAll() {
         try (swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
                         .<Integer>builder()
                         .withDir(Paths.get("disk3addall"))
@@ -187,7 +187,7 @@ public class QuickStartPersistentSetTest extends TestBase {
     }
 
     @Test
-    public void persistentSetIntRetainAll() {  
+    public void persistentSetIntRetainAll() {
         try (swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
                         .<Integer>builder()
                         .withDir(Paths.get("disk3retainall"))
@@ -203,13 +203,13 @@ public class QuickStartPersistentSetTest extends TestBase {
     }
 
     @Test
-    public void memorySetIntRetainAll2() {  
+    public void memorySetIntRetainAll2() {
         try (swaydb.persistent.Set<String> boxes = swaydb.persistent.Set
                         .<String>builder()
                         .withDir(Paths.get("disk3retainall2"))
                         .withKeySerializer(String.class)
                         .build()) {
-            List<String> bags = new ArrayList<>(); 
+            List<String> bags = new ArrayList<>();
             bags.add("pen");
             bags.add("pencil");
             bags.add("paper");
@@ -219,13 +219,13 @@ public class QuickStartPersistentSetTest extends TestBase {
             boxes.add("books");
             boxes.add("rubber");
 
-            boxes.retainAll(bags); 
+            boxes.retainAll(bags);
             assertThat(Arrays.toString(boxes.toArray()), equalTo("[paper, pen]"));
         }
     }
 
     @Test
-    public void persistentSetIntRemove() {  
+    public void persistentSetIntRemove() {
         try (swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
                         .<Integer>builder()
                         .withDir(Paths.get("disk3removeall"))
@@ -269,7 +269,7 @@ public class QuickStartPersistentSetTest extends TestBase {
             assertThat(db.isEmpty(), equalTo(false));
         }
     }
-    
+
     @Test
     public void persistentSetIntNonEmpty() {
         try (swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
@@ -284,7 +284,7 @@ public class QuickStartPersistentSetTest extends TestBase {
     }
 
     @Test
-    public void persistentSetIntExpiration() {  
+    public void persistentSetIntExpiration() {
         try (swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
                         .<Integer>builder()
                         .withDir(Paths.get("disk3expiration"))
@@ -299,7 +299,7 @@ public class QuickStartPersistentSetTest extends TestBase {
     }
 
     @Test
-    public void persistentSetIntTimeLeft() {  
+    public void persistentSetIntTimeLeft() {
         try (swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
                         .<Integer>builder()
                         .withDir(Paths.get("disk3timeleft"))
@@ -329,7 +329,7 @@ public class QuickStartPersistentSetTest extends TestBase {
     }
 
     @Test
-    public void persistentSetIntMightContain() {  
+    public void persistentSetIntMightContain() {
         try (swaydb.persistent.Set<Integer> db = swaydb.persistent.Set
                         .<Integer>builder()
                         .withDir(Paths.get("disk3mightContain"))
@@ -365,7 +365,7 @@ public class QuickStartPersistentSetTest extends TestBase {
             assertThat(db.isEmpty(), equalTo(true));
         }
     }
-    
+
     @Test
     public void persistentSetIntFromBuilder() {
         // val db = persistent.Set[Int](dir = dir.resolve("disk3builder")).get

@@ -132,5 +132,13 @@
         </module>
         <module name="SingleLineJavadoc"/>
     </module>
+    <module name="RegexpSingleline">
+        <property name="format" value="\s+$"/>
+        <property name="message" value="Trailing whitespace (extra spaces at the end of a line)"/>
+        <property name="severity" value="error"/>
+    </module>
+    <module name="NewlineAtEndOfFile">
+        <property name="lineSeparator" value="lf"/>
+    </module>
 
 </module>

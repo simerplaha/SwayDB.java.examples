@@ -1,20 +1,20 @@
 /*
-* Copyright (c) 2019 Simer Plaha (@simerplaha)
-*
-* This file is a part of SwayDB.
-*
-* SwayDB is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as
-* published by the Free Software Foundation, either version 3 of the
-* License, or (at your option) any later version.
-*
-* SwayDB is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU Affero General Public License for more details.
-*
-* You should have received a copy of the GNU Affero General Public License
-* along with SwayDB. If not, see <https://www.gnu.org/licenses/>.
+ * Copyright (c) 2019 Simer Plaha (@simerplaha)
+ *
+ * This file is a part of SwayDB.
+ *
+ * SwayDB is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * SwayDB is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with SwayDB. If not, see <https://www.gnu.org/licenses/>.
  */
 package swaydb.quickstart;
 
@@ -30,7 +30,7 @@ public class QuickStartExtensionsMemoryMapTest {
     @SuppressWarnings("unchecked")
     @Test
     public void memoryMapIntStringFrom() {
-        // Create a memory database        
+        // Create a memory database
         // val db = memory.Map[Int, String]().get
         try (swaydb.extensions.memory.Map<Integer, String> db = swaydb.extensions.memory.Map.create(
                 Integer.class, String.class)) {
@@ -56,10 +56,10 @@ public class QuickStartExtensionsMemoryMapTest {
             assertThat(db.get(1), nullValue());
         }
     }
-    
+
     @Test
     public void memoryMapIntStringClear() {
-        // Create a memory database        
+        // Create a memory database
         try (swaydb.extensions.memory.Map<Integer, String> db = swaydb.extensions.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
@@ -115,7 +115,7 @@ public class QuickStartExtensionsMemoryMapTest {
             assertThat(db.mightContain(1), equalTo(true));
         }
     }
-    
+
     @Test
     public void memoryMapIntStringHead() {
         try (swaydb.extensions.memory.Map<Integer, String> db = swaydb.extensions.memory.Map

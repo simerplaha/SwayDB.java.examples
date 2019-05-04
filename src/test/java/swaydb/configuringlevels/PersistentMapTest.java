@@ -1,20 +1,20 @@
 /*
-* Copyright (c) 2019 Simer Plaha (@simerplaha)
-*
-* This file is a part of SwayDB.
-*
-* SwayDB is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as
-* published by the Free Software Foundation, either version 3 of the
-* License, or (at your option) any later version.
-*
-* SwayDB is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU Affero General Public License for more details.
-*
-* You should have received a copy of the GNU Affero General Public License
-* along with SwayDB. If not, see <https://www.gnu.org/licenses/>.
+ * Copyright (c) 2019 Simer Plaha (@simerplaha)
+ *
+ * This file is a part of SwayDB.
+ *
+ * SwayDB is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * SwayDB is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with SwayDB. If not, see <https://www.gnu.org/licenses/>.
  */
 package swaydb.configuringlevels;
 
@@ -42,7 +42,7 @@ import swaydb.data.config.SwayDBPersistentConfig;
 import swaydb.java.*;
 
 public class PersistentMapTest extends TestBase {
-    
+
     @BeforeClass
     public static void beforeClass() throws IOException {
         deleteDirectoryWalkTree(Paths.get("Disk1/myDB"));
@@ -100,7 +100,7 @@ public class PersistentMapTest extends TestBase {
                         });
 //        KeyOrder ordering = (KeyOrder) swaydb.data.order.KeyOrder$.MODULE$.defaultJava();
         ExecutionContext ec = swaydb.SwayDB$.MODULE$.defaultExecutionContext();
-        
+
         try (swaydb.persistent.Map<Integer, String> db = new swaydb.persistent.Map<>(
               (swaydb.Map<Integer, String, swaydb.data.IO>)
                     swaydb.SwayDB$.MODULE$.apply(config, 1000, StorageDoubleImplicits.gb(1.0),

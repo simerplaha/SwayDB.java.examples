@@ -1,20 +1,20 @@
 /*
-* Copyright (c) 2019 Simer Plaha (@simerplaha)
-*
-* This file is a part of SwayDB.
-*
-* SwayDB is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as
-* published by the Free Software Foundation, either version 3 of the
-* License, or (at your option) any later version.
-*
-* SwayDB is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU Affero General Public License for more details.
-*
-* You should have received a copy of the GNU Affero General Public License
-* along with SwayDB. If not, see <https://www.gnu.org/licenses/>.
+ * Copyright (c) 2019 Simer Plaha (@simerplaha)
+ *
+ * This file is a part of SwayDB.
+ *
+ * SwayDB is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * SwayDB is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with SwayDB. If not, see <https://www.gnu.org/licenses/>.
  */
 package swaydb.quickstart;
 
@@ -49,7 +49,7 @@ public class QuickStartMemoryMapTest {
     @SuppressWarnings("unchecked")
     @Test
     public void memoryMapIntStringFrom() {
-        // Create a memory database        
+        // Create a memory database
         // val db = memory.Map[Int, String]().get
         try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map.create(
                 Integer.class, String.class)) {
@@ -261,7 +261,7 @@ public class QuickStartMemoryMapTest {
                     + " (9,9_updated), (10,10_updated)]"));
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     @Test
     public void memoryMapIntStringFilter() {
@@ -294,7 +294,7 @@ public class QuickStartMemoryMapTest {
             assertThat(result.toString(), equalTo("[(1,1), (2,2), (3,3), (4,4)]"));
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     @Test
     public void memoryMapIntStringForeach() {
@@ -322,7 +322,7 @@ public class QuickStartMemoryMapTest {
 
     @Test
     public void memoryMapIntStringClear() {
-        // Create a memory database        
+        // Create a memory database
         try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
@@ -678,7 +678,7 @@ public class QuickStartMemoryMapTest {
             assertThat(db.asJava().size(), equalTo(1));
         }
     }
-    
+
     @Test
     public void memoryMapIntStringRemove() {
         try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
@@ -696,7 +696,7 @@ public class QuickStartMemoryMapTest {
             assertThat(db.asJava().size(), equalTo(0));
         }
     }
-    
+
     @Test
     public void memoryMapStringIntRegisterApplyFunctionUpdate() {
         try (swaydb.memory.Map<String, Integer> likesMap = swaydb.memory.Map
@@ -712,7 +712,7 @@ public class QuickStartMemoryMapTest {
             IntStream.rangeClosed(1, 100).forEach(index -> likesMap.applyFunction("SwayDB", likesFunctionId));
             assertThat(likesMap.get("SwayDB"), equalTo(100));
         }
-    }    
+    }
 
     @Test
     public void memoryMapStringIntRegisterApplyFunctionExpire() {

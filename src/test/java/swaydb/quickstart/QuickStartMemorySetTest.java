@@ -1,21 +1,21 @@
 /*
-* Copyright (c) 2019 Simer Plaha (@simerplaha)
-*
-* This file is a part of SwayDB.
-*
-* SwayDB is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as
-* published by the Free Software Foundation, either version 3 of the
-* License, or (at your option) any later version.
-*
-* SwayDB is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU Affero General Public License for more details.
-*
-* You should have received a copy of the GNU Affero General Public License
-* along with SwayDB. If not, see <https://www.gnu.org/licenses/>.
-*/
+ * Copyright (c) 2019 Simer Plaha (@simerplaha)
+ *
+ * This file is a part of SwayDB.
+ *
+ * SwayDB is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * SwayDB is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with SwayDB. If not, see <https://www.gnu.org/licenses/>.
+ */
 package swaydb.quickstart;
 
 import java.time.LocalDateTime;
@@ -81,9 +81,9 @@ public class QuickStartMemorySetTest extends TestBase {
         assertThat(Arrays.toString(db.toArray()), equalTo("[1]"));
         assertThat(Arrays.toString(db.toArray(new Integer[]{})), equalTo("[1]"));
     }
-    
+
     @Test
-    public void memorySetIntAddExpireAfter() {  
+    public void memorySetIntAddExpireAfter() {
         try (swaydb.memory.Set<Integer> db = swaydb.memory.Set
                         .<Integer>builder()
                         .withKeySerializer(Integer.class)
@@ -98,7 +98,7 @@ public class QuickStartMemorySetTest extends TestBase {
     }
 
     @Test
-    public void memorySetIntAddExpireAt() {  
+    public void memorySetIntAddExpireAt() {
         try (swaydb.memory.Set<Integer> db = swaydb.memory.Set
                         .<Integer>builder()
                         .withKeySerializer(Integer.class)
@@ -113,7 +113,7 @@ public class QuickStartMemorySetTest extends TestBase {
     }
 
     @Test
-    public void memorySetIntExpireAfter() {  
+    public void memorySetIntExpireAfter() {
         try (swaydb.memory.Set<Integer> db = swaydb.memory.Set
                         .<Integer>builder()
                         .withKeySerializer(Integer.class)
@@ -129,7 +129,7 @@ public class QuickStartMemorySetTest extends TestBase {
     }
 
     @Test
-    public void memorySetIntExpireAt() {  
+    public void memorySetIntExpireAt() {
         try (swaydb.memory.Set<Integer> db = swaydb.memory.Set
                         .<Integer>builder()
                         .withKeySerializer(Integer.class)
@@ -145,7 +145,7 @@ public class QuickStartMemorySetTest extends TestBase {
     }
 
     @Test
-    public void memorySetIntContainsAll() {  
+    public void memorySetIntContainsAll() {
         try (swaydb.memory.Set<Integer> db = swaydb.memory.Set
                         .<Integer>builder()
                         .withKeySerializer(Integer.class)
@@ -156,7 +156,7 @@ public class QuickStartMemorySetTest extends TestBase {
     }
 
     @Test
-    public void memorySetIntAddAll() {  
+    public void memorySetIntAddAll() {
         try (swaydb.memory.Set<Integer> db = swaydb.memory.Set
                         .<Integer>builder()
                         .withKeySerializer(Integer.class)
@@ -168,7 +168,7 @@ public class QuickStartMemorySetTest extends TestBase {
     }
 
     @Test
-    public void memorySetIntRetainAll() {  
+    public void memorySetIntRetainAll() {
         try (swaydb.memory.Set<Integer> db = swaydb.memory.Set
                         .<Integer>builder()
                         .withKeySerializer(Integer.class)
@@ -183,12 +183,12 @@ public class QuickStartMemorySetTest extends TestBase {
     }
 
     @Test
-    public void memorySetIntRetainAll2() {  
+    public void memorySetIntRetainAll2() {
         try (swaydb.memory.Set<String> boxes = swaydb.memory.Set
                         .<String>builder()
                         .withKeySerializer(String.class)
                         .build()) {
-            List<String> bags = new ArrayList<>(); 
+            List<String> bags = new ArrayList<>();
             bags.add("pen");
             bags.add("pencil");
             bags.add("paper");
@@ -198,13 +198,13 @@ public class QuickStartMemorySetTest extends TestBase {
             boxes.add("books");
             boxes.add("rubber");
 
-            boxes.retainAll(bags); 
+            boxes.retainAll(bags);
             assertThat(Arrays.toString(boxes.toArray()), equalTo("[paper, pen]"));
         }
     }
 
     @Test
-    public void memorySetIntRemove() {  
+    public void memorySetIntRemove() {
         try (swaydb.memory.Set<Integer> db = swaydb.memory.Set
                         .<Integer>builder()
                         .withKeySerializer(Integer.class)
@@ -259,7 +259,7 @@ public class QuickStartMemorySetTest extends TestBase {
     }
 
     @Test
-    public void memorySetIntExpiration() {  
+    public void memorySetIntExpiration() {
         try (swaydb.memory.Set<Integer> db = swaydb.memory.Set
                         .<Integer>builder()
                         .withKeySerializer(Integer.class)
@@ -273,7 +273,7 @@ public class QuickStartMemorySetTest extends TestBase {
     }
 
     @Test
-    public void memorySetIntTimeLeft() {  
+    public void memorySetIntTimeLeft() {
         try (swaydb.memory.Set<Integer> db = swaydb.memory.Set
                         .<Integer>builder()
                         .withKeySerializer(Integer.class)
@@ -301,7 +301,7 @@ public class QuickStartMemorySetTest extends TestBase {
     }
 
     @Test
-    public void memorySetIntMightContain() {  
+    public void memorySetIntMightContain() {
         try (swaydb.memory.Set<Integer> db = swaydb.memory.Set
                         .<Integer>builder()
                         .withKeySerializer(Integer.class)

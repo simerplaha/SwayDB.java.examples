@@ -1,21 +1,21 @@
 /*
-* Copyright (c) 2019 Simer Plaha (@simerplaha)
-*
-* This file is a part of SwayDB.
-*
-* SwayDB is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as
-* published by the Free Software Foundation, either version 3 of the
-* License, or (at your option) any later version.
-*
-* SwayDB is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU Affero General Public License for more details.
-*
-* You should have received a copy of the GNU Affero General Public License
-* along with SwayDB. If not, see <https://www.gnu.org/licenses/>.
-*/
+ * Copyright (c) 2019 Simer Plaha (@simerplaha)
+ *
+ * This file is a part of SwayDB.
+ *
+ * SwayDB is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * SwayDB is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with SwayDB. If not, see <https://www.gnu.org/licenses/>.
+ */
 package swaydb.quickstart;
 
 import java.io.IOException;
@@ -306,7 +306,7 @@ public class QuickStartPersistentMapTest extends TestBase {
             assertThat(result.toString(), equalTo("[(1,1), (2,2), (3,3), (4,4)]"));
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     @Test
     public void persistentMapIntStringForeach() {
@@ -352,9 +352,9 @@ public class QuickStartPersistentMapTest extends TestBase {
             assertThat("Empty result", result2, nullValue());
         }
     }
-    
+
     @Test
-    public void persistentMapIntStringSize() {  
+    public void persistentMapIntStringSize() {
         try (swaydb.persistent.Map<Integer, String> db = swaydb.persistent.Map
                         .<Integer, String>builder()
                         .withDir(Paths.get("disk1builderSize"))
@@ -367,7 +367,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     }
 
     @Test
-    public void persistentMapIntStringIsEmpty() {  
+    public void persistentMapIntStringIsEmpty() {
         try (swaydb.persistent.Map<Integer, String> db = swaydb.persistent.Map
                         .<Integer, String>builder()
                         .withDir(Paths.get("disk1builderIsEmpty"))
@@ -381,7 +381,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     }
 
     @Test
-    public void persistentMapIntStringContainsValue() {  
+    public void persistentMapIntStringContainsValue() {
         try (swaydb.persistent.Map<Integer, String> db = swaydb.persistent.Map
                         .<Integer, String>builder()
                         .withDir(Paths.get("disk1builderContainsValue"))
@@ -394,7 +394,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     }
 
     @Test
-    public void persistentMapIntStringMightContain() {  
+    public void persistentMapIntStringMightContain() {
         try (swaydb.persistent.Map<Integer, String> db = swaydb.persistent.Map
                         .<Integer, String>builder()
                         .withDir(Paths.get("disk1builderMightContain"))
@@ -407,7 +407,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     }
 
     @Test
-    public void persistentMapIntStringHead() {  
+    public void persistentMapIntStringHead() {
         try (swaydb.persistent.Map<Integer, String> db = swaydb.persistent.Map
                         .<Integer, String>builder()
                         .withDir(Paths.get("disk1builderHead"))
@@ -423,7 +423,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     }
 
     @Test
-    public void persistentMapIntStringLast() {  
+    public void persistentMapIntStringLast() {
         try (swaydb.persistent.Map<Integer, String> db = swaydb.persistent.Map
                         .<Integer, String>builder()
                         .withDir(Paths.get("disk1builderLast"))
@@ -455,7 +455,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     }
 
     @Test
-    public void persistentMapIntStringUpdateMap() {  
+    public void persistentMapIntStringUpdateMap() {
         try (swaydb.persistent.Map<Integer, String> db = swaydb.persistent.Map
                         .<Integer, String>builder()
                         .withDir(Paths.get("disk1builderUpdateAll"))
@@ -486,9 +486,9 @@ public class QuickStartPersistentMapTest extends TestBase {
             assertThat(keys.toString(), equalTo("[1, 2]"));
         }
     }
-    
+
     @Test
-    public void persistentMapIntStringKeysHead() {  
+    public void persistentMapIntStringKeysHead() {
         try (swaydb.persistent.Map<Integer, String> db = swaydb.persistent.Map
                         .<Integer, String>builder()
                         .withDir(Paths.get("disk1builderKeysHead"))
@@ -536,7 +536,7 @@ public class QuickStartPersistentMapTest extends TestBase {
             assertThat(keys.toString(), equalTo("[one, two]"));
         }
     }
-    
+
     @Test
     public void persistentMapIntStringEntrySet() {
         try (swaydb.persistent.Map<Integer, String> db = swaydb.persistent.Map
@@ -553,9 +553,9 @@ public class QuickStartPersistentMapTest extends TestBase {
             assertThat(entries.toString(), equalTo("[1=one, 2=two]"));
         }
     }
-    
+
     @Test
-    public void persistentMapIntStringPutExpireAfter() {  
+    public void persistentMapIntStringPutExpireAfter() {
         try (swaydb.persistent.Map<Integer, String> db = swaydb.persistent.Map
                         .<Integer, String>builder()
                         .withDir(Paths.get("disk1putExpireAfter"))
@@ -572,7 +572,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     }
 
     @Test
-    public void persistentMapIntStringPutExpireAt() {  
+    public void persistentMapIntStringPutExpireAt() {
         try (swaydb.persistent.Map<Integer, String> db = swaydb.persistent.Map
                         .<Integer, String>builder()
                         .withDir(Paths.get("disk1putExpireAt"))
@@ -590,7 +590,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     }
 
     @Test
-    public void persistentMapIntStringExpiration() {  
+    public void persistentMapIntStringExpiration() {
         try (swaydb.persistent.Map<Integer, String> db = swaydb.persistent.Map
                         .<Integer, String>builder()
                         .withDir(Paths.get("disk1expiration"))
@@ -606,7 +606,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     }
 
     @Test
-    public void persistentMapIntStringTimeLeft() {  
+    public void persistentMapIntStringTimeLeft() {
         try (swaydb.persistent.Map<Integer, String> db = swaydb.persistent.Map
                         .<Integer, String>builder()
                         .withDir(Paths.get("disk1timeleft"))
@@ -664,7 +664,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     }
 
     @Test
-    public void persistentMapIntStringExpireAfter() {  
+    public void persistentMapIntStringExpireAfter() {
         try (swaydb.persistent.Map<Integer, String> db = swaydb.persistent.Map
                         .<Integer, String>builder()
                         .withDir(Paths.get("disk1expireAfter"))
@@ -682,7 +682,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     }
 
     @Test
-    public void persistentMapIntStringExpireAt() {  
+    public void persistentMapIntStringExpireAt() {
         try (swaydb.persistent.Map<Integer, String> db = swaydb.persistent.Map
                         .<Integer, String>builder()
                         .withDir(Paths.get("disk1expireAt"))
@@ -700,7 +700,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     }
 
     @Test
-    public void persistentMapIntStringUpdate() {  
+    public void persistentMapIntStringUpdate() {
         try (swaydb.persistent.Map<Integer, String> db = swaydb.persistent.Map
                         .<Integer, String>builder()
                         .withDir(Paths.get("disk1update"))
@@ -714,7 +714,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     }
 
     @Test
-    public void persistentMapIntStringRemove() {  
+    public void persistentMapIntStringRemove() {
         try (swaydb.persistent.Map<Integer, String> db = swaydb.persistent.Map
                         .<Integer, String>builder()
                         .withDir(Paths.get("disk1remove"))
@@ -763,7 +763,7 @@ public class QuickStartPersistentMapTest extends TestBase {
             IntStream.rangeClosed(1, 100).forEach(index -> likesMap.applyFunction("SwayDB", likesFunctionId));
             assertThat(likesMap.get("SwayDB"), equalTo(100));
         }
-    }  
+    }
 
     @Test
     public void persistentMapIntStringFromBuilder() {
@@ -804,7 +804,7 @@ public class QuickStartPersistentMapTest extends TestBase {
             assertThat("Empty result", result2, nullValue());
         }
     }
-    
+
     @Test
     public void persistentMapIntCustom() {
 
