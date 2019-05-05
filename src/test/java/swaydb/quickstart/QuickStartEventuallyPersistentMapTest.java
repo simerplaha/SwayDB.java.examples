@@ -725,6 +725,25 @@ public class QuickStartEventuallyPersistentMapTest extends TestBase {
     }
 
     @Test
+    public void persistentMapIntStringRemove() {
+        try (swaydb.eventually.persistent.Map<Integer, String> db = swaydb.eventually.persistent.Map
+                .<Integer, String>builder()
+                .withDir(Paths.get("disk2remove"))
+                .withKeySerializer(Integer.class)
+                .withValueSerializer(String.class)
+                .build()) {
+            db.put(1, "one");
+            db.put(2, "two");
+            db.remove(1, 2);
+            assertThat(db.asJava().size(), equalTo(0));
+            db.put(3, "three");
+            db.put(4, "four");
+            db.remove(new HashSet<>(Arrays.asList(3, 4)));
+            assertThat(db.asJava().size(), equalTo(0));
+        }
+    }
+
+    @Test
     public void persistentMapStringIntRegisterApplyFunctionUpdate() {
         try (swaydb.eventually.persistent.Map<String, Integer> likesMap = swaydb.eventually.persistent.Map
                 .<String, Integer>builder()

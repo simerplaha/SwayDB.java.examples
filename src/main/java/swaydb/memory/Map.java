@@ -22,8 +22,8 @@ import java.io.Closeable;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.AbstractMap;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
@@ -69,10 +69,12 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
         return (boolean) database.isEmpty().get();
     }
 
+    @Override
     public boolean nonEmpty() {
         return (boolean) database.nonEmpty().get();
     }
 
+    @Override
     public LocalDateTime expiration(K key) {
         Object result = database.expiration(key).get();
         if (result instanceof scala.Some) {
@@ -82,6 +84,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
         return null;
     }
 
+    @Override
     public Duration timeLeft(K key) {
         Object result = database.timeLeft(key).get();
         if (result instanceof scala.Some) {
@@ -91,18 +94,22 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
         return null;
     }
 
+    @Override
     public int keySize(K key) {
         return database.keySize(key);
     }
 
+    @Override
     public int valueSize(V value) {
         return database.valueSize(value);
     }
 
+    @Override
     public long sizeOfSegments() {
         return database.sizeOfSegments();
     }
 
+    @Override
     public Level0Meter level0Meter() {
         return database.level0Meter();
     }
@@ -111,21 +118,25 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
         return levelMeter(1);
     }
 
+    @Override
     public Optional<LevelMeter> levelMeter(int levelNumber) {
         Option<LevelMeter> levelMeter = database.levelMeter(levelNumber);
         return levelMeter.isEmpty() ? Optional.empty() : Optional.ofNullable(levelMeter.get());
     }
 
+    @Override
     public boolean containsKey(K key) {
         return (boolean) database.contains(key).get();
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public boolean mightContain(K key) {
         return (boolean) database.mightContain(key).get();
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public java.util.Map.Entry<K, V> head() {
         Object result = database.headOption().get();
         if (result instanceof scala.Some) {
@@ -136,11 +147,13 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public Optional<java.util.Map.Entry<K, V>> headOption() {
         return Optional.ofNullable(head());
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public java.util.Map.Entry<K, V> last() {
         Object result = database.lastOption().get();
         if (result instanceof scala.Some) {
@@ -150,14 +163,17 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
         return null;
     }
 
+    @Override
     public Optional<java.util.Map.Entry<K, V>> lastOption() {
         return Optional.ofNullable(last());
     }
 
+    @Override
     public boolean containsValue(V value) {
         return values().contains(value);
     }
 
+    @Override
     public void put(java.util.Map<K, V> map) {
         scala.collection.mutable.Map<K, V> entries =
                 scala.collection.JavaConverters.mapAsScalaMapConverter(map).asScala();
@@ -165,20 +181,24 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public void put(scala.collection.mutable.Seq seq) {
         database.put(seq);
     }
 
+    @Override
     public void update(java.util.Map<K, V> map) {
         scala.collection.mutable.Map<K, V> entries =
                 scala.collection.JavaConverters.mapAsScalaMapConverter(map).asScala();
         database.update(entries.toSet()).get();
     }
 
+    @Override
     public void clear() {
         database.asScala().clear();
     }
 
+    @Override
     public Set<K> keySet() {
         Seq<Tuple2<K, V>> entries = database.asScala().toSeq();
         Set<K> result = new LinkedHashSet<>();
@@ -190,6 +210,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public K keysHead() {
         Object result = database.keys().headOption().get();
         if (result instanceof scala.Some) {
@@ -198,11 +219,13 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
         return null;
     }
 
+    @Override
     public Optional<K> keysHeadOption() {
         return Optional.ofNullable(keysHead());
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public K keysLast() {
         Object result = database.keys().lastOption().get();
         if (result instanceof scala.Some) {
@@ -211,10 +234,12 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
         return null;
     }
 
+    @Override
     public Optional<K> keysLastOption() {
         return Optional.ofNullable(keysLast());
     }
 
+    @Override
     public List<V> values() {
         Seq<Tuple2<K, V>> entries = database.asScala().toSeq();
         List<V> result = new ArrayList<>();
@@ -226,6 +251,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public Set<java.util.Map.Entry<K, V>> entrySet() {
         Seq<Tuple2<K, V>> entries = database.asScala().toSeq();
         Set<java.util.Map.Entry<K, V>> result = new LinkedHashSet<>();
@@ -243,12 +269,14 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
         return oldValue;
     }
 
+    @Override
     public V put(K key, V value, long expireAfter, TimeUnit timeUnit) {
         V oldValue = get(key);
         database.put(key, value, FiniteDuration.create(expireAfter, timeUnit)).get();
         return oldValue;
     }
 
+    @Override
     public V put(K key, V value, LocalDateTime expireAt) {
         V oldValue = get(key);
         int expireAtNano = Duration.between(LocalDateTime.now(), expireAt).getNano();
@@ -256,12 +284,14 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
         return oldValue;
     }
 
+    @Override
     public V expire(K key, long after, TimeUnit timeUnit) {
         V oldValue = get(key);
         database.expire(key, FiniteDuration.create(after, timeUnit)).get();
         return oldValue;
     }
 
+    @Override
     public V expire(K key, LocalDateTime expireAt) {
         V oldValue = get(key);
         int expireAtNano = Duration.between(LocalDateTime.now(), expireAt).getNano();
@@ -269,6 +299,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
         return oldValue;
     }
 
+    @Override
     public V update(K key, V value) {
         V oldValue = get(key);
         database.update(key, value).get();
@@ -292,14 +323,17 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
         return oldValue;
     }
 
+    @Override
     public void remove(Set<K> keys) {
         database.remove(scala.collection.JavaConverters.asScalaSetConverter(keys).asScala()).get();
     }
 
+    @Override
     public void remove(K from, K to) {
         database.remove(from, to).get();
     }
 
+    @Override
     public java.util.Map<K, V> asJava() {
         return JavaConverters.mapAsJavaMapConverter(database.asScala()).asJava();
     }
@@ -319,18 +353,22 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
         database.applyFunction(key, functionId);
     }
 
+    @Override
     public swaydb.Map<K, V, IO> from(K key) {
         return database.from(key);
     }
 
+    @Override
     public swaydb.Map<K, V, IO> fromOrAfter(K key) {
         return database.fromOrAfter(key);
     }
 
+    @Override
     public swaydb.Map<K, V, IO> fromOrBefore(K key) {
         return database.fromOrBefore(key);
     }
 
+    @Override
     public swaydb.Set<K, IO> keys() {
         return database.keys();
     }

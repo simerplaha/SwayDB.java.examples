@@ -43,7 +43,7 @@ import swaydb.data.accelerate.Level0Meter;
 import swaydb.data.compaction.LevelMeter;
 import swaydb.java.Serializer;
 
-public class Set<K> implements Closeable {
+public class Set<K> implements swaydb.java.Set<K>, Closeable {
 
     private final swaydb.Set<K, IO> database;
 
@@ -51,14 +51,17 @@ public class Set<K> implements Closeable {
         this.database = database;
     }
 
+    @Override
     public boolean contains(K elem) {
         return (boolean) database.contains(elem).get();
     }
 
+    @Override
     public boolean mightContain(K key) {
         return (boolean) database.mightContain(key).get();
     }
 
+    @Override
     public Iterator<K> iterator() {
         Seq<K> entries = database.asScala().toSeq();
         java.util.List<K> result = new ArrayList<>();
@@ -68,6 +71,7 @@ public class Set<K> implements Closeable {
         return result.iterator();
     }
 
+    @Override
     public Object[] toArray() {
         Seq<K> entries = database.asScala().toSeq();
         java.util.List<K> result = new ArrayList<>();
@@ -78,16 +82,19 @@ public class Set<K> implements Closeable {
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public <T> T[] toArray(T[] a) {
         return (T[]) toArray();
     }
 
+    @Override
     public boolean add(K key) {
         Object result = database.add(key).get();
         return result instanceof scala.Some;
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public boolean add(K key, long expireAfter, TimeUnit timeUnit) {
         boolean result = contains(key);
         database.add(key, FiniteDuration.create(expireAfter, timeUnit)).get();
@@ -95,6 +102,7 @@ public class Set<K> implements Closeable {
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public boolean add(K key, LocalDateTime expireAt) {
         boolean result = contains(key);
         int expireAtNano = Duration.between(LocalDateTime.now(), expireAt).getNano();
@@ -103,6 +111,7 @@ public class Set<K> implements Closeable {
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public boolean expire(K key, long after, TimeUnit timeUnit) {
         boolean result = contains(key);
         database.expire(key, FiniteDuration.create(after, timeUnit)).get();
@@ -110,6 +119,7 @@ public class Set<K> implements Closeable {
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public boolean expire(K key, LocalDateTime expireAt) {
         boolean result = contains(key);
         int expireAtNano = Duration.between(LocalDateTime.now(), expireAt).getNano();
@@ -118,11 +128,13 @@ public class Set<K> implements Closeable {
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public boolean containsAll(Collection<K> collection) {
         return collection.stream()
                 .allMatch(elem -> (boolean) database.contains(elem).get());
     }
 
+    @Override
     public boolean add(List<? extends K> list) {
         Buffer<? extends K> entries = scala.collection.JavaConverters.asScalaBufferConverter(list).asScala();
         database.add(entries.toSet()).get();
@@ -130,6 +142,7 @@ public class Set<K> implements Closeable {
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public boolean retainAll(Collection<K> collection) {
         Seq<K> entries = database.asScala().toSeq();
         java.util.List<K> result = new ArrayList<>();
@@ -142,27 +155,33 @@ public class Set<K> implements Closeable {
         return true;
     }
 
+    @Override
     public void remove(java.util.Set<K> keys) {
         database.remove(scala.collection.JavaConverters.asScalaSetConverter(keys).asScala()).get();
     }
 
+    @Override
     public void remove(K from, K to) {
         database.remove(from, to).get();
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public int size() {
         return database.asScala().size();
     }
 
+    @Override
     public boolean isEmpty() {
         return (boolean) database.isEmpty().get();
     }
 
+    @Override
     public boolean nonEmpty() {
         return (boolean) database.nonEmpty().get();
     }
 
+    @Override
     public LocalDateTime expiration(K key) {
         Object result = database.expiration(key).get();
         if (result instanceof scala.Some) {
@@ -172,6 +191,7 @@ public class Set<K> implements Closeable {
         return null;
     }
 
+    @Override
     public Duration timeLeft(K key) {
         Object result = database.timeLeft(key).get();
         if (result instanceof scala.Some) {
@@ -181,10 +201,12 @@ public class Set<K> implements Closeable {
         return null;
     }
 
+    @Override
     public long sizeOfSegments() {
         return database.sizeOfSegments();
     }
 
+    @Override
     public Level0Meter level0Meter() {
         return database.level0Meter();
     }
@@ -193,20 +215,24 @@ public class Set<K> implements Closeable {
         return levelMeter(1);
     }
 
+    @Override
     public Optional<LevelMeter> levelMeter(int levelNumber) {
         Option<LevelMeter> levelMeter = database.levelMeter(levelNumber);
         return levelMeter.isEmpty() ? Optional.empty() : Optional.ofNullable(levelMeter.get());
     }
 
+    @Override
     public void clear() {
         database.asScala().clear();
     }
 
+    @Override
     public boolean remove(K key) {
         Object result = database.remove(key).get();
         return result instanceof scala.Some;
     }
 
+    @Override
     public java.util.Set<K> asJava() {
         return JavaConverters.setAsJavaSetConverter(database.asScala()).asJava();
     }
@@ -217,6 +243,7 @@ public class Set<K> implements Closeable {
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public Level0Meter commit(Prepare<K, scala.runtime.Nothing$>... prepares) {
         List<Prepare<K, scala.runtime.Nothing$>> preparesList = Arrays.asList(prepares);
         Iterable<Prepare<K, scala.runtime.Nothing$>> prepareIterator
