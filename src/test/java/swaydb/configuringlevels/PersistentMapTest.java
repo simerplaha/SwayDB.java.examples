@@ -39,6 +39,7 @@ import swaydb.data.compaction.Throttle;
 import swaydb.data.config.Dir;
 import swaydb.data.config.MMAP;
 import swaydb.data.config.SwayDBPersistentConfig;
+import swaydb.data.order.KeyOrder;
 import swaydb.java.*;
 
 public class PersistentMapTest extends TestBase {
@@ -98,7 +99,7 @@ public class PersistentMapTest extends TestBase {
                                              Duration.zero(), 0);
                             }
                         });
-//        KeyOrder ordering = (KeyOrder) swaydb.data.order.KeyOrder$.MODULE$.defaultJava();
+        KeyOrder ordering = (KeyOrder) swaydb.data.order.KeyOrder$.MODULE$.reverse();
         ExecutionContext ec = swaydb.SwayDB$.MODULE$.defaultExecutionContext();
 
         try (swaydb.persistent.Map<Integer, String> db = new swaydb.persistent.Map<>(
@@ -108,7 +109,7 @@ public class PersistentMapTest extends TestBase {
                           Duration.of(5, TimeUnit.SECONDS),
                           Serializer.classToType(Integer.class),
                           Serializer.classToType(String.class),
-                          swaydb.data.order.KeyOrder$.MODULE$.reverse(), ec).get())) {
+                          ordering, ec).get())) {
             db.put(1, "one");
             // db.get(1).get
             String result = db.get(1);

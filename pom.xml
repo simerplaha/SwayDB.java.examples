@@ -4,7 +4,7 @@
     <groupId>io.swaydb</groupId>
     <artifactId>swaydb-java</artifactId>
     <packaging>jar</packaging>
-    <version>0.8-beta.7</version>
+    <version>0.8-beta.8</version>
     <name>swaydb-java</name>
     <description>Java wrapper for SwayDB</description>
     <url>https://github.com/simerplaha/SwayDB.java</url>
@@ -134,7 +134,7 @@
         <dependency>
             <groupId>io.swaydb</groupId>
             <artifactId>swaydb_2.11</artifactId>
-            <version>0.8-beta.7</version>
+            <version>0.8-beta.8</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
