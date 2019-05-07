@@ -49,7 +49,13 @@ import swaydb.data.accelerate.Level0Meter;
 import swaydb.data.compaction.LevelMeter;
 import swaydb.java.Serializer;
 
-public class Map<K, V> implements swaydb.java.Map<K,V>, Closeable {
+/**
+ * The Map of data.
+ *
+ * @param <K> the type of the key element
+ * @param <V> the type of the value element
+ */
+public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
 
     private final swaydb.Map<K, V, IO> database;
 
@@ -57,16 +63,31 @@ public class Map<K, V> implements swaydb.java.Map<K,V>, Closeable {
         this.database = database;
     }
 
+    /**
+     * Returns the size of elements in this map.
+     *
+     * @return the size of elements in this map
+     */
     @Override
     public int size() {
         return database.asScala().size();
     }
 
+    /**
+     * Checks the map is empty.
+     *
+     * @return {@code true} if a map is empty, {@code false} otherwise
+     */
     @Override
     public boolean isEmpty() {
         return (boolean) database.isEmpty().get();
     }
 
+    /**
+     * Checks the map is not empty.
+     *
+     * @return {@code true} if a map is not empty, {@code false} otherwise
+     */
     @Override
     public boolean nonEmpty() {
         return (boolean) database.nonEmpty().get();
