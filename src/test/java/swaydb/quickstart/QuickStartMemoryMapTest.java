@@ -228,6 +228,37 @@ public class QuickStartMemoryMapTest {
 
     @SuppressWarnings("unchecked")
     @Test
+    public void memoryMapIntStringReverse() {
+        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map.create(
+                Integer.class, String.class)) {
+            // write 100 key-values atomically
+            db.put(IntStream.rangeClosed(1, 100)
+                    .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
+                    .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue())));
+
+            final Set<Integer> result = new LinkedHashSet<>();
+            db
+                    .reverse()
+                    .keys()
+                    .fromOrBefore(10)
+                    .take(5)
+                    .materialize()
+                    .foreach(new AbstractFunction1() {
+                        @Override
+                        public Object apply(Object t1) {
+                            scala.collection.Seq<Integer> entries = ((ListBuffer) t1).seq();
+                            for (int index = 0; index < entries.size(); index += 1) {
+                                result.add(entries.apply(index));
+                            }
+                            return null;
+                        }
+                    });
+            assertThat(result.toString(), equalTo("[10, 9, 8, 7, 6]"));
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
     public void memoryMapIntStringMap() {
         try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map.create(
                 Integer.class, String.class)) {

@@ -123,6 +123,8 @@ public interface Map<K, V> {
 
     swaydb.Set<K, IO> keys();
 
+    swaydb.Map<K, V, IO> reverse();
+
     Stream<Object, IO> map(Function1<Tuple2<K, V>, Object> function);
 
     Stream<Tuple2<K, V>, IO> filter(Function1<Tuple2<K, V>, Object> function);

@@ -372,6 +372,11 @@ public class Map<K, V> implements  swaydb.java.Map<K, V>, Closeable {
     }
 
     @Override
+    public swaydb.Map<K, V, IO> reverse() {
+        return database.reverse();
+    }
+
+    @Override
     public Stream<Object, IO> map(Function1<Tuple2<K, V>, Object> function) {
         return database.map(function);
     }
