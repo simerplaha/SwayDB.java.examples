@@ -143,6 +143,17 @@
             </exclusions>
         </dependency>
         <dependency>
+            <groupId>com.github.alexandrnikitin</groupId>
+            <artifactId>bloom-filter_2.11</artifactId>
+            <version>0.11.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.scala-lang</groupId>
+                    <artifactId>scala-library</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.8.1</version>
