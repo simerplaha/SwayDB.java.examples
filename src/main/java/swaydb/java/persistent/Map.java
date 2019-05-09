@@ -50,7 +50,7 @@ import swaydb.data.compaction.LevelMeter;
 import swaydb.java.Serializer;
 
 /**
- * The Map of data.
+ * The persistent Map of data.
  *
  * @param <K> the type of the key element
  * @param <V> the type of the value element

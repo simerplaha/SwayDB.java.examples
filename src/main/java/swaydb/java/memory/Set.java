@@ -256,7 +256,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
     }
 
     @SuppressWarnings("unchecked")
-    public static <K> swaydb.java.memory.Set<K> create(Object keySerializer) {
+    public static <K> Set<K> create(Object keySerializer) {
         int mapSize = Map$.MODULE$.apply$default$1();
         int segmentSize = Map$.MODULE$.apply$default$2();
         int cacheSize = Map$.MODULE$.apply$default$3();
@@ -272,7 +272,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
         ExecutionContext ec = Map$.MODULE$.apply$default$13(mapSize, segmentSize, cacheSize,
                 cacheCheckDelay, bloomFilterFalsePositiveRate,
                 compressDuplicateValues, deleteSegmentsEventually, groupingStrategy, acceleration);
-        return new swaydb.java.memory.Set<>(
+        return new Set<>(
                 (swaydb.Set<K, IO>) Set$.MODULE$.apply(mapSize, segmentSize, cacheSize,
                 cacheCheckDelay, bloomFilterFalsePositiveRate, compressDuplicateValues,
                 deleteSegmentsEventually, groupingStrategy, acceleration, Serializer.classToType(keySerializer),
@@ -343,14 +343,14 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
         }
 
         @SuppressWarnings("unchecked")
-        public swaydb.java.memory.Set<K> build() {
+        public Set<K> build() {
             swaydb.data.order.KeyOrder keyOrder = Map$.MODULE$.apply$default$12(mapSize, segmentSize,
                     cacheSize, cacheCheckDelay, bloomFilterFalsePositiveRate, compressDuplicateValues,
                     deleteSegmentsEventually, groupingStrategy, acceleration);
             ExecutionContext ec = Map$.MODULE$.apply$default$13(mapSize, segmentSize, cacheSize,
                     cacheCheckDelay, bloomFilterFalsePositiveRate,
                     compressDuplicateValues, deleteSegmentsEventually, groupingStrategy, acceleration);
-            return new swaydb.java.memory.Set<>(
+            return new Set<>(
                     (swaydb.Set<K, IO>) Set$.MODULE$.apply(mapSize, segmentSize, cacheSize,
                     cacheCheckDelay, bloomFilterFalsePositiveRate, compressDuplicateValues,
                     deleteSegmentsEventually, groupingStrategy, acceleration, Serializer.classToType(keySerializer),
