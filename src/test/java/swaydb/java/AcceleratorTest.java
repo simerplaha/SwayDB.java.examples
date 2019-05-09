@@ -23,6 +23,7 @@ import static org.junit.Assert.assertThat;
 import org.junit.Test;
 import swaydb.data.accelerate.Level0Meter;
 
+@SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
 public class AcceleratorTest {
 
     @Test

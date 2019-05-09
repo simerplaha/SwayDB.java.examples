@@ -25,6 +25,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import org.junit.Test;
 
+@SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
 public class QuickStartExtensionsMemoryMapTest {
 
     @SuppressWarnings("unchecked")

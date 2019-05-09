@@ -32,6 +32,7 @@ import static org.junit.Assert.assertThat;
 import org.junit.Test;
 import swaydb.base.TestBase;
 
+@SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
 public class QuickStartMemorySetTest extends TestBase {
 
     @SuppressWarnings("unchecked")

@@ -44,6 +44,7 @@ import swaydb.java.ApacheSerializer;
 import swaydb.java.Apply;
 import swaydb.java.BytesReader;
 
+@SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
 public class QuickStartMemoryMapTest {
 
     @SuppressWarnings("unchecked")

@@ -42,6 +42,7 @@ import swaydb.data.config.SwayDBPersistentConfig;
 import swaydb.data.order.KeyOrder;
 import swaydb.java.*;
 
+@SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
 public class PersistentMapTest extends TestBase {
 
     @BeforeClass

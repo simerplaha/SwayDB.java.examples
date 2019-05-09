@@ -32,6 +32,7 @@ import swaydb.base.TestBase;
 import swaydb.data.config.MMAP;
 import swaydb.data.config.RecoveryMode;
 
+@SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
 public class QuickStartExtensionsPersistentMapTest extends TestBase {
 
     @BeforeClass
