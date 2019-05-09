@@ -192,7 +192,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      * Checks if a map contains key.
      * @param key the key
      *
-     * @return {@code true} a map contains key, {@code false} otherwise
+     * @return {@code true} if a map contains key, {@code false} otherwise
      */
     @Override
     public boolean containsKey(K key) {
@@ -203,7 +203,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      * Checks if a map might contains key.
      * @param key the key
      *
-     * @return {@code true} a map might contains key, {@code false} otherwise
+     * @return {@code true} if a map might contains key, {@code false} otherwise
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -268,7 +268,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      * Checks if a map contains value.
      * @param value the value
      *
-     * @return {@code true} a map contains value, {@code false} otherwise
+     * @return {@code true} if a map contains value, {@code false} otherwise
      */
     @Override
     public boolean containsValue(V value) {
@@ -642,6 +642,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
 
     /**
      * Starts the map function for this map.
+     * @param function the function
      *
      * @return the stream object for this map
      */
@@ -652,6 +653,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
 
     /**
      * Starts the filter function for this map.
+     * @param function the function
      *
      * @return the stream object for this map
      */
@@ -662,6 +664,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
 
     /**
      * Starts the foreach function for this map.
+     * @param function the function
      *
      * @return the stream object for this map
      */
@@ -680,6 +683,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
 
     /**
      * Starts the commit function for this map.
+     * @param prepares the prepares
      *
      * @return the level zerro for this map
      */
@@ -696,7 +700,6 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      * Creates the map.
      * @param keySerializer the keySerializer
      * @param valueSerializer the valueSerializer
-     * @param dir the dir
      *
      * @return the map
      */
