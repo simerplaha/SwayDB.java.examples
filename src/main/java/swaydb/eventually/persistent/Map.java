@@ -49,7 +49,7 @@ import swaydb.data.accelerate.Level0Meter;
 import swaydb.data.compaction.LevelMeter;
 import swaydb.java.Serializer;
 
-public class Map<K, V> implements  swaydb.java.Map<K, V>, Closeable {
+public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
 
     private final swaydb.Map<K, V, IO> database;
 
