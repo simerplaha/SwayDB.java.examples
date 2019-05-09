@@ -161,9 +161,9 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     }
 
     /**
-     * Returns the level of metter for zerro level.
+     * Returns the level of meter for zerro level.
      *
-     * @return the level of metter for zerro level
+     * @return the level of meter for zerro level
      */
     @Override
     public Level0Meter level0Meter() {
@@ -171,19 +171,19 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     }
 
     /**
-     * Returns the level of metter for first level.
+     * Returns the level of meter for first level.
      *
-     * @return the level of metter for first level
+     * @return the level of meter for first level
      */
     public Optional<LevelMeter> level1Meter() {
         return levelMeter(1);
     }
 
     /**
-     * Returns the level of metter for level.
+     * Returns the level of meter for level.
      * @param levelNumber the level number
      *
-     * @return the level of metter for first level
+     * @return the level of meter for first level
      */
     @Override
     public Optional<LevelMeter> levelMeter(int levelNumber) {
@@ -699,7 +699,6 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      * Creates the map.
      * @param keySerializer the keySerializer
      * @param valueSerializer the valueSerializer
-     * @param dir the dir
      *
      * @return the map
      */
