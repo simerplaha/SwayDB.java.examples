@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with SwayDB. If not, see <https://www.gnu.org/licenses/>.
  */
-package swaydb.extensions.persistent;
+package swaydb.java.extensions.persistent;
 
 import java.io.Closeable;
 import java.nio.file.Path;
@@ -136,7 +136,7 @@ public class Map<K, V> implements Closeable {
     }
 
     @SuppressWarnings("unchecked")
-    public static <K, V> swaydb.extensions.persistent.Map<K, V> create(Object keySerializer, Object valueSerializer,
+    public static <K, V> Map<K, V> create(Object keySerializer, Object valueSerializer,
             Path dir) {
         int maxOpenSegments = swaydb.persistent.Map$.MODULE$.apply$default$2();
         int cacheSize = swaydb.persistent.Map$.MODULE$.apply$default$3();
@@ -167,7 +167,7 @@ public class Map<K, V> implements Closeable {
                 otherDirs, cacheCheckDelay, segmentsOpenCheckDelay,
                 bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
                 lastLevelGroupingStrategy, acceleration);
-        return new swaydb.extensions.persistent.Map(
+        return new Map(
                 (swaydb.extensions.Map) swaydb.extensions.persistent.Map$.MODULE$.apply(dir,
                 maxOpenSegments, cacheSize, mapSize, mmapMaps, recoveryMode,
                 mmapAppendix, mmapSegments, segmentSize, appendixFlushCheckpointSize, otherDirs,
@@ -301,7 +301,7 @@ public class Map<K, V> implements Closeable {
         }
 
         @SuppressWarnings("unchecked")
-        public swaydb.extensions.persistent.Map<K, V> build() {
+        public Map<K, V> build() {
             swaydb.data.order.KeyOrder keyOrder = swaydb.persistent.Map$.MODULE$.apply$default$21(dir,
                     maxOpenSegments, cacheSize, mapSize, mmapMaps, recoveryMode,
                     mmapAppendix, mmapSegments, segmentSize, appendixFlushCheckpointSize, otherDirs,

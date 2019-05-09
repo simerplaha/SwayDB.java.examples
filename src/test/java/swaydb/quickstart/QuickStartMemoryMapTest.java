@@ -52,7 +52,7 @@ public class QuickStartMemoryMapTest {
     public void memoryMapIntStringFrom() {
         // Create a memory database
         // val db = memory.Map[Int, String]().get
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map.create(
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map.create(
                 Integer.class, String.class)) {
             // db.put(1, "one").get
             db.put(1, "one");
@@ -117,7 +117,7 @@ public class QuickStartMemoryMapTest {
     @SuppressWarnings("unchecked")
     @Test
     public void memoryMapIntStringFromOrAfter() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map.create(
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map.create(
                 Integer.class, String.class)) {
             // write 100 key-values atomically
             db.put(IntStream.rangeClosed(1, 100)
@@ -158,7 +158,7 @@ public class QuickStartMemoryMapTest {
     @SuppressWarnings("unchecked")
     @Test
     public void memoryMapIntStringFromOrBefore() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map.create(
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map.create(
                 Integer.class, String.class)) {
             // write 100 key-values atomically
             db.put(IntStream.rangeClosed(1, 100)
@@ -199,7 +199,7 @@ public class QuickStartMemoryMapTest {
     @SuppressWarnings("unchecked")
     @Test
     public void memoryMapIntStringKeys() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map.create(
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map.create(
                 Integer.class, String.class)) {
             // write 100 key-values atomically
             db.put(IntStream.rangeClosed(1, 100)
@@ -230,7 +230,7 @@ public class QuickStartMemoryMapTest {
     @SuppressWarnings("unchecked")
     @Test
     public void memoryMapIntStringReverse() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map.create(
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map.create(
                 Integer.class, String.class)) {
             // write 100 key-values atomically
             db.put(IntStream.rangeClosed(1, 100)
@@ -261,7 +261,7 @@ public class QuickStartMemoryMapTest {
     @SuppressWarnings("unchecked")
     @Test
     public void memoryMapIntStringMap() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map.create(
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map.create(
                 Integer.class, String.class)) {
             // write 10 key-values atomically
             db.put(IntStream.rangeClosed(1, 10)
@@ -297,7 +297,7 @@ public class QuickStartMemoryMapTest {
     @SuppressWarnings("unchecked")
     @Test
     public void memoryMapIntStringFilter() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map.create(
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map.create(
                 Integer.class, String.class)) {
             // write 10 key-values atomically
             db.put(IntStream.rangeClosed(1, 10)
@@ -330,7 +330,7 @@ public class QuickStartMemoryMapTest {
     @SuppressWarnings("unchecked")
     @Test
     public void memoryMapIntStringForeach() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map.create(
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map.create(
                 Integer.class, String.class)) {
             // write 10 key-values atomically
             db.put(IntStream.rangeClosed(1, 10)
@@ -355,7 +355,7 @@ public class QuickStartMemoryMapTest {
     @Test
     public void memoryMapIntStringClear() {
         // Create a memory database
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -375,7 +375,7 @@ public class QuickStartMemoryMapTest {
 
     @Test
     public void memoryMapIntStringSize() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -390,7 +390,7 @@ public class QuickStartMemoryMapTest {
 
     @Test
     public void memoryMapIntStringIsEmpty() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -402,7 +402,7 @@ public class QuickStartMemoryMapTest {
 
     @Test
     public void memoryMapIntStringContainsValue() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -414,7 +414,7 @@ public class QuickStartMemoryMapTest {
 
     @Test
     public void memoryMapIntStringMightContain() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -426,7 +426,7 @@ public class QuickStartMemoryMapTest {
 
     @Test
     public void memoryMapIntStringHead() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -441,7 +441,7 @@ public class QuickStartMemoryMapTest {
 
     @Test
     public void memoryMapIntStringKeysHead() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -456,7 +456,7 @@ public class QuickStartMemoryMapTest {
 
     @Test
     public void memoryMapIntStringKeysLast() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -472,7 +472,7 @@ public class QuickStartMemoryMapTest {
 
     @Test
     public void memoryMapIntStringLast() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -488,7 +488,7 @@ public class QuickStartMemoryMapTest {
 
     @Test
     public void memoryMapIntStringPutMap() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -502,7 +502,7 @@ public class QuickStartMemoryMapTest {
 
     @Test
     public void memoryMapIntStringUpdateMap() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -517,7 +517,7 @@ public class QuickStartMemoryMapTest {
 
     @Test
     public void memoryMapIntStringKeySet() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -529,7 +529,7 @@ public class QuickStartMemoryMapTest {
 
     @Test
     public void memoryMapIntStringValues() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -541,7 +541,7 @@ public class QuickStartMemoryMapTest {
 
     @Test
     public void memoryMapIntStringEntrySet() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -553,7 +553,7 @@ public class QuickStartMemoryMapTest {
 
     @Test
     public void memoryMapIntStringPutExpireAfter() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -569,7 +569,7 @@ public class QuickStartMemoryMapTest {
 
     @Test
     public void memoryMapIntStringPutExpireAt() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -585,7 +585,7 @@ public class QuickStartMemoryMapTest {
 
     @Test
     public void memoryMapIntStringExpiration() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -600,7 +600,7 @@ public class QuickStartMemoryMapTest {
 
     @Test
     public void memoryMapIntStringTimeLeft() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -614,7 +614,7 @@ public class QuickStartMemoryMapTest {
 
     @Test
     public void memoryMapIntStringKeySize() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -626,7 +626,7 @@ public class QuickStartMemoryMapTest {
 
     @Test
     public void memoryMapIntStringValueSize() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -638,7 +638,7 @@ public class QuickStartMemoryMapTest {
 
     @Test
     public void memoryMapIntStringSizes() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -654,7 +654,7 @@ public class QuickStartMemoryMapTest {
 
     @Test
     public void memoryMapIntStringExpireAfter() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -671,7 +671,7 @@ public class QuickStartMemoryMapTest {
 
     @Test
     public void memoryMapIntStringExpireAt() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -688,7 +688,7 @@ public class QuickStartMemoryMapTest {
 
     @Test
     public void memoryMapIntStringUpdate() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -701,7 +701,7 @@ public class QuickStartMemoryMapTest {
 
     @Test
     public void memoryMapIntStringAsJava() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -713,7 +713,7 @@ public class QuickStartMemoryMapTest {
 
     @Test
     public void memoryMapIntStringRemove() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -731,7 +731,7 @@ public class QuickStartMemoryMapTest {
 
     @Test
     public void memoryMapStringIntRegisterApplyFunctionUpdate() {
-        try (swaydb.memory.Map<String, Integer> likesMap = swaydb.memory.Map
+        try (swaydb.java.memory.Map<String, Integer> likesMap = swaydb.java.memory.Map
                 .<String, Integer>builder()
                 .withKeySerializer(String.class)
                 .withValueSerializer(Integer.class)
@@ -748,7 +748,7 @@ public class QuickStartMemoryMapTest {
 
     @Test
     public void memoryMapStringIntRegisterApplyFunctionExpire() {
-        try (swaydb.memory.Map<String, Integer> likesMap = swaydb.memory.Map
+        try (swaydb.java.memory.Map<String, Integer> likesMap = swaydb.java.memory.Map
                 .<String, Integer>builder()
                 .withKeySerializer(String.class)
                 .withValueSerializer(Integer.class)
@@ -769,7 +769,7 @@ public class QuickStartMemoryMapTest {
 
     @Test
     public void memoryMapStringIntRegisterApplyFunctionRemove() {
-        try (swaydb.memory.Map<String, Integer> likesMap = swaydb.memory.Map
+        try (swaydb.java.memory.Map<String, Integer> likesMap = swaydb.java.memory.Map
                 .<String, Integer>builder()
                 .withKeySerializer(String.class)
                 .withValueSerializer(Integer.class)
@@ -785,7 +785,7 @@ public class QuickStartMemoryMapTest {
 
     @Test
     public void memoryMapStringIntRegisterApplyFunctionNothing() {
-        try (swaydb.memory.Map<String, Integer> likesMap = swaydb.memory.Map
+        try (swaydb.java.memory.Map<String, Integer> likesMap = swaydb.java.memory.Map
                 .<String, Integer>builder()
                 .withKeySerializer(String.class)
                 .withValueSerializer(Integer.class)
@@ -801,7 +801,7 @@ public class QuickStartMemoryMapTest {
 
     @Test
     public void memoryMapIntStringFromBuilder() {
-        try (swaydb.memory.Map<Integer, String> db = swaydb.memory.Map
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -879,7 +879,7 @@ public class QuickStartMemoryMapTest {
             }
         }
 
-        try (swaydb.memory.Map<Integer, MyData> db = swaydb.memory.Map
+        try (swaydb.java.memory.Map<Integer, MyData> db = swaydb.java.memory.Map
                 .<Integer, MyData>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(new MyDataSerializer())
@@ -920,7 +920,7 @@ public class QuickStartMemoryMapTest {
     @Test
     public void memoryMapIntApacheSerializer() {
 
-        try (swaydb.memory.Map<Integer, MyData> db = swaydb.memory.Map
+        try (swaydb.java.memory.Map<Integer, MyData> db = swaydb.java.memory.Map
                 .<Integer, MyData>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(new ApacheSerializer<>())

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with SwayDB. If not, see <https://www.gnu.org/licenses/>.
  */
-package swaydb.persistent;
+package swaydb.java.eventually.persistent;
 
 import java.io.Closeable;
 import java.nio.file.Path;
@@ -252,7 +252,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
     }
 
     @SuppressWarnings("unchecked")
-    public static <K> swaydb.persistent.Set<K> create(Object keySerializer, Path dir) {
+    public static <K> Set<K> create(Object keySerializer, Path dir) {
         int maxOpenSegments = swaydb.persistent.Map$.MODULE$.apply$default$2();
         int cacheSize = swaydb.persistent.Map$.MODULE$.apply$default$3();
         int mapSize = swaydb.persistent.Map$.MODULE$.apply$default$4();
@@ -282,7 +282,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
                 otherDirs, cacheCheckDelay, segmentsOpenCheckDelay,
                 bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
                 lastLevelGroupingStrategy, acceleration);
-        return new swaydb.persistent.Set<>(
+        return new Set<>(
                 (swaydb.Set<K, IO>) swaydb.persistent.Set$.MODULE$.apply(dir,
                 maxOpenSegments, cacheSize, mapSize, mmapMaps, recoveryMode,
                 mmapAppendix, mmapSegments, segmentSize, appendixFlushCheckpointSize, otherDirs,
@@ -410,7 +410,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
         }
 
         @SuppressWarnings("unchecked")
-        public swaydb.persistent.Set<K> build() {
+        public Set<K> build() {
             swaydb.data.order.KeyOrder keyOrder = swaydb.persistent.Map$.MODULE$.apply$default$21(dir,
                     maxOpenSegments, cacheSize, mapSize, mmapMaps, recoveryMode,
                     mmapAppendix, mmapSegments, segmentSize, appendixFlushCheckpointSize, otherDirs,
@@ -423,7 +423,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
                     otherDirs, cacheCheckDelay, segmentsOpenCheckDelay,
                     bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
                     lastLevelGroupingStrategy, acceleration);
-            return new swaydb.persistent.Set<>(
+            return new Set<>(
                     (swaydb.Set<K, IO>) swaydb.persistent.Set$.MODULE$.apply(dir,
                     maxOpenSegments, cacheSize, mapSize, mmapMaps, recoveryMode,
                     mmapAppendix, mmapSegments, segmentSize, appendixFlushCheckpointSize, otherDirs,

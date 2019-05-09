@@ -51,7 +51,7 @@ public class QuickStartEventuallyPersistentSetTest extends TestBase {
         // Create a eventually persistent set database. If the directories do not exist, they will be created.
         // val db = eventually.persistent.Set[Int](dir = dir.resolve("disk4")).get
 
-        final swaydb.eventually.persistent.Set<Integer> db = swaydb.eventually.persistent.Set.create(
+        final swaydb.java.eventually.persistent.Set<Integer> db = swaydb.java.eventually.persistent.Set.create(
                 Integer.class,
                 Paths.get("disk4"));
         // db.add(1).get
@@ -75,7 +75,7 @@ public class QuickStartEventuallyPersistentSetTest extends TestBase {
 
     @Test
     public void persistentSetIntIterator() {
-        final swaydb.eventually.persistent.Set<Integer> db = swaydb.eventually.persistent.Set
+        final swaydb.java.eventually.persistent.Set<Integer> db = swaydb.java.eventually.persistent.Set
                 .<Integer>builder()
                 .withDir(Paths.get("disk4iterator"))
                 .withKeySerializer(Integer.class)
@@ -86,7 +86,7 @@ public class QuickStartEventuallyPersistentSetTest extends TestBase {
 
     @Test
     public void persistentSetIntToArray() {
-        final swaydb.eventually.persistent.Set<Integer> db = swaydb.eventually.persistent.Set
+        final swaydb.java.eventually.persistent.Set<Integer> db = swaydb.java.eventually.persistent.Set
                 .<Integer>builder()
                 .withDir(Paths.get("disk4toarray"))
                 .withKeySerializer(Integer.class)
@@ -98,7 +98,7 @@ public class QuickStartEventuallyPersistentSetTest extends TestBase {
 
     @Test
     public void persistentSetIntAddExpireAfter() {
-        try (swaydb.eventually.persistent.Set<Integer> db = swaydb.eventually.persistent.Set
+        try (swaydb.java.eventually.persistent.Set<Integer> db = swaydb.java.eventually.persistent.Set
                         .<Integer>builder()
                         .withDir(Paths.get("disk4addexpireafter"))
                         .withKeySerializer(Integer.class)
@@ -114,7 +114,7 @@ public class QuickStartEventuallyPersistentSetTest extends TestBase {
 
     @Test
     public void persistentSetIntAddExpireAt() {
-        try (swaydb.eventually.persistent.Set<Integer> db = swaydb.eventually.persistent.Set
+        try (swaydb.java.eventually.persistent.Set<Integer> db = swaydb.java.eventually.persistent.Set
                         .<Integer>builder()
                         .withDir(Paths.get("disk4addexpireat"))
                         .withKeySerializer(Integer.class)
@@ -130,7 +130,7 @@ public class QuickStartEventuallyPersistentSetTest extends TestBase {
 
     @Test
     public void persistentSetIntExpireAfter() {
-        try (swaydb.eventually.persistent.Set<Integer> db = swaydb.eventually.persistent.Set
+        try (swaydb.java.eventually.persistent.Set<Integer> db = swaydb.java.eventually.persistent.Set
                         .<Integer>builder()
                         .withDir(Paths.get("disk4expireafter"))
                         .withKeySerializer(Integer.class)
@@ -147,7 +147,7 @@ public class QuickStartEventuallyPersistentSetTest extends TestBase {
 
     @Test
     public void persistentSetIntExpireAt() {
-        try (swaydb.eventually.persistent.Set<Integer> db = swaydb.eventually.persistent.Set
+        try (swaydb.java.eventually.persistent.Set<Integer> db = swaydb.java.eventually.persistent.Set
                         .<Integer>builder()
                         .withDir(Paths.get("disk4expireat"))
                         .withKeySerializer(Integer.class)
@@ -164,7 +164,7 @@ public class QuickStartEventuallyPersistentSetTest extends TestBase {
 
     @Test
     public void persistentSetIntContainsAll() {
-        try (swaydb.eventually.persistent.Set<Integer> db = swaydb.eventually.persistent.Set
+        try (swaydb.java.eventually.persistent.Set<Integer> db = swaydb.java.eventually.persistent.Set
                         .<Integer>builder()
                         .withDir(Paths.get("disk4containsall"))
                         .withKeySerializer(Integer.class)
@@ -176,7 +176,7 @@ public class QuickStartEventuallyPersistentSetTest extends TestBase {
 
     @Test
     public void persistentSetIntAddAll() {
-        try (swaydb.eventually.persistent.Set<Integer> db = swaydb.eventually.persistent.Set
+        try (swaydb.java.eventually.persistent.Set<Integer> db = swaydb.java.eventually.persistent.Set
                         .<Integer>builder()
                         .withDir(Paths.get("disk4addall"))
                         .withKeySerializer(Integer.class)
@@ -189,7 +189,7 @@ public class QuickStartEventuallyPersistentSetTest extends TestBase {
 
     @Test
     public void persistentSetIntRetainAll() {
-        try (swaydb.eventually.persistent.Set<Integer> db = swaydb.eventually.persistent.Set
+        try (swaydb.java.eventually.persistent.Set<Integer> db = swaydb.java.eventually.persistent.Set
                         .<Integer>builder()
                         .withDir(Paths.get("disk4retainall"))
                         .withKeySerializer(Integer.class)
@@ -205,7 +205,7 @@ public class QuickStartEventuallyPersistentSetTest extends TestBase {
 
     @Test
     public void memorySetIntRetainAll2() {
-        try (swaydb.eventually.persistent.Set<String> boxes = swaydb.eventually.persistent.Set
+        try (swaydb.java.eventually.persistent.Set<String> boxes = swaydb.java.eventually.persistent.Set
                         .<String>builder()
                         .withDir(Paths.get("disk4retainall2"))
                         .withKeySerializer(String.class)
@@ -227,7 +227,7 @@ public class QuickStartEventuallyPersistentSetTest extends TestBase {
 
     @Test
     public void persistentSetIntRemove() {
-        try (swaydb.eventually.persistent.Set<Integer> db = swaydb.eventually.persistent.Set
+        try (swaydb.java.eventually.persistent.Set<Integer> db = swaydb.java.eventually.persistent.Set
                         .<Integer>builder()
                         .withDir(Paths.get("disk4removeall"))
                         .withKeySerializer(Integer.class)
@@ -245,7 +245,7 @@ public class QuickStartEventuallyPersistentSetTest extends TestBase {
 
     @Test
     public void persistentSetIntSize() {
-        try (swaydb.eventually.persistent.Set<Integer> db = swaydb.eventually.persistent.Set
+        try (swaydb.java.eventually.persistent.Set<Integer> db = swaydb.java.eventually.persistent.Set
                         .<Integer>builder()
                         .withDir(Paths.get("disk4size"))
                         .withKeySerializer(Integer.class)
@@ -260,7 +260,7 @@ public class QuickStartEventuallyPersistentSetTest extends TestBase {
 
     @Test
     public void persistentSetIntIsEmpty() {
-        try (swaydb.eventually.persistent.Set<Integer> db = swaydb.eventually.persistent.Set
+        try (swaydb.java.eventually.persistent.Set<Integer> db = swaydb.java.eventually.persistent.Set
                         .<Integer>builder()
                         .withDir(Paths.get("disk4isempty"))
                         .withKeySerializer(Integer.class)
@@ -273,7 +273,7 @@ public class QuickStartEventuallyPersistentSetTest extends TestBase {
 
     @Test
     public void persistentSetIntNonEmpty() {
-        try (swaydb.eventually.persistent.Set<Integer> db = swaydb.eventually.persistent.Set
+        try (swaydb.java.eventually.persistent.Set<Integer> db = swaydb.java.eventually.persistent.Set
                         .<Integer>builder()
                         .withDir(Paths.get("disk4nonempty"))
                         .withKeySerializer(Integer.class)
@@ -286,7 +286,7 @@ public class QuickStartEventuallyPersistentSetTest extends TestBase {
 
     @Test
     public void persistentSetIntExpiration() {
-        try (swaydb.eventually.persistent.Set<Integer> db = swaydb.eventually.persistent.Set
+        try (swaydb.java.eventually.persistent.Set<Integer> db = swaydb.java.eventually.persistent.Set
                         .<Integer>builder()
                         .withDir(Paths.get("disk4expiration"))
                         .withKeySerializer(Integer.class)
@@ -301,7 +301,7 @@ public class QuickStartEventuallyPersistentSetTest extends TestBase {
 
     @Test
     public void persistentSetIntTimeLeft() {
-        try (swaydb.eventually.persistent.Set<Integer> db = swaydb.eventually.persistent.Set
+        try (swaydb.java.eventually.persistent.Set<Integer> db = swaydb.java.eventually.persistent.Set
                         .<Integer>builder()
                         .withDir(Paths.get("disk4timeleft"))
                         .withKeySerializer(Integer.class)
@@ -315,7 +315,7 @@ public class QuickStartEventuallyPersistentSetTest extends TestBase {
 
     @Test
     public void persistentSetIntSizes() {
-        try (swaydb.eventually.persistent.Set<Integer> db = swaydb.eventually.persistent.Set
+        try (swaydb.java.eventually.persistent.Set<Integer> db = swaydb.java.eventually.persistent.Set
                         .<Integer>builder()
                         .withDir(Paths.get("disk4sizes"))
                         .withKeySerializer(Integer.class)
@@ -331,7 +331,7 @@ public class QuickStartEventuallyPersistentSetTest extends TestBase {
 
     @Test
     public void persistentSetIntMightContain() {
-        try (swaydb.eventually.persistent.Set<Integer> db = swaydb.eventually.persistent.Set
+        try (swaydb.java.eventually.persistent.Set<Integer> db = swaydb.java.eventually.persistent.Set
                         .<Integer>builder()
                         .withDir(Paths.get("disk4mightContain"))
                         .withKeySerializer(Integer.class)
@@ -343,7 +343,7 @@ public class QuickStartEventuallyPersistentSetTest extends TestBase {
 
     @Test
     public void persistentSetIntAsJava() {
-        try (swaydb.eventually.persistent.Set<Integer> db = swaydb.eventually.persistent.Set
+        try (swaydb.java.eventually.persistent.Set<Integer> db = swaydb.java.eventually.persistent.Set
                         .<Integer>builder()
                         .withDir(Paths.get("disk4asjava"))
                         .withKeySerializer(Integer.class)
@@ -355,7 +355,7 @@ public class QuickStartEventuallyPersistentSetTest extends TestBase {
 
     @Test
     public void persistentSetIntClear() {
-        try (swaydb.eventually.persistent.Set<Integer> db = swaydb.eventually.persistent.Set
+        try (swaydb.java.eventually.persistent.Set<Integer> db = swaydb.java.eventually.persistent.Set
                         .<Integer>builder()
                         .withDir(Paths.get("disk4clear"))
                         .withKeySerializer(Integer.class)
@@ -370,7 +370,7 @@ public class QuickStartEventuallyPersistentSetTest extends TestBase {
     @Test
     public void persistentSetIntFromBuilder() {
         // val db = persistent.Set[Int](dir = dir.resolve("disk4builder")).get
-        final swaydb.eventually.persistent.Set<Integer> db = swaydb.eventually.persistent.Set
+        final swaydb.java.eventually.persistent.Set<Integer> db = swaydb.java.eventually.persistent.Set
                 .<Integer>builder()
                 .withDir(Paths.get("disk4builder"))
                 .withKeySerializer(Integer.class)

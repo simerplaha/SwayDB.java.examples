@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with SwayDB. If not, see <https://www.gnu.org/licenses/>.
  */
-package swaydb.extensions.memory;
+package swaydb.java.extensions.memory;
 
 import java.io.Closeable;
 import java.util.AbstractMap;
@@ -138,7 +138,7 @@ public class Map<K, V> implements Closeable {
     }
 
     @SuppressWarnings("unchecked")
-    public static <K, V> swaydb.extensions.memory.Map<K, V> create(Object keySerializer, Object valueSerializer) {
+    public static <K, V> Map<K, V> create(Object keySerializer, Object valueSerializer) {
         final int mapSize = Map$.MODULE$.apply$default$1();
         final int segmentSize = Map$.MODULE$.apply$default$2();
         final int cacheSize = Map$.MODULE$.apply$default$3();
@@ -231,14 +231,14 @@ public class Map<K, V> implements Closeable {
         }
 
         @SuppressWarnings("unchecked")
-        public swaydb.extensions.memory.Map<K, V> build() {
+        public Map<K, V> build() {
             final swaydb.data.order.KeyOrder keyOrder = Map$.MODULE$.apply$default$12(
                 mapSize, segmentSize, cacheSize, cacheCheckDelay, bloomFilterFalsePositiveRate,
                 compressDuplicateValues, deleteSegmentsEventually, groupingStrategy, acceleration);
             final ExecutionContext ec = Map$.MODULE$.apply$default$13(mapSize, segmentSize, cacheSize,
                 cacheCheckDelay, bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
                 groupingStrategy, acceleration);
-            return new swaydb.extensions.memory.Map(
+            return new Map(
                 (swaydb.extensions.Map) Map$.MODULE$.apply(mapSize, segmentSize, cacheSize, cacheCheckDelay,
                         bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
                         groupingStrategy, acceleration, Serializer.classToType(keySerializer),

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with SwayDB. If not, see <https://www.gnu.org/licenses/>.
  */
-package swaydb.configuringlevels;
+package swaydb.java.configuringlevels;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -103,7 +103,7 @@ public class PersistentMapTest extends TestBase {
         KeyOrder ordering = (KeyOrder) swaydb.data.order.KeyOrder$.MODULE$.reverse();
         ExecutionContext ec = swaydb.SwayDB$.MODULE$.defaultExecutionContext();
 
-        try (swaydb.persistent.Map<Integer, String> db = new swaydb.persistent.Map<>(
+        try (swaydb.java.persistent.Map<Integer, String> db = new swaydb.java.persistent.Map<>(
               (swaydb.Map<Integer, String, swaydb.data.IO>)
                     swaydb.SwayDB$.MODULE$.apply(config, 1000, StorageDoubleImplicits.gb(1.0),
                           Duration.of(5, TimeUnit.SECONDS),

@@ -33,7 +33,7 @@ public class QuickStartExtensionsMemoryMapTest {
     public void memoryMapIntStringFrom() {
         // Create a memory database
         // val db = memory.Map[Int, String]().get
-        try (swaydb.extensions.memory.Map<Integer, String> db = swaydb.extensions.memory.Map.create(
+        try (swaydb.java.extensions.memory.Map<Integer, String> db = swaydb.java.extensions.memory.Map.create(
                 Integer.class, String.class)) {
             // db.put(1, "one").get
             db.put(1, "one");
@@ -61,7 +61,7 @@ public class QuickStartExtensionsMemoryMapTest {
     @Test
     public void memoryMapIntStringClear() {
         // Create a memory database
-        try (swaydb.extensions.memory.Map<Integer, String> db = swaydb.extensions.memory.Map
+        try (swaydb.java.extensions.memory.Map<Integer, String> db = swaydb.java.extensions.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -80,7 +80,7 @@ public class QuickStartExtensionsMemoryMapTest {
 
     @Test
     public void memoryMapIntStringSize() {
-        try (swaydb.extensions.memory.Map<Integer, String> db = swaydb.extensions.memory.Map
+        try (swaydb.java.extensions.memory.Map<Integer, String> db = swaydb.java.extensions.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -95,7 +95,7 @@ public class QuickStartExtensionsMemoryMapTest {
 
     @Test
     public void memoryMapIntStringIsEmpty() {
-        try (swaydb.extensions.memory.Map<Integer, String> db = swaydb.extensions.memory.Map
+        try (swaydb.java.extensions.memory.Map<Integer, String> db = swaydb.java.extensions.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -107,7 +107,7 @@ public class QuickStartExtensionsMemoryMapTest {
 
     @Test
     public void memoryMapIntStringMightContain() {
-        try (swaydb.extensions.memory.Map<Integer, String> db = swaydb.extensions.memory.Map
+        try (swaydb.java.extensions.memory.Map<Integer, String> db = swaydb.java.extensions.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -119,7 +119,7 @@ public class QuickStartExtensionsMemoryMapTest {
 
     @Test
     public void memoryMapIntStringHead() {
-        try (swaydb.extensions.memory.Map<Integer, String> db = swaydb.extensions.memory.Map
+        try (swaydb.java.extensions.memory.Map<Integer, String> db = swaydb.java.extensions.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -134,7 +134,7 @@ public class QuickStartExtensionsMemoryMapTest {
 
     @Test
     public void memoryMapIntStringLast() {
-        try (swaydb.extensions.memory.Map<Integer, String> db = swaydb.extensions.memory.Map
+        try (swaydb.java.extensions.memory.Map<Integer, String> db = swaydb.java.extensions.memory.Map
                 .<Integer, String>builder()
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
@@ -150,7 +150,7 @@ public class QuickStartExtensionsMemoryMapTest {
 
     @Test
     public void memoryMapIntStringMaps() {
-        try (swaydb.extensions.memory.Map<String, String> rootMap = swaydb.extensions.memory.Map
+        try (swaydb.java.extensions.memory.Map<String, String> rootMap = swaydb.java.extensions.memory.Map
                 .<String, String>builder()
                 .withKeySerializer(String.class)
                 .withValueSerializer(String.class)
@@ -166,7 +166,7 @@ public class QuickStartExtensionsMemoryMapTest {
 
     @Test
     public void memoryMapIntStringFromBuilder() {
-        try (swaydb.extensions.memory.Map<Integer, String> db = swaydb.extensions.memory.Map
+        try (swaydb.java.extensions.memory.Map<Integer, String> db = swaydb.java.extensions.memory.Map
                         .<Integer, String>builder()
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
