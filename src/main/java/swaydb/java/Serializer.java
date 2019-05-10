@@ -21,6 +21,9 @@ package swaydb.java;
 import java.util.HashMap;
 import swaydb.serializers.Default;
 
+/**
+ * The Serializer wrapper.
+ */
 public class Serializer {
 
     private static final java.util.Map<Class<?>, swaydb.serializers.Serializer> CLASS_TO_TYPE = new HashMap<>();
@@ -36,6 +39,12 @@ public class Serializer {
         CLASS_TO_TYPE.put(Double.class, Default.DoubleSerializer$.MODULE$);
     }
 
+    /**
+     * Returns the Serializer object for class.
+     * @param clazz the class or Serializer
+     *
+     * @return the Serializer object for class
+     */
     public static swaydb.serializers.Serializer classToType(Object clazz) {
         if (clazz instanceof swaydb.serializers.Serializer) {
             return (swaydb.serializers.Serializer) clazz;

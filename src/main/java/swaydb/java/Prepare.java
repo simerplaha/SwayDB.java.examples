@@ -18,15 +18,31 @@
  */
 package swaydb.java;
 
-/*
+/**
  * Wrapper Java class to create SwayDB's scala Prepare classes.
+ *
+ * @param <K> the type of the key element
+ * @param <V> the type of the value element
  */
 public class Prepare<K, V> {
 
+    /**
+     * Returns the Prepare object for put.
+     * @param key the key
+     * @param value the value
+     *
+     * @return the Prepare object for put
+     */
     public swaydb.Prepare.Put<K, V> put(K key, V value) {
         return new swaydb.Prepare.Put<>(key, value, scala.Option.empty());
     }
 
+    /**
+     * Returns the Prepare object for remove.
+     * @param key the key
+     *
+     * @return the Prepare object for remove
+     */
     public swaydb.Prepare.Remove<K> remove(K key) {
         return new swaydb.Prepare.Remove<>(key, scala.Option.empty(), scala.Option.empty());
     }

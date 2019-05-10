@@ -334,6 +334,8 @@ public interface Map<K, V> {
 
     /**
      * Registers the function for this map.
+     * @param functionId the functionId
+     * @param function the function
      *
      * @return the function id
      */

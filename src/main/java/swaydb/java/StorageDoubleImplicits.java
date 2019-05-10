@@ -18,11 +18,26 @@
  */
 package swaydb.java;
 
+/**
+ * The StorageDoubleImplicits wrapper.
+ */
 public class StorageDoubleImplicits {
+    /**
+     * Returns the size for gigabytes.
+     * @param value the value
+     *
+     * @return the size for gigabytes
+     */
     public static int gb(double value) {
         return swaydb.package$.MODULE$.StorageDoubleImplicits(value).gb();
     }
 
+    /**
+     * Returns the size for megabytes.
+     * @param value the value
+     *
+     * @return the size for megabytes
+     */
     public static int mb(double value) {
         return swaydb.package$.MODULE$.StorageDoubleImplicits(value).mb();
     }

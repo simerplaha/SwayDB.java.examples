@@ -59,6 +59,10 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
 
     private final swaydb.Map<K, V, IO> database;
 
+    /**
+     * Constructs the Map object.
+     * @param database the database
+     */
     public Map(swaydb.Map<K, V, IO> database) {
         this.database = database;
     }
@@ -564,6 +568,8 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
 
     /**
      * Registers the function for this map.
+     * @param functionId the functionId
+     * @param function the function
      *
      * @return the function id
      */
@@ -698,8 +704,11 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
 
     /**
      * Creates the map.
+     * @param <K> the type of the key element
+     * @param <V> the type of the value element
      * @param keySerializer the keySerializer
      * @param valueSerializer the valueSerializer
+     * @param dir the directory
      *
      * @return the map
      */
@@ -745,6 +754,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
                 Serializer.classToType(keySerializer), Serializer.classToType(valueSerializer), keyOrder, ec).get());
     }
 
+    @SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
     public static class Builder<K, V> {
 
         private Path dir;
@@ -893,6 +903,13 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
         }
     }
 
+    /**
+     * Creates the builder.
+     * @param <K> the type of the key element
+     * @param <V> the type of the value element
+     *
+     * @return the builder
+     */
     public static <K, V> Builder<K, V> builder() {
         return new Builder<>();
     }

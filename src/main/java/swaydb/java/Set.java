@@ -42,7 +42,7 @@ public interface Set<K> {
      *
      * @return {@code true} if a set contains key, {@code false} otherwise
      */
-    boolean contains(K elem);
+    boolean contains(K key);
 
     /**
      * Checks if a set might contains key.
@@ -68,6 +68,8 @@ public interface Set<K> {
 
     /**
      * Returns the typed array of elements in this set.
+     * @param <T> the type of the array
+     * @param a the typed object
      *
      * @return the typed array of elements in this set
      */

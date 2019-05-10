@@ -26,8 +26,21 @@ import swaydb.data.config.ConfigWizard$;
 import swaydb.data.config.LevelZeroPersistentConfig;
 import swaydb.data.config.RecoveryMode;
 
+/**
+ * The ConfigWizard wrapper.
+ */
 public class ConfigWizard {
 
+    /**
+     * Returns the LevelZeroPersistentConfig object.
+     * @param mapSize the mapSize
+     * @param directory the directory
+     * @param mmap the mmap
+     * @param recoveryMode the recoveryMode
+     * @param acceleration the acceleration
+     *
+     * @return the LevelZeroPersistentConfig object
+     */
     public static LevelZeroPersistentConfig addPersistentLevel0(int mapSize, Path directory,
             boolean mmap, RecoveryMode recoveryMode, AbstractFunction1<Level0Meter, Accelerator> acceleration) {
         return ConfigWizard$.MODULE$.addPersistentLevel0(mapSize, directory, mmap, recoveryMode, acceleration);

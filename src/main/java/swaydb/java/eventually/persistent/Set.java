@@ -53,7 +53,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
     private final swaydb.Set<K, IO> database;
 
     /**
-     * Constructs the set.
+     * Constructs the Set object.
      * @param database the database
      */
     public Set(swaydb.Set<K, IO> database) {
@@ -423,6 +423,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
 
     /**
      * Creates the set.
+     * @param <K> the type of the key element
      * @param keySerializer the keySerializer
      * @param dir the dir
      *
@@ -469,6 +470,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
                 keyOrder, ec).get());
     }
 
+    @SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
     public static class Builder<K> {
 
         private Path dir;
@@ -611,6 +613,12 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
         }
     }
 
+    /**
+     * Creates the builder.
+     * @param <K> the type of the key element
+     *
+     * @return the builder
+     */
     public static <K> Builder<K> builder() {
         return new Builder<>();
     }

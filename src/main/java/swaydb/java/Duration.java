@@ -22,11 +22,26 @@ import scala.concurrent.duration.FiniteDuration;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * The Duration wrapper.
+ */
 public class Duration {
+    /**
+     * Returns the FiniteDuration object.
+     * @param length the length
+     * @param unit the unit
+     *
+     * @return the FiniteDuration object
+     */
     public static FiniteDuration of(long length, TimeUnit unit) {
         return scala.concurrent.duration.Duration$.MODULE$.apply(length, unit);
     }
 
+    /**
+     * Returns the FiniteDuration zero object.
+     *
+     * @return the FiniteDuration zero object
+     */
     public static FiniteDuration zero() {
         return scala.concurrent.duration.Duration$.MODULE$.Zero();
     }

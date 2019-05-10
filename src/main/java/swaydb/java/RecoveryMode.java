@@ -18,6 +18,9 @@
  */
 package swaydb.java;
 
+/**
+ * The RecoveryMode wrapper.
+ */
 public enum RecoveryMode {
     ReportFailure(swaydb.data.config.RecoveryMode.ReportFailure$.MODULE$);
 
@@ -27,6 +30,11 @@ public enum RecoveryMode {
         this.recoveryMode = recoveryMode;
     }
 
+    /**
+     * Returns the RecoveryMode object.
+     *
+     * @return the RecoveryMode object
+     */
     public swaydb.data.config.RecoveryMode get() {
         return recoveryMode;
     }

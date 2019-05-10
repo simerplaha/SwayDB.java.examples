@@ -35,6 +35,12 @@ import swaydb.data.accelerate.Level0Meter;
 import swaydb.extensions.Maps;
 import swaydb.java.Serializer;
 
+/**
+ * The memory Map of data.
+ *
+ * @param <K> the type of the key element
+ * @param <V> the type of the value element
+ */
 public class Map<K, V> implements Closeable {
 
     private final swaydb.extensions.Map<K, V> database;
@@ -43,27 +49,59 @@ public class Map<K, V> implements Closeable {
         this.database = database;
     }
 
+    /**
+     * Returns the size of elements in this map.
+     *
+     * @return the size of elements in this map
+     */
     public int size() {
         return database.baseMap().asScala().size();
     }
 
+    /**
+     * Checks the map is empty.
+     *
+     * @return {@code true} if a map is empty, {@code false} otherwise
+     */
     public boolean isEmpty() {
         return (boolean) database.baseMap().isEmpty().get();
     }
 
+    /**
+     * Checks the map is not empty.
+     *
+     * @return {@code true} if a map is not empty, {@code false} otherwise
+     */
     public boolean nonEmpty() {
         return (boolean) database.baseMap().nonEmpty().get();
     }
 
+    /**
+     * Checks if a map contains key.
+     * @param key the key
+     *
+     * @return {@code true} if a map contains key, {@code false} otherwise
+     */
     public boolean containsKey(K key) {
         return (boolean) database.contains(key).get();
     }
 
+    /**
+     * Checks if a map might contains key.
+     * @param key the key
+     *
+     * @return {@code true} if a map might contains key, {@code false} otherwise
+     */
     @SuppressWarnings("unchecked")
     public boolean mightContain(K key) {
         return (boolean) database.mightContain(key).get();
     }
 
+    /**
+     * Returns the head key for this map.
+     *
+     * @return the head key for this map
+     */
     @SuppressWarnings("unchecked")
     public java.util.Map.Entry<K, V> head() {
         Object result = database.headOption().get();
@@ -74,11 +112,21 @@ public class Map<K, V> implements Closeable {
         return null;
     }
 
+    /**
+     * Returns the optional head key for this map.
+     *
+     * @return the optional head key for this map
+     */
     @SuppressWarnings("unchecked")
     public Optional<java.util.Map.Entry<K, V>> headOption() {
         return Optional.ofNullable(head());
     }
 
+    /**
+     * Returns the last key for this map.
+     *
+     * @return the last key for this map
+     */
     @SuppressWarnings("unchecked")
     public java.util.Map.Entry<K, V> last() {
         Object result = database.lastOption().get();
@@ -89,16 +137,34 @@ public class Map<K, V> implements Closeable {
         return null;
     }
 
+    /**
+     * Returns the optional last key for this map.
+     *
+     * @return the optional last key for this map
+     */
     public Optional<java.util.Map.Entry<K, V>> lastOption() {
         return Optional.ofNullable(last());
     }
 
+    /**
+     * Puts the key/value pair for this map.
+     * @param key the key
+     * @param value the value
+     *
+     * @return the old value for this key or null
+     */
     public V put(K key, V value) {
         V oldValue = get(key);
         database.put(key, value).get();
         return oldValue;
     }
 
+    /**
+     * Returns the value or null for key of this map.
+     * @param key the key
+     *
+     * @return the value or null for key of this map
+     */
     @SuppressWarnings("unchecked")
     public V get(K key) {
         Object result = database.get(key).get();
@@ -108,25 +174,48 @@ public class Map<K, V> implements Closeable {
         return null;
     }
 
+    /**
+     * Removes the value for key of this map.
+     * @param key the key
+     *
+     * @return the old value or null for key of this map
+     */
     public V remove(K key) {
         V oldValue = get(key);
         database.remove(key).get();
         return oldValue;
     }
 
+    /**
+     * Clears this map.
+     */
     public void clear() {
         database.clear().get();
     }
 
+    /**
+     * Returns the Maps object of this map.
+     *
+     * @return the Maps object of this map
+     */
     public Maps<K, V> maps() {
         return database.maps();
     }
 
+    /**
+     * Closes the database.
+     */
     @Override
     public void close() {
         database.closeDatabase().get();
     }
 
+    /**
+     * Starts the commit function for this map.
+     * @param prepares the prepares
+     *
+     * @return the level zerro for this map
+     */
     @SuppressWarnings("unchecked")
     public Level0Meter commit(Prepare<K, V>... prepares) {
         List<Prepare<K, V>> preparesList = Arrays.asList(prepares);
@@ -135,6 +224,16 @@ public class Map<K, V> implements Closeable {
         return database.commit(prepareIterator).get();
     }
 
+    /**
+     * Creates the map.
+     * @param <K> the type of the key element
+     * @param <V> the type of the value element
+     * @param keySerializer the keySerializer
+     * @param valueSerializer the valueSerializer
+     * @param dir the directory
+     *
+     * @return the map
+     */
     @SuppressWarnings("unchecked")
     public static <K, V> Map<K, V> create(Object keySerializer, Object valueSerializer,
             Path dir) {
@@ -177,6 +276,7 @@ public class Map<K, V> implements Closeable {
                 Serializer.classToType(keySerializer), Serializer.classToType(valueSerializer), keyOrder, ec).get());
     }
 
+    @SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
     public static class Builder<K, V> {
 
         private Path dir;
@@ -325,6 +425,13 @@ public class Map<K, V> implements Closeable {
         }
     }
 
+    /**
+     * Creates the builder.
+     * @param <K> the type of the key element
+     * @param <V> the type of the value element
+     *
+     * @return the builder
+     */
     public static <K, V> Builder<K, V> builder() {
         return new Builder<>();
     }

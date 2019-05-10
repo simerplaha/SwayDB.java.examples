@@ -21,6 +21,9 @@ package swaydb.java;
 import java.nio.charset.StandardCharsets;
 import swaydb.data.slice.Slice$;
 
+/**
+ * The RecoveryMode wrapper.
+ */
 public class Slice {
 
     private swaydb.data.slice.Slice<Object> slice;
@@ -29,36 +32,77 @@ public class Slice {
         slice = Slice$.MODULE$.create(size, scala.reflect.ClassTag$.MODULE$.Any());
     }
 
+    /**
+     * Creates the Slice object.
+     * @param size the size
+     *
+     * @return the Slice object
+     */
     public static Slice create(int size) {
         return new Slice(size);
     }
 
+    /**
+     * Adds string to the Slice object.
+     * @param string the string
+     *
+     * @return the Slice object
+     */
     public Slice addString(String string) {
         slice = Slice$.MODULE$.ByteSliceImplicits(slice)
                 .addString(string, StandardCharsets.UTF_8);
         return this;
     }
 
+    /**
+     * Adds int to the Slice object.
+     * @param value the value
+     *
+     * @return the Slice object
+     */
     public Slice addInt(int value) {
         slice = Slice$.MODULE$.ByteSliceImplicits(slice).addInt(value);
         return this;
     }
 
+    /**
+     * Adds long to the Slice object.
+     * @param value the value
+     *
+     * @return the Slice object
+     */
     public Slice addLong(long value) {
         slice = Slice$.MODULE$.ByteSliceImplicits(slice).addLong(value);
         return this;
     }
 
+    /**
+     * Adds byte to the Slice object.
+     * @param value the value
+     *
+     * @return the Slice object
+     */
     public Slice addByte(byte value) {
         slice = Slice$.MODULE$.ByteSliceImplicits(slice).addByte(value);
         return this;
     }
 
+    /**
+     * Adds boolean to the Slice object.
+     * @param value the value
+     *
+     * @return the Slice object
+     */
     public Slice addBoolean(boolean value) {
         slice = Slice$.MODULE$.ByteSliceImplicits(slice).addBoolean(value);
         return this;
     }
 
+    /**
+     * Closes the Slice object.
+     *
+     * @return the Slice object
+     */
     public swaydb.data.slice.Slice<Object> close() {
         return slice.close();
     }
