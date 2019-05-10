@@ -24,3 +24,4 @@ before_script:
 
 after_success:
   - codecov
+  - mvn sonar:sonar -Dsonar.projectKey=SwayDB.java -Dsonar.organization=simerplaha-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_LOGIN
