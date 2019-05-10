@@ -23,8 +23,19 @@ import org.apache.commons.lang3.SerializationUtils;
 import swaydb.data.slice.Slice;
 import swaydb.data.slice.Slice$;
 
+/**
+ * The ApacheSerializer.
+ *
+ * @param <T> the type of the data element
+ */
 public class ApacheSerializer<T extends Serializable> implements swaydb.serializers.Serializer<T> {
 
+    /**
+     * Writes a typed object for this slice.
+     * @param myData the typed object
+     *
+     * @return the slice object
+     */
     @Override
     public Slice<Object> write(T myData) {
         byte[] data = SerializationUtils.serialize(myData);
@@ -33,6 +44,12 @@ public class ApacheSerializer<T extends Serializable> implements swaydb.serializ
                 .addBytes(Slice$.MODULE$.apply(data, scala.reflect.ClassTag$.MODULE$.Any()));
     }
 
+    /**
+     * Reads a typed object from this slice.
+     * @param data the slice object
+     *
+     * @return the typed data object
+     */
     @Override
     public T read(Slice<Object> data) {
         Slice<Object> byteSlice = Slice$.MODULE$.ByteSliceImplicits(data).createReader()

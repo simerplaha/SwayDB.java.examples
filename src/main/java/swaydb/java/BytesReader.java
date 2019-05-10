@@ -22,6 +22,9 @@ import java.nio.charset.StandardCharsets;
 import swaydb.data.slice.Slice;
 import swaydb.data.slice.Slice$;
 
+/**
+ * The BytesReader wrapper.
+ */
 public class BytesReader {
 
     private final swaydb.data.slice.BytesReader reader;
@@ -30,26 +33,58 @@ public class BytesReader {
         reader = Slice$.MODULE$.ByteSliceImplicits(slice).createReader();
     }
 
+    /**
+     * Creates the BytesReader object.
+     * @param slice the slice
+     *
+     * @return the BytesReader object
+     */
     public static BytesReader create(Slice<Object> slice) {
         return new BytesReader(slice);
     }
 
+    /**
+     * Reads the string data.
+     * @param size the size
+     *
+     * @return the string data
+     */
     public String readString(int size) {
         return reader.readString(size, StandardCharsets.UTF_8);
     }
 
+    /**
+     * Reads the int data.
+     *
+     * @return the int data
+     */
     public int readInt() {
         return reader.readInt();
     }
 
+    /**
+     * Reads the long data.
+     *
+     * @return the long data
+     */
     public long readLong() {
         return reader.readLong();
     }
 
+    /**
+     * Reads the byte data.
+     *
+     * @return the byte data
+     */
     public byte readByte() {
         return (byte) reader.read(1).apply(0);
     }
 
+    /**
+     * Reads the boolean data.
+     *
+     * @return the boolean data
+     */
     public boolean readBoolean() {
         return (byte) reader.read(1).apply(0) == 1;
     }
