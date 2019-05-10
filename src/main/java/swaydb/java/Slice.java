@@ -26,10 +26,10 @@ import swaydb.data.slice.Slice$;
  */
 public class Slice {
 
-    private swaydb.data.slice.Slice<Object> slice;
+    private swaydb.data.slice.Slice<Object> sliceObject;
 
     private Slice(int size) {
-        slice = Slice$.MODULE$.create(size, scala.reflect.ClassTag$.MODULE$.Any());
+        sliceObject = Slice$.MODULE$.create(size, scala.reflect.ClassTag$.MODULE$.Any());
     }
 
     /**
@@ -49,7 +49,7 @@ public class Slice {
      * @return the Slice object
      */
     public Slice addString(String string) {
-        slice = Slice$.MODULE$.ByteSliceImplicits(slice)
+        sliceObject = Slice$.MODULE$.ByteSliceImplicits(sliceObject)
                 .addString(string, StandardCharsets.UTF_8);
         return this;
     }
@@ -61,7 +61,7 @@ public class Slice {
      * @return the Slice object
      */
     public Slice addInt(int value) {
-        slice = Slice$.MODULE$.ByteSliceImplicits(slice).addInt(value);
+        sliceObject = Slice$.MODULE$.ByteSliceImplicits(sliceObject).addInt(value);
         return this;
     }
 
@@ -72,7 +72,7 @@ public class Slice {
      * @return the Slice object
      */
     public Slice addLong(long value) {
-        slice = Slice$.MODULE$.ByteSliceImplicits(slice).addLong(value);
+        sliceObject = Slice$.MODULE$.ByteSliceImplicits(sliceObject).addLong(value);
         return this;
     }
 
@@ -83,7 +83,7 @@ public class Slice {
      * @return the Slice object
      */
     public Slice addByte(byte value) {
-        slice = Slice$.MODULE$.ByteSliceImplicits(slice).addByte(value);
+        sliceObject = Slice$.MODULE$.ByteSliceImplicits(sliceObject).addByte(value);
         return this;
     }
 
@@ -94,7 +94,7 @@ public class Slice {
      * @return the Slice object
      */
     public Slice addBoolean(boolean value) {
-        slice = Slice$.MODULE$.ByteSliceImplicits(slice).addBoolean(value);
+        sliceObject = Slice$.MODULE$.ByteSliceImplicits(sliceObject).addBoolean(value);
         return this;
     }
 
@@ -104,6 +104,6 @@ public class Slice {
      * @return the Slice object
      */
     public swaydb.data.slice.Slice<Object> close() {
-        return slice.close();
+        return sliceObject.close();
     }
 }
