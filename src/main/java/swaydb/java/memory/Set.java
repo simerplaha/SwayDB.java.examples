@@ -68,7 +68,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
      * Checks if a set contains key.
      * @param key the key
      *
-     * @return {@code true} a set contains key, {@code false} otherwise
+     * @return {@code true} if a set contains key, {@code false} otherwise
      */
     @Override
     public boolean contains(K key) {
@@ -79,7 +79,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
      * Checks if a set might contains key.
      * @param key the key
      *
-     * @return {@code true} a set contains key, {@code false} otherwise
+     * @return {@code true} if a set might contains key, {@code false} otherwise
      */
     @Override
     public boolean mightContain(K key) {
@@ -131,7 +131,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
      * Adds the key to this set.
      * @param key the key
      *
-     * @return {@code true} a set contained key, {@code false} otherwise
+     * @return {@code true} if a set contained key, {@code false} otherwise
      */
     @Override
     public boolean add(K key) {
@@ -145,7 +145,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
      * @param expireAfter the expireAfter
      * @param timeUnit the timeUnit
      *
-     * @return {@code true} a set contained key, {@code false} otherwise
+     * @return {@code true} if a set contained key, {@code false} otherwise
      */
     @SuppressWarnings("unchecked")
     @Override
