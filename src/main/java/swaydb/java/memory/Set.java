@@ -76,10 +76,10 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
     }
 
     /**
-     * Checks if a set might contains key.
+     * Checks if a set might contain key.
      * @param key the key
      *
-     * @return {@code true} if a set might contains key, {@code false} otherwise
+     * @return {@code true} if a set might contain key, {@code false} otherwise
      */
     @Override
     public boolean mightContain(K key) {

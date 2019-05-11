@@ -123,7 +123,7 @@ public interface Map<K, V> {
     boolean containsKey(K key);
 
     /**
-     * Checks if a map might contains key.
+     * Checks if a map might contain key.
      * @param key the key
      *
      * @return {@code true} if a map might contains key, {@code false} otherwise

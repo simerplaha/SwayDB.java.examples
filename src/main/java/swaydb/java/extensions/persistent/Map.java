@@ -87,7 +87,7 @@ public class Map<K, V> implements Closeable {
     }
 
     /**
-     * Checks if a map might contains key.
+     * Checks if a map might contain key.
      * @param key the key
      *
      * @return {@code true} if a map might contains key, {@code false} otherwise
