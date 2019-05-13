@@ -31,6 +31,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 
 import scala.Function1;
 import scala.Option;
@@ -658,8 +659,15 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      * @return the stream object for this map
      */
     @Override
-    public Stream<Object, IO> map(Function1<Tuple2<K, V>, Object> function) {
-        return database.map(function);
+    public Stream<Object, IO> map(UnaryOperator<java.util.Map.Entry<K, V>> function) {
+        return database.map(new AbstractFunction1<Tuple2<K, V>, Object>() {
+            @Override
+            public Object apply(Tuple2<K, V> tuple2) {
+                java.util.Map.Entry<K, V> result = function.apply(
+                      new AbstractMap.SimpleEntry<>(tuple2._1(), tuple2._2()));
+                return Tuple2.apply(result.getKey(), result.getValue());
+            }
+        });
     }
 
     /**

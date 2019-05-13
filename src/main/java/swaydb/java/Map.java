@@ -24,6 +24,7 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 
 import scala.Function1;
 import scala.Tuple2;
@@ -394,7 +395,7 @@ public interface Map<K, V> {
      *
      * @return the stream object for this map
      */
-    Stream<Object, IO> map(Function1<Tuple2<K, V>, Object> function);
+    Stream<Object, IO> map(UnaryOperator<java.util.Map.Entry<K, V>> function);
 
     /**
      * Starts the filter function for this map.

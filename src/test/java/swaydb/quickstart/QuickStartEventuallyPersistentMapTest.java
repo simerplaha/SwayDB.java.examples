@@ -280,16 +280,9 @@ public class QuickStartEventuallyPersistentMapTest extends TestBase {
                     .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue())));
 
             final Set<scala.Tuple2<Integer, String>> result = new LinkedHashSet<>();
-            ((swaydb.data.IO.Success) db
-                    .map(new AbstractFunction1() {
-                        @Override
-                        public Object apply(Object t1) {
-                            Integer key = (Integer) ((scala.Tuple2) t1)._1();
-                            String value = (String) ((scala.Tuple2) t1)._2();
-                            return scala.Tuple2.apply(key, value + "_updated");
-                        }
-                    })
-                    .materialize()).foreach(new AbstractFunction1() {
+            db
+                .map(item -> new AbstractMap.SimpleEntry<>(item.getKey(), item.getValue() + "_updated"))
+                .materialize().foreach(new AbstractFunction1() {
                         @Override
                         public Object apply(Object t1) {
                             scala.collection.Seq<scala.Tuple2<Integer, String>> entries = ((ListBuffer) t1).seq();
@@ -297,7 +290,7 @@ public class QuickStartEventuallyPersistentMapTest extends TestBase {
                                 result.add(entries.apply(index));
                             }
                             return null;
-                        }
+                    }
                     });
             assertThat(result.toString(), equalTo("[(1,1_updated), (2,2_updated), (3,3_updated),"
                     + " (4,4_updated), (5,5_updated), (6,6_updated), (7,7_updated), (8,8_updated),"
