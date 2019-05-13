@@ -30,6 +30,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+import java.util.function.Predicate;
+
 import scala.Function1;
 import scala.Option;
 import scala.Tuple2;
@@ -662,13 +664,18 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
 
     /**
      * Starts the filter function for this map.
-     * @param function the function
+     * @param predicate the function
      *
      * @return the stream object for this map
      */
     @Override
-    public Stream<Tuple2<K, V>,IO> filter(Function1<Tuple2<K, V>, Object> function) {
-        return database.filter(function);
+    public Stream<Tuple2<K, V>,IO> filter(final Predicate<java.util.Map.Entry<K, V>> predicate) {
+        return database.filter(new AbstractFunction1<Tuple2<K, V>, Object>() {
+            @Override
+            public Object apply(Tuple2<K, V> tuple2) {
+                return predicate.test(new AbstractMap.SimpleEntry<>(tuple2._1(), tuple2._2()));
+            }
+        });
     }
 
     /**

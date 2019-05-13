@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+import java.util.function.Predicate;
+
 import scala.Function1;
 import scala.Tuple2;
 import scala.runtime.BoxedUnit;
@@ -396,11 +398,11 @@ public interface Map<K, V> {
 
     /**
      * Starts the filter function for this map.
-     * @param function the function
+     * @param predicate the predicate
      *
      * @return the stream object for this map
      */
-    Stream<Tuple2<K, V>, IO> filter(Function1<Tuple2<K, V>, Object> function);
+    Stream<Tuple2<K, V>,IO> filter(final Predicate<java.util.Map.Entry<K, V>> predicate);
 
     /**
      * Starts the foreach function for this map.

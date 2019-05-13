@@ -305,24 +305,20 @@ public class QuickStartMemoryMapTest {
                     .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue())));
 
             final Set<scala.Tuple2<Integer, String>> result = new LinkedHashSet<>();
-            ((swaydb.data.IO.Success) db
-                    .filter(new AbstractFunction1<scala.Tuple2<Integer, String>, Object>() {
+            db
+                .filter(item -> item.getKey() < 5)
+                .materialize().foreach(
+                    new AbstractFunction1<ListBuffer<scala.Tuple2<Integer, String>>, Object>() {
                         @Override
-                        public Boolean apply(scala.Tuple2<Integer, String> item) {
-                            return item._1() < 5;
-                        }
-                    })
-                    .materialize()).foreach(
-                        new AbstractFunction1<ListBuffer<scala.Tuple2<Integer, String>>, Object>() {
-                            @Override
-                            public Object apply(ListBuffer<scala.Tuple2<Integer, String>> t1) {
-                                scala.collection.Seq<scala.Tuple2<Integer, String>> entries = t1.seq();
-                                for (int index = 0; index < entries.size(); index += 1) {
-                                    result.add(entries.apply(index));
-                                }
-                                return null;
+                        public Object apply(ListBuffer<scala.Tuple2<Integer, String>> t1) {
+                            scala.collection.Seq<scala.Tuple2<Integer, String>> entries = t1.seq();
+                            for (int index = 0; index < entries.size(); index += 1) {
+                                result.add(entries.apply(index));
                             }
-                        });
+                            return null;
+                        }
+                    }
+                );
             assertThat(result.toString(), equalTo("[(1,1), (2,2), (3,3), (4,4)]"));
         }
     }
