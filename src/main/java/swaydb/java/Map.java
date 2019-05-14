@@ -419,7 +419,7 @@ public interface Map<K, V> {
      *
      * @return the stream object for this map
      */
-    Stream<Tuple2<K, V>,IO> takeWhile(final Predicate<java.util.Map.Entry<K, V>> predicate);
+    swaydb.java.Stream<K, V> takeWhile(final Predicate<java.util.Map.Entry<K, V>> predicate);
 
     /**
      * Starts the foreach function for this map.

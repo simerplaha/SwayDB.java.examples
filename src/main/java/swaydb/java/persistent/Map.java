@@ -701,13 +701,13 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      * @return the stream object for this map
      */
     @Override
-    public Stream<Tuple2<K, V>,IO> takeWhile(final Predicate<java.util.Map.Entry<K, V>> predicate) {
-        return database.takeWhile(new AbstractFunction1<Tuple2<K, V>, Object>() {
+    public swaydb.java.Stream<K, V> takeWhile(final Predicate<java.util.Map.Entry<K, V>> predicate) {
+        return new swaydb.java.StreamImpl<>(database.takeWhile(new AbstractFunction1<Tuple2<K, V>, Object>() {
             @Override
             public Object apply(Tuple2<K, V> tuple2) {
                 return predicate.test(new AbstractMap.SimpleEntry<>(tuple2._1(), tuple2._2()));
             }
-        });
+        }));
     }
 
     /**
@@ -955,5 +955,4 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     public static <K, V> Builder<K, V> builder() {
         return new Builder<>();
     }
-
 }
