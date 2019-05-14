@@ -144,9 +144,7 @@ public class QuickStartEventuallyPersistentMapTest extends TestBase {
                     .fromOrBefore(10)
                     .takeWhile(item -> item.getKey() <= 90)
                     .map(item -> new AbstractMap.SimpleEntry<>(item.getKey(), item.getValue() + "_updated"))
-                    .materialize().foreach(integerStringEntry ->
-                            db.put(integerStringEntry.getKey(), integerStringEntry.getValue()));
-
+                    .materialize().foreach(db::put);
             // assert the key-values were updated
             IntStream.rangeClosed(10, 90)
                     .mapToObj(item -> new AbstractMap.SimpleEntry<>(item, db.get(item)))

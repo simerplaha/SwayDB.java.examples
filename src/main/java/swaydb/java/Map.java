@@ -176,10 +176,10 @@ public interface Map<K, V> {
     void put(java.util.Map<K, V> map);
 
     /**
-     * Puts a squence object to this map.
-     * @param seq the squence
+     * Puts a entry object to this map.
+     * @param entry the entry
      */
-    void put(scala.collection.mutable.Seq seq);
+    void put(java.util.Map.Entry<K, V> entry);
 
     /**
      * Updates a map entries for this map.

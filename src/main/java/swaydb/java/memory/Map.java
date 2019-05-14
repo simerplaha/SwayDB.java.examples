@@ -297,13 +297,13 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     }
 
     /**
-     * Puts a squence object to this map.
-     * @param seq the squence
+     * Puts a entry object to this map.
+     * @param entry the entry
      */
     @SuppressWarnings("unchecked")
     @Override
-    public void put(scala.collection.mutable.Seq seq) {
-        database.put(seq);
+    public void put(java.util.Map.Entry<K, V> entry) {
+        database.put(entry.getKey(), entry.getValue());
     }
 
     /**
