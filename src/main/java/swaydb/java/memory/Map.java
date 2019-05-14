@@ -606,8 +606,8 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      * @return the map object
      */
     @Override
-    public swaydb.Map<K, V, IO> from(K key) {
-        return database.from(key);
+    public Map<K, V> from(K key) {
+        return new Map<>(database.from(key));
     }
 
     /**
@@ -617,8 +617,8 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      * @return the map object
      */
     @Override
-    public swaydb.Map<K, V, IO> fromOrAfter(K key) {
-        return database.fromOrAfter(key);
+    public Map<K, V> fromOrAfter(K key) {
+        return new Map<>(database.fromOrAfter(key));
     }
 
     /**
@@ -628,8 +628,8 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      * @return the map object
      */
     @Override
-    public swaydb.Map<K, V, IO> fromOrBefore(K key) {
-        return database.fromOrBefore(key);
+    public Map<K, V> fromOrBefore(K key) {
+        return new Map<>(database.fromOrBefore(key));
     }
 
     /**
@@ -679,6 +679,22 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     @Override
     public Stream<Tuple2<K, V>,IO> filter(final Predicate<java.util.Map.Entry<K, V>> predicate) {
         return database.filter(new AbstractFunction1<Tuple2<K, V>, Object>() {
+            @Override
+            public Object apply(Tuple2<K, V> tuple2) {
+                return predicate.test(new AbstractMap.SimpleEntry<>(tuple2._1(), tuple2._2()));
+            }
+        });
+    }
+
+    /**
+     * Starts the takeWhile function for this map.
+     * @param predicate the function
+     *
+     * @return the stream object for this map
+     */
+    @Override
+    public Stream<Tuple2<K, V>,IO> takeWhile(final Predicate<java.util.Map.Entry<K, V>> predicate) {
+        return database.takeWhile(new AbstractFunction1<Tuple2<K, V>, Object>() {
             @Override
             public Object apply(Tuple2<K, V> tuple2) {
                 return predicate.test(new AbstractMap.SimpleEntry<>(tuple2._1(), tuple2._2()));

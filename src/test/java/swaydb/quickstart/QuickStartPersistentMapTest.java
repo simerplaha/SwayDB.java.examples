@@ -97,12 +97,7 @@ public class QuickStartPersistentMapTest extends TestBase {
             // and atomically write updated key-values
             ((swaydb.data.IO.Success) db
                     .from(10)
-                    .takeWhile(new AbstractFunction1() {
-                        @Override
-                        public Object apply(Object t1) {
-                            return (Integer) ((scala.Tuple2) t1)._1() <= 90;
-                        }
-                    })
+                    .takeWhile(item -> item.getKey() <= 90)
                     .map(new AbstractFunction1() {
                         @Override
                         public Object apply(Object t1) {
@@ -138,12 +133,7 @@ public class QuickStartPersistentMapTest extends TestBase {
 
             ((swaydb.data.IO.Success) db
                     .fromOrAfter(10)
-                    .takeWhile(new AbstractFunction1() {
-                        @Override
-                        public Object apply(Object t1) {
-                            return (Integer) ((scala.Tuple2) t1)._1() <= 90;
-                        }
-                    })
+                    .takeWhile(item -> item.getKey() <= 90)
                     .map(new AbstractFunction1() {
                         @Override
                         public Object apply(Object t1) {
@@ -179,12 +169,7 @@ public class QuickStartPersistentMapTest extends TestBase {
 
             ((swaydb.data.IO.Success) db
                     .fromOrBefore(10)
-                    .takeWhile(new AbstractFunction1() {
-                        @Override
-                        public Object apply(Object t1) {
-                            return (Integer) ((scala.Tuple2) t1)._1() <= 90;
-                        }
-                    })
+                    .takeWhile(item -> item.getKey() <= 90)
                     .map(new AbstractFunction1() {
                         @Override
                         public Object apply(Object t1) {

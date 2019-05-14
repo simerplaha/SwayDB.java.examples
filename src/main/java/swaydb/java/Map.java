@@ -357,7 +357,7 @@ public interface Map<K, V> {
      *
      * @return the map object
      */
-    swaydb.Map<K, V, IO> from(K key);
+    Map<K, V> from(K key);
 
     /**
      * Returns the map object which starts or after key for this map.
@@ -365,7 +365,7 @@ public interface Map<K, V> {
      *
      * @return the map object
      */
-    swaydb.Map<K, V, IO> fromOrAfter(K key);
+    Map<K, V> fromOrAfter(K key);
 
     /**
      * Returns the map object which starts or before key for this map.
@@ -373,7 +373,7 @@ public interface Map<K, V> {
      *
      * @return the map object
      */
-    swaydb.Map<K, V, IO> fromOrBefore(K key);
+    Map<K, V> fromOrBefore(K key);
 
     /**
      * Returns the key objects for this map.
@@ -404,6 +404,14 @@ public interface Map<K, V> {
      * @return the stream object for this map
      */
     Stream<Tuple2<K, V>,IO> filter(final Predicate<java.util.Map.Entry<K, V>> predicate);
+
+    /**
+     * Starts the takeWhile function for this map.
+     * @param predicate the predicate
+     *
+     * @return the stream object for this map
+     */
+    Stream<Tuple2<K, V>,IO> takeWhile(final Predicate<java.util.Map.Entry<K, V>> predicate);
 
     /**
      * Starts the foreach function for this map.
