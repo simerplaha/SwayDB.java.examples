@@ -24,16 +24,11 @@ public class QuickStartTest {
 
         // Iteration: fetch all key-values withing range 10 to 90,
         // update values and atomically write updated key-values
-/*
-  map
-    .from(10)
-    .takeWhile(_._1 <= 90)
-    .map {
-      case (key, value) =>
-        (key, value + "_updated")
-    }
-    .materialize
-    .flatMap(map.put)
-*/
+        map
+            .from(10)
+            .takeWhile(item -> item.getKey() <= 90)
+            .map(item -> new AbstractMap.SimpleEntry<>(item.getKey(), item.getValue() + "_updated"))
+            .materialize().foreach(integerStringEntry ->
+                    map.put(integerStringEntry.getKey(), integerStringEntry.getValue()));
     }
 }
