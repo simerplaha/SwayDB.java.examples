@@ -90,24 +90,12 @@ public class QuickStartEventuallyPersistentMapTest extends TestBase {
 
             // Iteration: fetch all key-values withing range 10 to 90, update values
             // and atomically write updated key-values
-            ((swaydb.data.IO.Success) db
+            db
                     .from(10)
                     .takeWhile(item -> item.getKey() <= 90)
-                    .map(new AbstractFunction1() {
-                        @Override
-                        public Object apply(Object t1) {
-                            Integer key = (Integer) ((scala.Tuple2) t1)._1();
-                            String value = (String) ((scala.Tuple2) t1)._2();
-                            return scala.Tuple2.apply(key, value + "_updated");
-                        }
-                    })
-                    .materialize()).foreach(new AbstractFunction1<Object, Object>() {
-                        @Override
-                        public Object apply(Object t1) {
-                            db.put(((ListBuffer) t1).seq());
-                            return null;
-                        }
-                    });
+                    .map(item -> new AbstractMap.SimpleEntry<>(item.getKey(), item.getValue() + "_updated"))
+                    .materialize().foreach(integerStringEntry ->
+                            db.put(integerStringEntry.getKey(), integerStringEntry.getValue()));
 
             // assert the key-values were updated
             IntStream.rangeClosed(10, 90)
@@ -127,24 +115,12 @@ public class QuickStartEventuallyPersistentMapTest extends TestBase {
                     .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
                     .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue())));
 
-            ((swaydb.data.IO.Success) db
+            db
                     .fromOrAfter(10)
                     .takeWhile(item -> item.getKey() <= 90)
-                    .map(new AbstractFunction1() {
-                        @Override
-                        public Object apply(Object t1) {
-                            Integer key = (Integer) ((scala.Tuple2) t1)._1();
-                            String value = (String) ((scala.Tuple2) t1)._2();
-                            return scala.Tuple2.apply(key, value + "_updated");
-                        }
-                    })
-                    .materialize()).foreach(new AbstractFunction1<Object, Object>() {
-                        @Override
-                        public Object apply(Object t1) {
-                            db.put(((ListBuffer) t1).seq());
-                            return null;
-                        }
-                    });
+                    .map(item -> new AbstractMap.SimpleEntry<>(item.getKey(), item.getValue() + "_updated"))
+                    .materialize().foreach(integerStringEntry ->
+                            db.put(integerStringEntry.getKey(), integerStringEntry.getValue()));
 
             // assert the key-values were updated
             IntStream.rangeClosed(10, 90)
@@ -164,24 +140,12 @@ public class QuickStartEventuallyPersistentMapTest extends TestBase {
                     .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
                     .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue())));
 
-            ((swaydb.data.IO.Success) db
+            db
                     .fromOrBefore(10)
                     .takeWhile(item -> item.getKey() <= 90)
-                    .map(new AbstractFunction1() {
-                        @Override
-                        public Object apply(Object t1) {
-                            Integer key = (Integer) ((scala.Tuple2) t1)._1();
-                            String value = (String) ((scala.Tuple2) t1)._2();
-                            return scala.Tuple2.apply(key, value + "_updated");
-                        }
-                    })
-                    .materialize()).foreach(new AbstractFunction1<Object, Object>() {
-                        @Override
-                        public Object apply(Object t1) {
-                            db.put(((ListBuffer) t1).seq());
-                            return null;
-                        }
-                    });
+                    .map(item -> new AbstractMap.SimpleEntry<>(item.getKey(), item.getValue() + "_updated"))
+                    .materialize().foreach(integerStringEntry ->
+                            db.put(integerStringEntry.getKey(), integerStringEntry.getValue()));
 
             // assert the key-values were updated
             IntStream.rangeClosed(10, 90)
