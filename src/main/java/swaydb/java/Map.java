@@ -398,6 +398,14 @@ public interface Map<K, V> {
     Stream<Object, IO> map(UnaryOperator<java.util.Map.Entry<K, V>> function);
 
     /**
+     * Starts the drop function for this map.
+     * @param count the count
+     *
+     * @return the stream object for this map
+     */
+    Stream<Tuple2<K, V>, IO> drop(int count);
+
+    /**
      * Starts the filter function for this map.
      * @param predicate the predicate
      *

@@ -671,6 +671,17 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     }
 
     /**
+     * Starts the drop function for this map.
+     * @param count the count
+     *
+     * @return the stream object for this map
+     */
+    @Override
+    public Stream<Tuple2<K, V>, IO> drop(int count) {
+        return database.drop(count);
+    }
+
+    /**
      * Starts the filter function for this map.
      * @param predicate the function
      *
