@@ -577,7 +577,7 @@ public class QuickStartMemoryMapTest {
                 .build()) {
             db.put(1, "one", LocalDateTime.now().plusNanos(TimeUnit.MILLISECONDS.toNanos(100)));
             assertThat(db.entrySet().toString(), equalTo("[1=one]"));
-            await().atMost(1200, TimeUnit.MILLISECONDS).until(() -> {
+            await().atMost(1800, TimeUnit.MILLISECONDS).until(() -> {
                 assertThat(db.get(1), nullValue());
                 return true;
             });
