@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
@@ -423,11 +424,11 @@ public interface Map<K, V> {
 
     /**
      * Starts the foreach function for this map.
-     * @param function the function
+     * @param consumer the consumer
      *
      * @return the stream object for this map
      */
-    Stream<BoxedUnit, IO> foreach(Function1<Tuple2<K, V>, Object> function);
+    Stream<BoxedUnit, IO> foreach(Consumer<java.util.Map.Entry<K, V>> consumer);
 
     /**
      * Starts the commit function for this map.

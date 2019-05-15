@@ -278,18 +278,11 @@ public class QuickStartMemoryMapTest {
                     .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
                     .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue())));
 
-            final Set<scala.Tuple2<Integer, String>> result = new LinkedHashSet<>();
+            final Set<Map.Entry<Integer, String>> result = new LinkedHashSet<>();
             db
-                    .foreach(new AbstractFunction1<scala.Tuple2<Integer, String>, Object>() {
-                        @Override
-                        public Object apply(scala.Tuple2<Integer, String> entry) {
-                            result.add(entry);
-                            return null;
-                        }
-                    })
+                    .foreach(result::add)
                     .materialize();
-            assertThat(result.toString(), equalTo("[(1,1), (2,2), (3,3), (4,4), (5,5),"
-                    + " (6,6), (7,7), (8,8), (9,9), (10,10)]"));
+            assertThat(result.toString(), equalTo("[1=1, 2=2, 3=3, 4=4, 5=5, 6=6, 7=7, 8=8, 9=9, 10=10]"));
         }
     }
 

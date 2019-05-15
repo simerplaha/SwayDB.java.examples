@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
@@ -39,6 +40,7 @@ import scala.Tuple2;
 import scala.collection.Iterable;
 import scala.collection.JavaConverters;
 import scala.collection.Seq;
+import scala.collection.mutable.ListBuffer;
 import scala.concurrent.ExecutionContext;
 import scala.concurrent.duration.Deadline;
 import scala.concurrent.duration.FiniteDuration;
@@ -715,13 +717,19 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
 
     /**
      * Starts the foreach function for this map.
-     * @param function the function
+     * @param consumer the consumer
      *
      * @return the stream object for this map
      */
     @Override
-    public Stream<BoxedUnit, IO> foreach(Function1<Tuple2<K, V>, Object> function) {
-        return database.foreach(function);
+    public Stream<BoxedUnit, IO> foreach(Consumer<java.util.Map.Entry<K, V>> consumer) {
+        return database.foreach(new AbstractFunction1<Tuple2<K, V>, Object>() {
+            @Override
+            public Object apply(Tuple2<K, V> tuple2) {
+                consumer.accept(new AbstractMap.SimpleEntry<>(tuple2._1(), tuple2._2()));
+                return null;
+            }
+        });
     }
 
     /**
