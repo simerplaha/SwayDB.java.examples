@@ -27,7 +27,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
-import scala.runtime.BoxedUnit;
 import swaydb.Stream;
 import swaydb.data.IO;
 import swaydb.data.accelerate.Level0Meter;
@@ -434,7 +433,7 @@ public interface Map<K, V> {
      *
      * @return the stream object for this map
      */
-    Stream<BoxedUnit, IO> foreach(Consumer<java.util.Map.Entry<K, V>> consumer);
+    swaydb.java.Stream<K, V> foreach(Consumer<java.util.Map.Entry<K, V>> consumer);
 
     /**
      * Starts the filter function for this map.
