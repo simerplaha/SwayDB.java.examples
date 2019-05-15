@@ -91,7 +91,6 @@ public class Stream<K, V> {
      */
     @SuppressWarnings("unchecked")
     public Stream<K, V> foreach(Consumer<Map.Entry<K, V>> consumer) {
-        assert success != null;
         success.foreach(new AbstractFunction1<Object, Object>() {
             @Override
             public Object apply(Object t1) {
