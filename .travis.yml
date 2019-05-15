@@ -7,13 +7,6 @@ script:
   - mvn -B clean install jacoco:report
   - mvn -f examples/pom.xml clean test
 
-deploy:
-  provider: script
-  script: mvn -B -s .settings.xml -P release -DskipTests clean verify gpg:sign deploy
-  skip_cleanup: true
-  on:
-    tags: true
-
 addons:
    hosts:
        - travis
