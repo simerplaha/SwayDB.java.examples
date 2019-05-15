@@ -6,4 +6,6 @@
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=SwayDB.java&metric=sqale_rating)](https://sonarcloud.io/dashboard/index/SwayDB.java)
 [![Scrutinizer](https://img.shields.io/scrutinizer/g/simerplaha/SwayDB.java.svg)](https://scrutinizer-ci.com/g/simerplaha/SwayDB.java/)
 
+[![Join the chat at https://gitter.im/SwayDB-chat/Lobby](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/SwayDB-chat/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Java wrapper for [SwayDB](https://github.com/simerplaha/SwayDB).
