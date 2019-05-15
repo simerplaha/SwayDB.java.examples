@@ -277,6 +277,24 @@ public class QuickStartPersistentMapTest extends TestBase {
 
     @SuppressWarnings("unchecked")
     @Test
+    public void persistentMapIntStringTake() {
+        try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map.create(
+                Integer.class, String.class, Paths.get("disk1Take"))) {
+            // write 10 key-values atomically
+            db.put(IntStream.rangeClosed(1, 10)
+                    .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
+                    .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue())));
+
+            final Set<Map.Entry<Integer, String>> result = new LinkedHashSet<>();
+            db
+                    .take(5)
+                    .materialize().foreach(result::add);
+            assertThat(result.toString(), equalTo("[1=1, 2=2, 3=3, 4=4, 5=5]"));
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
     public void persistentMapIntStringFilter() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map.create(
               Integer.class, String.class, Paths.get("disk1Filter"))) {
