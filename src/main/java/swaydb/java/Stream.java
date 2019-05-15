@@ -97,8 +97,13 @@ public class Stream<K, V> {
             public Object apply(Object t1) {
                 Seq entries =  ((ListBuffer) t1).seq();
                 for (int index = 0; index < entries.size(); index += 1) {
-                    IO.Success<Tuple2<K, V>> tuple2 = (IO.Success<Tuple2<K, V>>) entries.apply(index);
-                    consumer.accept(new AbstractMap.SimpleEntry<>(tuple2.get()._1(), tuple2.get()._2()));
+                    if (entries.apply(index) instanceof Tuple2) {
+                        Tuple2<K, V> tuple2 = (Tuple2<K, V>) entries.apply(index);
+                        consumer.accept(new AbstractMap.SimpleEntry<>(tuple2._1(), tuple2._2()));
+                    } else {
+                        IO.Success<Tuple2<K, V>> tuple2 = (IO.Success<Tuple2<K, V>>) entries.apply(index);
+                        consumer.accept(new AbstractMap.SimpleEntry<>(tuple2.get()._1(), tuple2.get()._2()));
+                    }
                 }
                 return null;
             }

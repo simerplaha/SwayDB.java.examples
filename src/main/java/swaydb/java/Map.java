@@ -176,13 +176,13 @@ public interface Map<K, V> {
     void put(java.util.Map<K, V> map);
 
     /**
-     * Puts a entry object to this map.
+     * Puts an entry object to this map.
      * @param entry the entry
      */
     void put(java.util.Map.Entry<K, V> entry);
 
     /**
-     * Updates a map entries for this map.
+     * Updates map entries for this map.
      * @param map the map
      */
     void update(java.util.Map<K, V> map);
@@ -411,7 +411,7 @@ public interface Map<K, V> {
      *
      * @return the stream object for this map
      */
-    Stream<Tuple2<K, V>,IO> filter(final Predicate<java.util.Map.Entry<K, V>> predicate);
+    swaydb.java.Stream<K, V> filter(final Predicate<java.util.Map.Entry<K, V>> predicate);
 
     /**
      * Starts the takeWhile function for this map.

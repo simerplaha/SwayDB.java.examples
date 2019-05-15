@@ -294,7 +294,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     }
 
     /**
-     * Puts a entry object to this map.
+     * Puts an entry object to this map.
      * @param entry the entry
      */
     @SuppressWarnings("unchecked")
@@ -304,7 +304,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     }
 
     /**
-     * Updates a map entries for this map.
+     * Updates map entries for this map.
      * @param map the map
      */
     @Override
@@ -685,13 +685,13 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      * @return the stream object for this map
      */
     @Override
-    public Stream<Tuple2<K, V>,IO> filter(final Predicate<java.util.Map.Entry<K, V>> predicate) {
-        return database.filter(new AbstractFunction1<Tuple2<K, V>, Object>() {
+    public swaydb.java.Stream<K, V> filter(final Predicate<java.util.Map.Entry<K, V>> predicate) {
+        return new swaydb.java.Stream<>(database.filter(new AbstractFunction1<Tuple2<K, V>, Object>() {
             @Override
             public Object apply(Tuple2<K, V> tuple2) {
                 return predicate.test(new AbstractMap.SimpleEntry<>(tuple2._1(), tuple2._2()));
             }
-        });
+        }));
     }
 
     /**
