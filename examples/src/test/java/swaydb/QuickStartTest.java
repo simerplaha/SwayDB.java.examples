@@ -28,7 +28,6 @@ public class QuickStartTest {
             .from(10)
             .takeWhile(item -> item.getKey() <= 90)
             .map(item -> new AbstractMap.SimpleEntry<>(item.getKey(), item.getValue() + "_updated"))
-            .materialize().foreach(integerStringEntry ->
-                    map.put(integerStringEntry.getKey(), integerStringEntry.getValue()));
+            .materialize().foreach(map::put);
     }
 }
