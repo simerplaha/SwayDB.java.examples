@@ -243,6 +243,28 @@ public class QuickStartMemoryMapTest {
 
     @SuppressWarnings("unchecked")
     @Test
+    public void memoryMapIntStringDropWhile() {
+        try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map.create(
+                Integer.class, String.class)) {
+            // write 100 key-values atomically
+            db.put(IntStream.rangeClosed(1, 100)
+                    .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
+                    .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue())));
+
+            db
+                    .from(1)
+                    .dropWhile(item -> item.getKey() < 10)
+                    .map(item -> new AbstractMap.SimpleEntry<>(item.getKey(), item.getValue() + "_updated"))
+                    .materialize().foreach(db::put);
+            // assert the key-values were updated
+            IntStream.rangeClosed(10, 90)
+                    .mapToObj(item -> new AbstractMap.SimpleEntry<>(item, db.get(item)))
+                    .forEach(pair -> assertThat(pair.getValue().endsWith("_updated"), equalTo(true)));
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
     public void memoryMapIntStringTake() {
         try (swaydb.java.memory.Map<Integer, String> db = swaydb.java.memory.Map.create(
                 Integer.class, String.class)) {

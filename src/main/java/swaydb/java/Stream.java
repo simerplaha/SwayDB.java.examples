@@ -27,6 +27,7 @@ import swaydb.data.IO;
 import java.util.AbstractMap;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
 /**
@@ -109,4 +110,21 @@ public class Stream<K, V> {
         });
         return this;
     }
+
+    /**
+     * Starts the takeWhile function for this map.
+     * @param predicate the predicate
+     *
+     * @return the stream object for this map
+     */
+    @SuppressWarnings("unchecked")
+    public swaydb.java.Stream<K, V> takeWhile(Predicate<Map.Entry<K, V>> predicate) {
+        return new Stream<>(streamObject.takeWhile(new AbstractFunction1() {
+            public Object apply(Object tuple2) {
+                return IO.Success$.MODULE$.apply(predicate.test(
+                        new AbstractMap.SimpleEntry<>((K) ((Tuple2) tuple2)._1(), (V) ((Tuple2) tuple2)._2())));
+            }
+        }));
+    }
+
 }
