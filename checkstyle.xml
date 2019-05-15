@@ -12,6 +12,13 @@
     <module name="SuppressWarningsFilter"/>
     <module name="TreeWalker">
         <module name="SuppressWarningsHolder"/>
+        <module name="AvoidStarImport">
+            <property name="excludes" value="java.util"/>
+        </module>
+        <module name="IllegalImport"/>
+        <module name="UnusedImports"/>
+        <module name="RedundantImport"/>
+
         <module name="OuterTypeFilename"/>
         <module name="IllegalTokenText">
             <property name="tokens" value="STRING_LITERAL, CHAR_LITERAL"/>

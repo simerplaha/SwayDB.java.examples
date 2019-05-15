@@ -40,7 +40,6 @@ import scala.Tuple2;
 import scala.collection.Iterable;
 import scala.collection.JavaConverters;
 import scala.collection.Seq;
-import scala.collection.mutable.ListBuffer;
 import scala.concurrent.ExecutionContext;
 import scala.concurrent.duration.Deadline;
 import scala.concurrent.duration.FiniteDuration;

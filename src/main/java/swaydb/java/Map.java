@@ -27,8 +27,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
-import scala.Function1;
-import scala.Tuple2;
 import scala.runtime.BoxedUnit;
 import swaydb.Stream;
 import swaydb.data.IO;

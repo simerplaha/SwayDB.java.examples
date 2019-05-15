@@ -40,7 +40,11 @@ import swaydb.data.config.Dir;
 import swaydb.data.config.MMAP;
 import swaydb.data.config.SwayDBPersistentConfig;
 import swaydb.data.order.KeyOrder;
-import swaydb.java.*;
+import swaydb.java.ConfigWizard;
+import swaydb.java.Duration;
+import swaydb.java.RecoveryMode;
+import swaydb.java.Serializer;
+import swaydb.java.StorageDoubleImplicits;
 
 @SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
 public class PersistentMapTest extends TestBase {
