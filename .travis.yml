@@ -14,7 +14,6 @@ addons:
 
 before_script:
   - pip install --user codecov
-  - echo $GPG_SECRET_KEYS | base64 --decode | gpg --import
 
 after_success:
   - codecov
