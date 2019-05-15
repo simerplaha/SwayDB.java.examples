@@ -51,9 +51,9 @@ public class PersistentMapTest extends TestBase {
 
     @BeforeClass
     public static void beforeClass() throws IOException {
-        deleteDirectoryWalkTree(Paths.get("Disk1/myDB"));
-        deleteDirectoryWalkTree(Paths.get("Disk2/myDB"));
-        deleteDirectoryWalkTree(Paths.get("Disk3/myDB"));
+        deleteDirectoryWalkTree(addTarget(Paths.get("Disk1/myDB")));
+        deleteDirectoryWalkTree(addTarget(Paths.get("Disk2/myDB")));
+        deleteDirectoryWalkTree(addTarget(Paths.get("Disk3/myDB")));
     }
 
     @SuppressWarnings("unchecked")
@@ -61,7 +61,7 @@ public class PersistentMapTest extends TestBase {
     public void persistentMapIntStringConfig() {
         SwayDBPersistentConfig config = ConfigWizard.addPersistentLevel0(
                 StorageDoubleImplicits.mb(4.0),
-                Paths.get("Disk1/myDB"),
+                addTarget(Paths.get("Disk1/myDB")),
                 true,
                 RecoveryMode.ReportFailure.get(),
                 new AbstractFunction1<Level0Meter, Accelerator>() {
@@ -88,10 +88,10 @@ public class PersistentMapTest extends TestBase {
                                              Duration.zero(), 0);
                             }
                     })
-                .addPersistentLevel(Paths.get("Disk1/myDB"),
+                .addPersistentLevel(addTarget(Paths.get("Disk1/myDB")),
                         (Seq) Predef$.MODULE$.wrapRefArray((Object[]) new Dir[]{
-                    swaydb.package$.MODULE$.pathStringToDir("Disk2/myDB"),
-                    swaydb.package$.MODULE$.pathStringToDir("Disk3/myDB")}),
+                    swaydb.package$.MODULE$.pathStringToDir("target/Disk2/myDB"),
+                    swaydb.package$.MODULE$.pathStringToDir("target/Disk3/myDB")}),
                         StorageDoubleImplicits.mb(4.0),
                         MMAP.WriteAndRead$.MODULE$, true, 0, true, 0, true, true, (Option) scala.None$.MODULE$,
                         new AbstractFunction1<LevelMeter, Throttle>() {

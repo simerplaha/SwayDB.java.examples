@@ -46,7 +46,7 @@ public class QuickStartExtensionsPersistentMapTest extends TestBase {
         // Create a persistent database. If the directories do not exist, they will be created.
         // val db = persistent.Map[Int, String](dir = dir.resolve("disk1From")).get
         try (swaydb.java.extensions.persistent.Map<Integer, String> db = swaydb.java.extensions.persistent.Map.create(
-                Integer.class, String.class, Paths.get("disk5From"))) {
+                Integer.class, String.class, addTarget(Paths.get("disk5From")))) {
             // db.put(1, "one").get
             db.put(1, "one");
             // db.get(1).get
@@ -75,7 +75,7 @@ public class QuickStartExtensionsPersistentMapTest extends TestBase {
         // Create a persistent database
         try (swaydb.java.extensions.persistent.Map<Integer, String> db = swaydb.java.extensions.persistent.Map
                 .<Integer, String>builder()
-                .withDir(Paths.get("disk5builderClear"))
+                .withDir(addTarget(Paths.get("disk5builderClear")))
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
                 .build()) {
@@ -95,7 +95,7 @@ public class QuickStartExtensionsPersistentMapTest extends TestBase {
     public void persistentMapIntStringSize() {
         try (swaydb.java.extensions.persistent.Map<Integer, String> db = swaydb.java.extensions.persistent.Map
                 .<Integer, String>builder()
-                .withDir(Paths.get("disk5builderSize"))
+                .withDir(addTarget(Paths.get("disk5builderSize")))
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
                 .build()) {
@@ -111,7 +111,7 @@ public class QuickStartExtensionsPersistentMapTest extends TestBase {
     public void persistentMapIntStringIsEmpty() {
         try (swaydb.java.extensions.persistent.Map<Integer, String> db = swaydb.java.extensions.persistent.Map
                 .<Integer, String>builder()
-                .withDir(Paths.get("disk5builderIsEmpty"))
+                .withDir(addTarget(Paths.get("disk5builderIsEmpty")))
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
                 .build()) {
@@ -124,7 +124,7 @@ public class QuickStartExtensionsPersistentMapTest extends TestBase {
     public void persistentMapIntStringMightContain() {
         try (swaydb.java.extensions.persistent.Map<Integer, String> db = swaydb.java.extensions.persistent.Map
                 .<Integer, String>builder()
-                .withDir(Paths.get("disk5builderMightContain"))
+                .withDir(addTarget(Paths.get("disk5builderMightContain")))
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
                 .build()) {
@@ -137,7 +137,7 @@ public class QuickStartExtensionsPersistentMapTest extends TestBase {
     public void persistentMapIntStringHead() {
         try (swaydb.java.extensions.persistent.Map<Integer, String> db = swaydb.java.extensions.persistent.Map
                 .<Integer, String>builder()
-                .withDir(Paths.get("disk5builderHead"))
+                .withDir(addTarget(Paths.get("disk5builderHead")))
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
                 .build()) {
@@ -153,7 +153,7 @@ public class QuickStartExtensionsPersistentMapTest extends TestBase {
     public void persistentMapIntStringLast() {
         try (swaydb.java.extensions.persistent.Map<Integer, String> db = swaydb.java.extensions.persistent.Map
                 .<Integer, String>builder()
-                .withDir(Paths.get("disk5builderLast"))
+                .withDir(addTarget(Paths.get("disk5builderLast")))
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
                 .build()) {
@@ -170,7 +170,7 @@ public class QuickStartExtensionsPersistentMapTest extends TestBase {
     public void persistentMapIntStringMaps() {
         try (swaydb.java.extensions.persistent.Map<String, String> rootMap = swaydb.java.extensions.persistent.Map
                 .<String, String>builder()
-                .withDir(Paths.get("disk5builderMaps"))
+                .withDir(addTarget(Paths.get("disk5builderMaps")))
                 .withKeySerializer(String.class)
                 .withValueSerializer(String.class)
                 .build()) {
@@ -187,7 +187,7 @@ public class QuickStartExtensionsPersistentMapTest extends TestBase {
     public void persistentMapIntStringFromBuilder() {
         try (swaydb.java.extensions.persistent.Map<Integer, String> db = swaydb.java.extensions.persistent.Map
                         .<Integer, String>builder()
-                        .withDir(Paths.get("disk5builder"))
+                        .withDir(addTarget(Paths.get("disk5builder")))
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
                         .withMaxOpenSegments(1000)

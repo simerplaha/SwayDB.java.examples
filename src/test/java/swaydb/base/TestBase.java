@@ -30,6 +30,10 @@ import java.nio.file.attribute.BasicFileAttributes;
 @SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
 public class TestBase {
 
+    protected static Path addTarget(Path path) {
+        return Paths.get("target", path.toFile().getPath());
+    }
+
     protected static void deleteDirectoryWalkTree(Path path) {
         if (!path.toFile().exists()) {
             return;

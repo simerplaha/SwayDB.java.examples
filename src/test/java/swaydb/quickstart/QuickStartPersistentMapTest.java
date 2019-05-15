@@ -56,7 +56,7 @@ public class QuickStartPersistentMapTest extends TestBase {
 
     @BeforeClass
     public static void beforeClass() throws IOException {
-        deleteDirectoryWalkTreeStartsWith("disk1");
+        deleteDirectoryWalkTreeStartsWith("target/disk1");
     }
 
     @SuppressWarnings("unchecked")
@@ -65,7 +65,7 @@ public class QuickStartPersistentMapTest extends TestBase {
         // Create a persistent database. If the directories do not exist, they will be created.
         // val db = persistent.Map[Int, String](dir = dir.resolve("disk1From")).get
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map.create(
-                Integer.class, String.class, Paths.get("disk1From"))) {
+                Integer.class, String.class, addTarget(Paths.get("disk1From")))) {
             // db.put(1, "one").get
             db.put(1, "one");
             // db.get(1).get
@@ -112,7 +112,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     @Test
     public void persistentMapIntStringFromOrAfter() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map.create(
-                Integer.class, String.class, Paths.get("disk1FromOrAfter"))) {
+                Integer.class, String.class, addTarget(Paths.get("disk1FromOrAfter")))) {
             // write 100 key-values atomically
             db.put(IntStream.rangeClosed(1, 100)
                     .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
@@ -135,7 +135,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     @Test
     public void persistentMapIntStringFromOrBefore() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map.create(
-                Integer.class, String.class, Paths.get("disk1FromOrBefore"))) {
+                Integer.class, String.class, addTarget(Paths.get("disk1FromOrBefore")))) {
             // write 100 key-values atomically
             db.put(IntStream.rangeClosed(1, 100)
                     .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
@@ -157,7 +157,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     @Test
     public void persistentMapIntStringKeys() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map.create(
-                Integer.class, String.class, Paths.get("disk1Keys"))) {
+                Integer.class, String.class, addTarget(Paths.get("disk1Keys")))) {
             // write 100 key-values atomically
             db.put(IntStream.rangeClosed(1, 100)
                     .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
@@ -188,7 +188,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     @Test
     public void persistentMapIntStringReverse() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map.create(
-                Integer.class, String.class, Paths.get("disk1Reverse"))) {
+                Integer.class, String.class, addTarget(Paths.get("disk1Reverse")))) {
             // write 100 key-values atomically
             db.put(IntStream.rangeClosed(1, 100)
                     .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
@@ -219,7 +219,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     @Test
     public void persistentMapIntStringMap() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map.create(
-                Integer.class, String.class, Paths.get("disk1Map"))) {
+                Integer.class, String.class, addTarget(Paths.get("disk1Map")))) {
             // write 10 key-values atomically
             db.put(IntStream.rangeClosed(1, 10)
                     .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
@@ -239,7 +239,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     @Test
     public void persistentMapIntStringDrop() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map.create(
-                Integer.class, String.class, Paths.get("disk1Drop"))) {
+                Integer.class, String.class, addTarget(Paths.get("disk1Drop")))) {
             // write 10 key-values atomically
             db.put(IntStream.rangeClosed(1, 10)
                     .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
@@ -257,7 +257,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     @Test
     public void persistentMapIntStringDropWhile() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map.create(
-                Integer.class, String.class, Paths.get("disk1DropWhile"))) {
+                Integer.class, String.class, addTarget(Paths.get("disk1DropWhile")))) {
             // write 100 key-values atomically
             db.put(IntStream.rangeClosed(1, 100)
                     .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
@@ -279,7 +279,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     @Test
     public void persistentMapIntStringTake() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map.create(
-                Integer.class, String.class, Paths.get("disk1Take"))) {
+                Integer.class, String.class, addTarget(Paths.get("disk1Take")))) {
             // write 10 key-values atomically
             db.put(IntStream.rangeClosed(1, 10)
                     .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
@@ -297,7 +297,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     @Test
     public void persistentMapIntStringFilter() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map.create(
-              Integer.class, String.class, Paths.get("disk1Filter"))) {
+              Integer.class, String.class, addTarget(Paths.get("disk1Filter")))) {
             // write 10 key-values atomically
             db.put(IntStream.rangeClosed(1, 10)
                   .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
@@ -315,7 +315,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     @Test
     public void persistentMapIntStringForeach() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map.create(
-                Integer.class, String.class, Paths.get("disk1Foreach"))) {
+                Integer.class, String.class, addTarget(Paths.get("disk1Foreach")))) {
             // write 10 key-values atomically
             db.put(IntStream.rangeClosed(1, 10)
                     .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
@@ -333,7 +333,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     public void persistentMapIntStringClear() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map
                         .<Integer, String>builder()
-                        .withDir(Paths.get("disk1builderClear"))
+                        .withDir(addTarget(Paths.get("disk1builderClear")))
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
                         .build()) {
@@ -354,7 +354,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     public void persistentMapIntStringSize() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map
                         .<Integer, String>builder()
-                        .withDir(Paths.get("disk1builderSize"))
+                        .withDir(addTarget(Paths.get("disk1builderSize")))
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
                         .build()) {
@@ -367,7 +367,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     public void persistentMapIntStringIsEmpty() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map
                         .<Integer, String>builder()
-                        .withDir(Paths.get("disk1builderIsEmpty"))
+                        .withDir(addTarget(Paths.get("disk1builderIsEmpty")))
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
                         .build()) {
@@ -381,7 +381,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     public void persistentMapIntStringContainsValue() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map
                         .<Integer, String>builder()
-                        .withDir(Paths.get("disk1builderContainsValue"))
+                        .withDir(addTarget(Paths.get("disk1builderContainsValue")))
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
                         .build()) {
@@ -394,7 +394,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     public void persistentMapIntStringMightContain() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map
                         .<Integer, String>builder()
-                        .withDir(Paths.get("disk1builderMightContain"))
+                        .withDir(addTarget(Paths.get("disk1builderMightContain")))
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
                         .build()) {
@@ -407,7 +407,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     public void persistentMapIntStringHead() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map
                         .<Integer, String>builder()
-                        .withDir(Paths.get("disk1builderHead"))
+                        .withDir(addTarget(Paths.get("disk1builderHead")))
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
                         .build()) {
@@ -423,7 +423,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     public void persistentMapIntStringLast() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map
                         .<Integer, String>builder()
-                        .withDir(Paths.get("disk1builderLast"))
+                        .withDir(addTarget(Paths.get("disk1builderLast")))
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
                         .build()) {
@@ -440,7 +440,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     public void persistentMapIntStringPutMap() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map
                         .<Integer, String>builder()
-                        .withDir(Paths.get("disk1builderPutAll"))
+                        .withDir(addTarget(Paths.get("disk1builderPutAll")))
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
                         .build()) {
@@ -455,7 +455,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     public void persistentMapIntStringUpdateMap() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map
                         .<Integer, String>builder()
-                        .withDir(Paths.get("disk1builderUpdateAll"))
+                        .withDir(addTarget(Paths.get("disk1builderUpdateAll")))
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
                         .build()) {
@@ -471,7 +471,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     public void persistentMapIntStringKeySet() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map
                 .<Integer, String>builder()
-                .withDir(Paths.get("disk1builderKeySet"))
+                .withDir(addTarget(Paths.get("disk1builderKeySet")))
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
                 .build()) {
@@ -488,7 +488,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     public void persistentMapIntStringKeysHead() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map
                         .<Integer, String>builder()
-                        .withDir(Paths.get("disk1builderKeysHead"))
+                        .withDir(addTarget(Paths.get("disk1builderKeysHead")))
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
                         .build()) {
@@ -504,7 +504,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     public void persistentMapIntStringKeysLast() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map
                         .<Integer, String>builder()
-                        .withDir(Paths.get("disk1builderKeysLast"))
+                        .withDir(addTarget(Paths.get("disk1builderKeysLast")))
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
                         .build()) {
@@ -521,7 +521,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     public void persistentMapIntStringValues() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map
                 .<Integer, String>builder()
-                .withDir(Paths.get("disk1builderValues"))
+                .withDir(addTarget(Paths.get("disk1builderValues")))
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(String.class)
                 .build()) {
@@ -538,7 +538,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     public void persistentMapIntStringEntrySet() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map
                         .<Integer, String>builder()
-                        .withDir(Paths.get("disk1builderEntries"))
+                        .withDir(addTarget(Paths.get("disk1builderEntries")))
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
                         .build()) {
@@ -555,7 +555,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     public void persistentMapIntStringPutExpireAfter() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map
                         .<Integer, String>builder()
-                        .withDir(Paths.get("disk1putExpireAfter"))
+                        .withDir(addTarget(Paths.get("disk1putExpireAfter")))
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
                         .build()) {
@@ -572,7 +572,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     public void persistentMapIntStringPutExpireAt() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map
                         .<Integer, String>builder()
-                        .withDir(Paths.get("disk1putExpireAt"))
+                        .withDir(addTarget(Paths.get("disk1putExpireAt")))
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
                         .build()) {
@@ -590,7 +590,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     public void persistentMapIntStringExpiration() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map
                         .<Integer, String>builder()
-                        .withDir(Paths.get("disk1expiration"))
+                        .withDir(addTarget(Paths.get("disk1expiration")))
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
                         .build()) {
@@ -606,7 +606,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     public void persistentMapIntStringTimeLeft() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map
                         .<Integer, String>builder()
-                        .withDir(Paths.get("disk1timeleft"))
+                        .withDir(addTarget(Paths.get("disk1timeleft")))
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
                         .build()) {
@@ -621,7 +621,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     public void persistentMapIntStringKeySize() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map
                         .<Integer, String>builder()
-                        .withDir(Paths.get("disk1keysize"))
+                        .withDir(addTarget(Paths.get("disk1keysize")))
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
                         .build()) {
@@ -634,7 +634,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     public void persistentMapIntStringValueSize() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map
                         .<Integer, String>builder()
-                        .withDir(Paths.get("disk1valuesize"))
+                        .withDir(addTarget(Paths.get("disk1valuesize")))
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
                         .build()) {
@@ -647,7 +647,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     public void persistentMapIntStringSizes() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map
                         .<Integer, String>builder()
-                        .withDir(Paths.get("disk1sizes"))
+                        .withDir(addTarget(Paths.get("disk1sizes")))
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
                         .build()) {
@@ -664,7 +664,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     public void persistentMapIntStringExpireAfter() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map
                         .<Integer, String>builder()
-                        .withDir(Paths.get("disk1expireAfter"))
+                        .withDir(addTarget(Paths.get("disk1expireAfter")))
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
                         .build()) {
@@ -682,7 +682,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     public void persistentMapIntStringExpireAt() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map
                         .<Integer, String>builder()
-                        .withDir(Paths.get("disk1expireAt"))
+                        .withDir(addTarget(Paths.get("disk1expireAt")))
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
                         .build()) {
@@ -700,7 +700,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     public void persistentMapIntStringUpdate() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map
                         .<Integer, String>builder()
-                        .withDir(Paths.get("disk1update"))
+                        .withDir(addTarget(Paths.get("disk1update")))
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
                         .build()) {
@@ -714,7 +714,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     public void persistentMapIntStringRemove() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map
                         .<Integer, String>builder()
-                        .withDir(Paths.get("disk1remove"))
+                        .withDir(addTarget(Paths.get("disk1remove")))
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
                         .build()) {
@@ -735,7 +735,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     public void persistentMapIntStringAsJava() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map
                         .<Integer, String>builder()
-                        .withDir(Paths.get("disk1asjava"))
+                        .withDir(addTarget(Paths.get("disk1asjava")))
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
                         .build()) {
@@ -748,7 +748,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     public void persistentMapStringIntRegisterApplyFunctionUpdate() {
         try (swaydb.java.persistent.Map<String, Integer> likesMap = swaydb.java.persistent.Map
                 .<String, Integer>builder()
-                .withDir(Paths.get("disk1registerapplyfunction"))
+                .withDir(addTarget(Paths.get("disk1registerapplyfunction")))
                 .withKeySerializer(String.class)
                 .withValueSerializer(Integer.class)
                 .build()) {
@@ -766,7 +766,7 @@ public class QuickStartPersistentMapTest extends TestBase {
     public void persistentMapIntStringFromBuilder() {
         try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map
                         .<Integer, String>builder()
-                        .withDir(Paths.get("disk1builder"))
+                        .withDir(addTarget(Paths.get("disk1builder")))
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
                         .withMaxOpenSegments(1000)
@@ -839,7 +839,7 @@ public class QuickStartPersistentMapTest extends TestBase {
 
         try (swaydb.java.persistent.Map<Integer, MyData> db = swaydb.java.persistent.Map
                 .<Integer, MyData>builder()
-                .withDir(Paths.get("disk1custom"))
+                .withDir(addTarget(Paths.get("disk1custom")))
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(new MyDataSerializer())
                 .build()) {
@@ -874,7 +874,7 @@ public class QuickStartPersistentMapTest extends TestBase {
 
         try (swaydb.java.persistent.Map<Integer, MyData> db = swaydb.java.persistent.Map
                 .<Integer, MyData>builder()
-                .withDir(Paths.get("disk1apache"))
+                .withDir(addTarget(Paths.get("disk1apache")))
                 .withKeySerializer(Integer.class)
                 .withValueSerializer(new ApacheSerializer<>())
                 .build()) {
