@@ -4,7 +4,8 @@ jdk:
   - oraclejdk8
 
 script:
-  - mvn -B clean test jacoco:report
+  - mvn -B clean install jacoco:report
+  - mvn -f examples/pom.xml clean test
 
 deploy:
   provider: script
