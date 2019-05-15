@@ -405,12 +405,20 @@ public interface Map<K, V> {
     swaydb.java.Stream<K, V> drop(int count);
 
     /**
-     * Starts the filter function for this map.
+     * Starts the dropWhile function for this map.
      * @param predicate the predicate
      *
      * @return the stream object for this map
      */
-    swaydb.java.Stream<K, V> filter(final Predicate<java.util.Map.Entry<K, V>> predicate);
+    swaydb.java.Stream<K, V> dropWhile(final Predicate<java.util.Map.Entry<K, V>> predicate);
+
+    /**
+     * Starts the take function for this map.
+     * @param count the count
+     *
+     * @return the stream object for this map
+     */
+    swaydb.java.Stream<K, V> take(int count);
 
     /**
      * Starts the takeWhile function for this map.
@@ -427,6 +435,14 @@ public interface Map<K, V> {
      * @return the stream object for this map
      */
     Stream<BoxedUnit, IO> foreach(Consumer<java.util.Map.Entry<K, V>> consumer);
+
+    /**
+     * Starts the filter function for this map.
+     * @param predicate the predicate
+     *
+     * @return the stream object for this map
+     */
+    swaydb.java.Stream<K, V> filter(final Predicate<java.util.Map.Entry<K, V>> predicate);
 
     /**
      * Starts the commit function for this map.

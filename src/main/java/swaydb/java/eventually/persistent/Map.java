@@ -680,19 +680,30 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     }
 
     /**
-     * Starts the filter function for this map.
+     * Starts the dropWhile function for this map.
      * @param predicate the function
      *
      * @return the stream object for this map
      */
     @Override
-    public swaydb.java.Stream<K, V> filter(final Predicate<java.util.Map.Entry<K, V>> predicate) {
-        return new swaydb.java.Stream<>(database.filter(new AbstractFunction1<Tuple2<K, V>, Object>() {
+    public swaydb.java.Stream<K, V> dropWhile(final Predicate<java.util.Map.Entry<K, V>> predicate) {
+        return new swaydb.java.Stream<>(database.dropWhile(new AbstractFunction1<Tuple2<K, V>, Object>() {
             @Override
             public Object apply(Tuple2<K, V> tuple2) {
                 return predicate.test(new AbstractMap.SimpleEntry<>(tuple2._1(), tuple2._2()));
             }
         }));
+    }
+
+    /**
+     * Starts the take function for this map.
+     * @param count the count
+     *
+     * @return the stream object for this map
+     */
+    @Override
+    public swaydb.java.Stream<K, V> take(int count) {
+        return new swaydb.java.Stream<>(database.take(count));
     }
 
     /**
@@ -726,6 +737,22 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
                 return null;
             }
         });
+    }
+
+    /**
+     * Starts the filter function for this map.
+     * @param predicate the function
+     *
+     * @return the stream object for this map
+     */
+    @Override
+    public swaydb.java.Stream<K, V> filter(final Predicate<java.util.Map.Entry<K, V>> predicate) {
+        return new swaydb.java.Stream<>(database.filter(new AbstractFunction1<Tuple2<K, V>, Object>() {
+            @Override
+            public Object apply(Tuple2<K, V> tuple2) {
+                return predicate.test(new AbstractMap.SimpleEntry<>(tuple2._1(), tuple2._2()));
+            }
+        }));
     }
 
     /**
