@@ -65,7 +65,7 @@ public class Stream<K, V> {
      */
     @SuppressWarnings("unchecked")
     public swaydb.java.Stream<K, V> map(UnaryOperator<Map.Entry<K, V>> function) {
-        return new Stream<K, V>(streamObject.map(new AbstractFunction1() {
+        return new Stream<>(streamObject.map(new AbstractFunction1() {
             public Object apply(Object tuple2) {
                 java.util.Map.Entry<K, V> result = function.apply(
                         new AbstractMap.SimpleEntry<>((K) ((Tuple2) tuple2)._1(), (V) ((Tuple2) tuple2)._2()));
