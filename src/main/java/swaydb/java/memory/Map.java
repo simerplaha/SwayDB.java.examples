@@ -660,15 +660,15 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      * @return the stream object for this map
      */
     @Override
-    public Stream<Object, IO> map(UnaryOperator<java.util.Map.Entry<K, V>> function) {
-        return database.map(new AbstractFunction1<Tuple2<K, V>, Object>() {
+    public swaydb.java.Stream<K, V> map(UnaryOperator<java.util.Map.Entry<K, V>> function) {
+        return new swaydb.java.Stream<>(database.map(new AbstractFunction1<Tuple2<K, V>, Object>() {
             @Override
             public Object apply(Tuple2<K, V> tuple2) {
                 java.util.Map.Entry<K, V> result = function.apply(
                       new AbstractMap.SimpleEntry<>(tuple2._1(), tuple2._2()));
                 return Tuple2.apply(result.getKey(), result.getValue());
             }
-        });
+        }));
     }
 
     /**

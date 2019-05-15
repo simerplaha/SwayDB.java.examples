@@ -36,14 +36,14 @@ import java.util.function.UnaryOperator;
  * @param <V> the type of the value element
  */
 public class Stream<K, V> {
-    private final swaydb.Stream<Tuple2<K, V>, IO> streamObject;
+    private final swaydb.Stream streamObject;
     private final IO.Success success;
 
     /**
      * Constructs the Stream object.
      * @param streamObject the streamObject
      */
-    public Stream(final swaydb.Stream<Tuple2<K, V>, IO> streamObject) {
+    public Stream(final swaydb.Stream streamObject) {
         this.streamObject = streamObject;
         this.success = null;
     }

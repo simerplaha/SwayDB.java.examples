@@ -394,7 +394,7 @@ public interface Map<K, V> {
      *
      * @return the stream object for this map
      */
-    Stream<Object, IO> map(UnaryOperator<java.util.Map.Entry<K, V>> function);
+    swaydb.java.Stream<K, V> map(UnaryOperator<java.util.Map.Entry<K, V>> function);
 
     /**
      * Starts the drop function for this map.

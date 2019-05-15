@@ -213,22 +213,13 @@ public class QuickStartMemoryMapTest {
                     .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
                     .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue())));
 
-            final Set<scala.Tuple2<Integer, String>> result = new LinkedHashSet<>();
+            final Set<Map.Entry<Integer, String>> result = new LinkedHashSet<>();
             db
                     .map(item -> new AbstractMap.SimpleEntry<>(item.getKey(), item.getValue() + "_updated"))
-                    .materialize().foreach(new AbstractFunction1() {
-                        @Override
-                        public Object apply(Object t1) {
-                            scala.collection.Seq<scala.Tuple2<Integer, String>> entries = ((ListBuffer) t1).seq();
-                            for (int index = 0; index < entries.size(); index += 1) {
-                                result.add(entries.apply(index));
-                            }
-                            return null;
-                        }
-                    });
-            assertThat(result.toString(), equalTo("[(1,1_updated), (2,2_updated), (3,3_updated),"
-                    + " (4,4_updated), (5,5_updated), (6,6_updated), (7,7_updated), (8,8_updated),"
-                    + " (9,9_updated), (10,10_updated)]"));
+                    .materialize().foreach(result::add);
+            assertThat(result.toString(), equalTo("[1=1_updated, 2=2_updated, 3=3_updated,"
+                    + " 4=4_updated, 5=5_updated, 6=6_updated, 7=7_updated, 8=8_updated,"
+                    + " 9=9_updated, 10=10_updated]"));
         }
     }
 
