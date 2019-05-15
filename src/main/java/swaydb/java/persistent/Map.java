@@ -674,8 +674,8 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      * @return the stream object for this map
      */
     @Override
-    public Stream<Tuple2<K, V>, IO> drop(int count) {
-        return database.drop(count);
+    public swaydb.java.Stream<K, V> drop(int count) {
+        return new swaydb.java.Stream<>(database.drop(count));
     }
 
     /**

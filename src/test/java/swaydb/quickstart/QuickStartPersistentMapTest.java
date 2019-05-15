@@ -254,20 +254,11 @@ public class QuickStartPersistentMapTest extends TestBase {
                     .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
                     .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue())));
 
-            final Set<scala.Tuple2<Integer, String>> result = new LinkedHashSet<>();
+            final Set<Map.Entry<Integer, String>> result = new LinkedHashSet<>();
             db
                     .drop(5)
-                    .materialize().foreach(new AbstractFunction1() {
-                        @Override
-                        public Object apply(Object t1) {
-                            scala.collection.Seq<scala.Tuple2<Integer, String>> entries = ((ListBuffer) t1).seq();
-                            for (int index = 0; index < entries.size(); index += 1) {
-                                result.add(entries.apply(index));
-                            }
-                            return null;
-                        }
-                    });
-            assertThat(result.toString(), equalTo("[(6,6), (7,7), (8,8), (9,9), (10,10)]"));
+                    .materialize().foreach(result::add);
+            assertThat(result.toString(), equalTo("[6=6, 7=7, 8=8, 9=9, 10=10]"));
         }
     }
 

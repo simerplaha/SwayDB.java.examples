@@ -403,7 +403,7 @@ public interface Map<K, V> {
      *
      * @return the stream object for this map
      */
-    Stream<Tuple2<K, V>, IO> drop(int count);
+    swaydb.java.Stream<K, V> drop(int count);
 
     /**
      * Starts the filter function for this map.
