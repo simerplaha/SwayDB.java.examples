@@ -644,8 +644,8 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      * @return the reversed map object for this map
      */
     @Override
-    public swaydb.Map<K, V, IO> reverse() {
-        return database.reverse();
+    public Map<K, V> reverse() {
+        return new Map<>(database.reverse());
     }
 
     /**

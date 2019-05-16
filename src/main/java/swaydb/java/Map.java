@@ -384,7 +384,7 @@ public interface Map<K, V> {
      *
      * @return the reversed map object for this map
      */
-    swaydb.Map<K, V, IO> reverse();
+    Map<K, V> reverse();
 
     /**
      * Starts the map function for this map.
