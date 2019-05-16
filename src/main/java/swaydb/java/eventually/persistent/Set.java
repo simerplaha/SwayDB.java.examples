@@ -403,7 +403,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
      */
     @Override
     public void close() {
-        database.closeDatabase().get();
+        database.close().get();
     }
 
     /**

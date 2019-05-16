@@ -216,10 +216,10 @@ public class Map<K, V> implements Closeable {
      * Starts the commit function for this map.
      * @param prepares the prepares
      *
-     * @return the level zerro for this map
+     * @return the IO.OK for this map
      */
     @SuppressWarnings("unchecked")
-    public Level0Meter commit(Prepare<K, V>... prepares) {
+    public swaydb.data.IO.OK commit(Prepare<K, V>... prepares) {
         List<Prepare<K, V>> preparesList = Arrays.asList(prepares);
         Iterable<Prepare<K, V>> prepareIterator
                 = JavaConverters.iterableAsScalaIterableConverter(preparesList).asScala();

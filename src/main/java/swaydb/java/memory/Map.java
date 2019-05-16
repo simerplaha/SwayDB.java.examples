@@ -761,7 +761,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      */
     @Override
     public void close() {
-        database.closeDatabase().get();
+        database.close().get();
     }
 
     /**
