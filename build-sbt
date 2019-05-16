@@ -13,6 +13,12 @@ val publishSettings = Seq[Setting[_]](
   developers := List(
     Developer(id = "simerplaha", name = "SwayDB", email = "simer.j@gmail.com", url = url("http://swaydb.io"))
   ),
+  javacOptions ++= Seq("-source", "1.8", "-target", "1.8", "-Xlint"),
+  initialize := {
+    val _ = initialize.value
+    if (sys.props("java.specification.version") != "1.8")
+      sys.error("Java 8 is required for this project.")
+  },
   publishTo := sonatypePublishTo.value,
   crossPaths := false,
   publishConfiguration := publishConfiguration.value.withOverwrite(true),
@@ -20,8 +26,7 @@ val publishSettings = Seq[Setting[_]](
   releaseProcess := Seq[ReleaseStep](
     runClean,
     releaseStepCommandAndRemaining("+publishSigned"),
-    releaseStepCommand("sonatypeReleaseAll"),
-    pushChanges
+    releaseStepCommand("sonatypeReleaseAll")
   )
 )
 
@@ -30,7 +35,7 @@ lazy val root =
     .settings(
       organization := "io.swaydb",
       name := "swaydb-java",
-      version := "0.8-beta.8.5",
+      version := "0.8-beta.8.6",
       scalaVersion := scalaVersion.value
     )
     .settings(publishSettings)
