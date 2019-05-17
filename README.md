@@ -24,7 +24,7 @@ Include the following in your `pom.xml` for Maven:
   <dependency>
     <groupId>io.swaydb</groupId>
     <artifactId>swaydb-java</artifactId>
-    <version>0.8-beta.8.6</version>
+    <version>0.8-beta.8.7</version>
   </dependency>
   ...
 </dependencies>
@@ -33,7 +33,7 @@ Include the following in your `pom.xml` for Maven:
 Gradle:
 
 ```groovy
-compile 'io.swaydb:swaydb-java:0.8-beta.8.6'
+compile 'io.swaydb:swaydb-java:0.8-beta.8.7'
 ```
 
 ### Usage
