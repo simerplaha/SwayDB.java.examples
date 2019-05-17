@@ -35,7 +35,7 @@ lazy val root =
     .settings(
       organization := "io.swaydb",
       name := "swaydb-java",
-      version := "0.8-beta.8.6",
+      version := "0.8-beta.8.7",
       scalaVersion := "2.11.12"
     )
     .settings(publishSettings)
@@ -43,6 +43,6 @@ lazy val root =
       libraryDependencies ++=
         Seq(
           "io.swaydb" %% "swaydb" % "0.8-beta.8",
-          "org.apache.commons" % "commons-lang3" % "3.8.1"
+          "org.apache.commons" % "commons-lang3" % "3.9"
         )
     )
