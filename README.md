@@ -7,6 +7,7 @@
 [![Scrutinizer](https://img.shields.io/scrutinizer/g/simerplaha/SwayDB.java.svg)](https://scrutinizer-ci.com/g/simerplaha/SwayDB.java/)
 
 [![Join the chat at https://gitter.im/SwayDB-chat/Lobby](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/SwayDB-chat/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://swaydb.slack.com](https://img.shields.io/badge/slack-chat-e01563.svg)](https://join.slack.com/t/swaydb/shared_invite/enQtNjM5MDM2MjYyMTE2LWU3ZTczNjA4YTAxZGNhMzk2MDc1MDViZTE0MzkyMmI2Y2E0OGE1ODg0MGJiZjY3YzY3MTE2MTA4MDcxZmMzMzY)
 
 Java wrapper for [SwayDB](https://github.com/simerplaha/SwayDB).
 
