@@ -4,6 +4,8 @@ import java.util.AbstractMap;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 import org.junit.Test;
 
 public class QuickStartTest {
@@ -27,7 +29,13 @@ public class QuickStartTest {
         map
             .from(10)
             .takeWhile(item -> item.getKey() <= 90)
-            .map(item -> new AbstractMap.SimpleEntry<>(item.getKey(), item.getValue() + "_updated"))
-            .materialize().foreach(map::put);
+            .map(item -> {item.setValue(item.getValue() + "_updated"); return item;})
+            .materialize()
+            .foreach(map::put);
+
+        // assert the key-values were updated
+        IntStream.rangeClosed(10, 90)
+                .mapToObj(item -> new AbstractMap.SimpleEntry<>(item, map.get(item)))
+                .forEach(pair -> assertThat(pair.getValue().endsWith("_updated"), equalTo(true)));
     }
 }
