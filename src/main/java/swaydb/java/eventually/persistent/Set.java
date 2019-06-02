@@ -39,8 +39,11 @@ import scala.concurrent.duration.Deadline;
 import scala.concurrent.duration.FiniteDuration;
 import swaydb.Prepare;
 import swaydb.data.IO;
+import swaydb.data.accelerate.Accelerator;
 import swaydb.data.accelerate.Level0Meter;
+import swaydb.data.api.grouping.KeyValueGroupingStrategy;
 import swaydb.data.compaction.LevelMeter;
+import swaydb.data.config.Dir;
 import swaydb.java.Serializer;
 
 /**
@@ -431,66 +434,73 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
      */
     @SuppressWarnings("unchecked")
     public static <K> Set<K> create(Object keySerializer, Path dir) {
-        int maxOpenSegments = swaydb.persistent.Map$.MODULE$.apply$default$2();
-        int cacheSize = swaydb.persistent.Map$.MODULE$.apply$default$3();
-        int mapSize = swaydb.persistent.Map$.MODULE$.apply$default$4();
-        boolean mmapMaps = swaydb.persistent.Map$.MODULE$.apply$default$5();
-        swaydb.data.config.RecoveryMode recoveryMode = swaydb.persistent.Map$.MODULE$.apply$default$6();
-        boolean mmapAppendix = swaydb.persistent.Map$.MODULE$.apply$default$7();
-        swaydb.data.config.MMAP mmapSegments = swaydb.persistent.Map$.MODULE$.apply$default$8();
-        int segmentSize = swaydb.persistent.Map$.MODULE$.apply$default$9();
-        int appendixFlushCheckpointSize = swaydb.persistent.Map$.MODULE$.apply$default$10();
-        Seq otherDirs = swaydb.persistent.Map$.MODULE$.apply$default$11();
-        FiniteDuration cacheCheckDelay = swaydb.persistent.Map$.MODULE$.apply$default$12();
-        FiniteDuration segmentsOpenCheckDelay = swaydb.persistent.Map$.MODULE$.apply$default$13();
-        double bloomFilterFalsePositiveRate = swaydb.persistent.Map$.MODULE$.apply$default$14();
-        boolean compressDuplicateValues = swaydb.persistent.Map$.MODULE$.apply$default$15();
-        boolean deleteSegmentsEventually = swaydb.persistent.Map$.MODULE$.apply$default$16();
-        Option lastLevelGroupingStrategy = swaydb.persistent.Map$.MODULE$.apply$default$17();
-        Function1 acceleration = swaydb.persistent.Map$.MODULE$.apply$default$18();
-        swaydb.data.order.KeyOrder keyOrder = swaydb.persistent.Map$.MODULE$.apply$default$21(dir,
-                maxOpenSegments, cacheSize, mapSize, mmapMaps, recoveryMode,
-                mmapAppendix, mmapSegments, segmentSize, appendixFlushCheckpointSize, otherDirs,
-                cacheCheckDelay, segmentsOpenCheckDelay,
+        int maxOpenSegments = swaydb.eventually.persistent.Map$.MODULE$.apply$default$2();
+        int mapSize = swaydb.eventually.persistent.Map$.MODULE$.apply$default$3();
+        int maxMemoryLevelSize = swaydb.eventually.persistent.Map$.MODULE$.apply$default$4();
+        int maxSegmentsToPush = swaydb.eventually.persistent.Map$.MODULE$.apply$default$5();
+        int memoryLevelSegmentSize = swaydb.eventually.persistent.Map$.MODULE$.apply$default$6();
+        int persistentLevelSegmentSize = swaydb.eventually.persistent.Map$.MODULE$.apply$default$7();
+        int persistentLevelAppendixFlushCheckpointSize = swaydb.eventually.persistent.Map$.MODULE$.apply$default$8();
+        swaydb.data.config.MMAP mmapPersistentSegments = swaydb.eventually.persistent.Map$.MODULE$.apply$default$9();
+        boolean mmapPersistentAppendix = swaydb.eventually.persistent.Map$.MODULE$.apply$default$10();
+        int cacheSize = swaydb.eventually.persistent.Map$.MODULE$.apply$default$11();
+        Seq<Dir> otherDirs = swaydb.eventually.persistent.Map$.MODULE$.apply$default$12();
+        FiniteDuration cacheCheckDelay = swaydb.eventually.persistent.Map$.MODULE$.apply$default$13();
+        FiniteDuration segmentsOpenCheckDelay = swaydb.eventually.persistent.Map$.MODULE$.apply$default$14();
+        double bloomFilterFalsePositiveRate = swaydb.eventually.persistent.Map$.MODULE$.apply$default$15();
+        boolean compressDuplicateValues = swaydb.eventually.persistent.Map$.MODULE$.apply$default$16();
+        boolean deleteSegmentsEventually = swaydb.eventually.persistent.Map$.MODULE$.apply$default$17();
+        Option<KeyValueGroupingStrategy> groupingStrategy =
+                swaydb.eventually.persistent.Map$.MODULE$.apply$default$18();
+        Function1<Level0Meter, Accelerator> acceleration = swaydb.eventually.persistent.Map$.MODULE$.apply$default$19();
+        swaydb.data.order.KeyOrder keyOrder = swaydb.eventually.persistent.Map$.MODULE$.apply$default$22(
+                dir, maxOpenSegments, mapSize, maxMemoryLevelSize, maxSegmentsToPush, memoryLevelSegmentSize,
+                persistentLevelSegmentSize, persistentLevelAppendixFlushCheckpointSize, mmapPersistentSegments,
+                mmapPersistentAppendix, cacheSize, otherDirs, cacheCheckDelay, segmentsOpenCheckDelay,
                 bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
-                lastLevelGroupingStrategy, acceleration);
-        scala.concurrent.ExecutionContext ec = swaydb.persistent.Map$.MODULE$.apply$default$22(dir,
-                maxOpenSegments, cacheSize, mapSize, mmapMaps,
-                recoveryMode, mmapAppendix, mmapSegments, segmentSize, appendixFlushCheckpointSize,
-                otherDirs, cacheCheckDelay, segmentsOpenCheckDelay,
-                bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
-                lastLevelGroupingStrategy, acceleration);
+                groupingStrategy, acceleration);
+        scala.concurrent.ExecutionContext ec = swaydb.eventually.persistent.Map$.MODULE$.apply$default$23(
+                dir, maxOpenSegments, mapSize, maxMemoryLevelSize, maxSegmentsToPush, memoryLevelSegmentSize,
+                persistentLevelSegmentSize, persistentLevelAppendixFlushCheckpointSize,
+                mmapPersistentSegments, mmapPersistentAppendix, cacheSize, otherDirs,
+                cacheCheckDelay, segmentsOpenCheckDelay, bloomFilterFalsePositiveRate,
+                compressDuplicateValues, deleteSegmentsEventually, groupingStrategy, acceleration);
         return new Set<>(
-                (swaydb.Set<K, IO>) swaydb.persistent.Set$.MODULE$.apply(dir,
-                maxOpenSegments, cacheSize, mapSize, mmapMaps, recoveryMode,
-                mmapAppendix, mmapSegments, segmentSize, appendixFlushCheckpointSize, otherDirs,
-                cacheCheckDelay, segmentsOpenCheckDelay,
-                bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
-                lastLevelGroupingStrategy, acceleration, Serializer.classToType(keySerializer),
-                keyOrder, ec).get());
+                (swaydb.Set<K, IO>) swaydb.eventually.persistent.Set$.MODULE$.apply(dir,
+                maxOpenSegments, mapSize, maxMemoryLevelSize, maxSegmentsToPush,
+                memoryLevelSegmentSize, persistentLevelSegmentSize, persistentLevelAppendixFlushCheckpointSize,
+                mmapPersistentSegments, mmapPersistentAppendix, cacheSize, otherDirs,
+                cacheCheckDelay, segmentsOpenCheckDelay, bloomFilterFalsePositiveRate,
+                compressDuplicateValues, deleteSegmentsEventually, groupingStrategy, acceleration,
+                Serializer.classToType(keySerializer), keyOrder, ec).get());
     }
 
     @SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
     public static class Builder<K> {
 
         private Path dir;
-        private int maxOpenSegments = swaydb.persistent.Map$.MODULE$.apply$default$2();
-        private int cacheSize = swaydb.persistent.Map$.MODULE$.apply$default$3();
-        private int mapSize = swaydb.persistent.Map$.MODULE$.apply$default$4();
-        private boolean mmapMaps = swaydb.persistent.Map$.MODULE$.apply$default$5();
-        private swaydb.data.config.RecoveryMode recoveryMode = swaydb.persistent.Map$.MODULE$.apply$default$6();
-        private boolean mmapAppendix = swaydb.persistent.Map$.MODULE$.apply$default$7();
-        private swaydb.data.config.MMAP mmapSegments = swaydb.persistent.Map$.MODULE$.apply$default$8();
-        private int segmentSize = swaydb.persistent.Map$.MODULE$.apply$default$9();
-        private int appendixFlushCheckpointSize = swaydb.persistent.Map$.MODULE$.apply$default$10();
-        private Seq otherDirs = swaydb.persistent.Map$.MODULE$.apply$default$11();
-        private FiniteDuration cacheCheckDelay = swaydb.persistent.Map$.MODULE$.apply$default$12();
-        private FiniteDuration segmentsOpenCheckDelay = swaydb.persistent.Map$.MODULE$.apply$default$13();
-        private double bloomFilterFalsePositiveRate = swaydb.persistent.Map$.MODULE$.apply$default$14();
-        private boolean compressDuplicateValues = swaydb.persistent.Map$.MODULE$.apply$default$15();
-        private boolean deleteSegmentsEventually = swaydb.persistent.Map$.MODULE$.apply$default$16();
-        private Option lastLevelGroupingStrategy = swaydb.persistent.Map$.MODULE$.apply$default$17();
-        private Function1 acceleration = swaydb.persistent.Map$.MODULE$.apply$default$18();
+        private int maxOpenSegments = swaydb.eventually.persistent.Map$.MODULE$.apply$default$2();
+        private int mapSize = swaydb.eventually.persistent.Map$.MODULE$.apply$default$3();
+        private int maxMemoryLevelSize = swaydb.eventually.persistent.Map$.MODULE$.apply$default$4();
+        private int maxSegmentsToPush = swaydb.eventually.persistent.Map$.MODULE$.apply$default$5();
+        private int memoryLevelSegmentSize = swaydb.eventually.persistent.Map$.MODULE$.apply$default$6();
+        private int persistentLevelSegmentSize = swaydb.eventually.persistent.Map$.MODULE$.apply$default$7();
+        private int persistentLevelAppendixFlushCheckpointSize =
+                swaydb.eventually.persistent.Map$.MODULE$.apply$default$8();
+        private swaydb.data.config.MMAP mmapPersistentSegments =
+                swaydb.eventually.persistent.Map$.MODULE$.apply$default$9();
+        private boolean mmapPersistentAppendix = swaydb.eventually.persistent.Map$.MODULE$.apply$default$10();
+        private int cacheSize = swaydb.eventually.persistent.Map$.MODULE$.apply$default$11();
+        private Seq<Dir> otherDirs = swaydb.eventually.persistent.Map$.MODULE$.apply$default$12();
+        private FiniteDuration cacheCheckDelay = swaydb.eventually.persistent.Map$.MODULE$.apply$default$13();
+        private FiniteDuration segmentsOpenCheckDelay = swaydb.eventually.persistent.Map$.MODULE$.apply$default$14();
+        private double bloomFilterFalsePositiveRate = swaydb.eventually.persistent.Map$.MODULE$.apply$default$15();
+        private boolean compressDuplicateValues = swaydb.eventually.persistent.Map$.MODULE$.apply$default$16();
+        private boolean deleteSegmentsEventually = swaydb.eventually.persistent.Map$.MODULE$.apply$default$17();
+        private Option<KeyValueGroupingStrategy> groupingStrategy =
+                swaydb.eventually.persistent.Map$.MODULE$.apply$default$18();
+        private Function1<Level0Meter, Accelerator> acceleration =
+                swaydb.eventually.persistent.Map$.MODULE$.apply$default$19();
         private Object keySerializer;
 
         public Builder<K> withDir(Path dir) {
@@ -503,47 +513,53 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
             return this;
         }
 
-        public Builder<K> withCacheSize(int cacheSize) {
-            this.cacheSize = cacheSize;
-            return this;
-        }
-
         public Builder<K> withMapSize(int mapSize) {
             this.mapSize = mapSize;
             return this;
         }
 
-        public Builder<K> withMmapMaps(boolean mmapMaps) {
-            this.mmapMaps = mmapMaps;
+        public Builder<K> withMaxMemoryLevelSize(int maxMemoryLevelSize) {
+            this.maxMemoryLevelSize = maxMemoryLevelSize;
             return this;
         }
 
-        public Builder<K> withRecoveryMode(swaydb.data.config.RecoveryMode recoveryMode) {
-            this.recoveryMode = recoveryMode;
+        public Builder<K> withMaxSegmentsToPush(int maxSegmentsToPush) {
+            this.maxSegmentsToPush = maxSegmentsToPush;
             return this;
         }
 
-        public Builder<K> withMmapAppendix(boolean mmapAppendix) {
-            this.mmapAppendix = mmapAppendix;
+        public Builder<K> withMemoryLevelSegmentSize(int memoryLevelSegmentSize) {
+            this.memoryLevelSegmentSize = memoryLevelSegmentSize;
             return this;
         }
 
-        public Builder<K> withMmapSegments(swaydb.data.config.MMAP mmapSegments) {
-            this.mmapSegments = mmapSegments;
+        public Builder<K> withPersistentLevelSegmentSize(int persistentLevelSegmentSize) {
+            this.persistentLevelSegmentSize = persistentLevelSegmentSize;
             return this;
         }
 
-        public Builder<K> withSegmentSize(int segmentSize) {
-            this.segmentSize = segmentSize;
+        public Builder<K> withPersistentLevelAppendixFlushCheckpointSize(
+                int persistentLevelAppendixFlushCheckpointSize) {
+            this.persistentLevelAppendixFlushCheckpointSize = persistentLevelAppendixFlushCheckpointSize;
             return this;
         }
 
-        public Builder<K> withAppendixFlushCheckpointSize(int appendixFlushCheckpointSize) {
-            this.appendixFlushCheckpointSize = appendixFlushCheckpointSize;
+        public Builder<K> withMmapPersistentSegments(swaydb.data.config.MMAP mmapPersistentSegments) {
+            this.mmapPersistentSegments = mmapPersistentSegments;
             return this;
         }
 
-        public Builder<K> withOtherDirs(Seq otherDirs) {
+        public Builder<K> withMmapPersistentAppendix(boolean mmapPersistentAppendix) {
+            this.mmapPersistentAppendix = mmapPersistentAppendix;
+            return this;
+        }
+
+        public Builder<K> withCacheSize(int cacheSize) {
+            this.cacheSize = cacheSize;
+            return this;
+        }
+
+        public Builder<K> withOtherDirs(Seq<Dir> otherDirs) {
             this.otherDirs = otherDirs;
             return this;
         }
@@ -573,12 +589,12 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
             return this;
         }
 
-        public Builder<K> withLastLevelGroupingStrategy(Option lastLevelGroupingStrategy) {
-            this.lastLevelGroupingStrategy = lastLevelGroupingStrategy;
+        public Builder<K> withGroupingStrategy(Option<KeyValueGroupingStrategy> groupingStrategy) {
+            this.groupingStrategy = groupingStrategy;
             return this;
         }
 
-        public Builder<K> withAcceleration(Function1 acceleration) {
+        public Builder<K> withAcceleration(Function1<Level0Meter, Accelerator>  acceleration) {
             this.acceleration = acceleration;
             return this;
         }
@@ -590,37 +606,37 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
 
         @SuppressWarnings("unchecked")
         public Set<K> build() {
-            swaydb.data.order.KeyOrder keyOrder = swaydb.persistent.Map$.MODULE$.apply$default$21(dir,
-                    maxOpenSegments, cacheSize, mapSize, mmapMaps, recoveryMode,
-                    mmapAppendix, mmapSegments, segmentSize, appendixFlushCheckpointSize, otherDirs,
-                    cacheCheckDelay, segmentsOpenCheckDelay,
-                    bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
-                    lastLevelGroupingStrategy, acceleration);
-            scala.concurrent.ExecutionContext ec = swaydb.persistent.Map$.MODULE$.apply$default$22(dir,
-                    maxOpenSegments, cacheSize, mapSize, mmapMaps,
-                    recoveryMode, mmapAppendix, mmapSegments, segmentSize, appendixFlushCheckpointSize,
-                    otherDirs, cacheCheckDelay, segmentsOpenCheckDelay,
-                    bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
-                    lastLevelGroupingStrategy, acceleration);
+            swaydb.data.order.KeyOrder keyOrder = swaydb.eventually.persistent.Map$.MODULE$.apply$default$22(
+                dir, maxOpenSegments, mapSize, maxMemoryLevelSize, maxSegmentsToPush, memoryLevelSegmentSize,
+                persistentLevelSegmentSize, persistentLevelAppendixFlushCheckpointSize, mmapPersistentSegments,
+                mmapPersistentAppendix, cacheSize, otherDirs, cacheCheckDelay, segmentsOpenCheckDelay,
+                bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
+                groupingStrategy, acceleration);
+            scala.concurrent.ExecutionContext ec = swaydb.eventually.persistent.Map$.MODULE$.apply$default$23(
+                dir, maxOpenSegments, mapSize, maxMemoryLevelSize, maxSegmentsToPush, memoryLevelSegmentSize,
+                persistentLevelSegmentSize, persistentLevelAppendixFlushCheckpointSize,
+                mmapPersistentSegments, mmapPersistentAppendix, cacheSize, otherDirs,
+                cacheCheckDelay, segmentsOpenCheckDelay, bloomFilterFalsePositiveRate,
+                compressDuplicateValues, deleteSegmentsEventually, groupingStrategy, acceleration);
             return new Set<>(
-                    (swaydb.Set<K, IO>) swaydb.persistent.Set$.MODULE$.apply(dir,
-                    maxOpenSegments, cacheSize, mapSize, mmapMaps, recoveryMode,
-                    mmapAppendix, mmapSegments, segmentSize, appendixFlushCheckpointSize, otherDirs,
-                    cacheCheckDelay, segmentsOpenCheckDelay,
-                    bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
-                    lastLevelGroupingStrategy, acceleration, Serializer.classToType(keySerializer),
-                    keyOrder, ec).get());
+                (swaydb.Set<K, IO>) swaydb.eventually.persistent.Set$.MODULE$.apply(dir,
+                maxOpenSegments, mapSize, maxMemoryLevelSize, maxSegmentsToPush,
+                memoryLevelSegmentSize, persistentLevelSegmentSize, persistentLevelAppendixFlushCheckpointSize,
+                mmapPersistentSegments, mmapPersistentAppendix, cacheSize, otherDirs,
+                cacheCheckDelay, segmentsOpenCheckDelay, bloomFilterFalsePositiveRate,
+                compressDuplicateValues, deleteSegmentsEventually, groupingStrategy, acceleration,
+                Serializer.classToType(keySerializer), keyOrder, ec).get());
         }
     }
 
     /**
      * Creates the builder.
      * @param <K> the type of the key element
+     * @param <V> the type of the value element
      *
      * @return the builder
      */
     public static <K> Builder<K> builder() {
         return new Builder<>();
     }
-
 }
