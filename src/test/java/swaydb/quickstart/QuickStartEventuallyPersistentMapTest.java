@@ -44,8 +44,6 @@ import org.junit.Test;
 import scala.collection.mutable.ListBuffer;
 import scala.runtime.AbstractFunction1;
 import swaydb.base.TestBase;
-import swaydb.data.config.MMAP;
-import swaydb.data.config.RecoveryMode;
 import swaydb.data.slice.Slice;
 import swaydb.java.ApacheSerializer;
 import swaydb.java.Apply;
@@ -774,24 +772,25 @@ public class QuickStartEventuallyPersistentMapTest extends TestBase {
                         .withDir(addTarget(Paths.get("disk2builder")))
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
-                        .withMaxOpenSegments(1000)
-                        .withCacheSize(100000000)
-                        .withMapSize(4000000)
-                        .withMmapMaps(true)
-                        .withRecoveryMode(RecoveryMode.ReportFailure$.MODULE$)
-                        .withMmapAppendix(true)
-                        .withMmapSegments(MMAP.WriteAndRead$.MODULE$)
-                        .withSegmentSize(2000000)
-                        .withAppendixFlushCheckpointSize(2000000)
-                        .withOtherDirs(scala.collection.immutable.Nil$.MODULE$)
-                        .withCacheCheckDelay(scala.concurrent.duration.FiniteDuration.apply(5, TimeUnit.SECONDS))
-                        .withSegmentsOpenCheckDelay(
-                                scala.concurrent.duration.FiniteDuration.apply(5, TimeUnit.SECONDS))
-                        .withBloomFilterFalsePositiveRate(0.01)
-                        .withCompressDuplicateValues(true)
-                        .withDeleteSegmentsEventually(false)
-                        .withLastLevelGroupingStrategy(scala.Option.empty())
-                        .withAcceleration(swaydb.persistent.Map$.MODULE$.apply$default$18())
+                        .withMaxOpenSegments(swaydb.eventually.persistent.Map$.MODULE$.apply$default$2())
+                        .withMapSize(swaydb.eventually.persistent.Map$.MODULE$.apply$default$3())
+                        .withMaxMemoryLevelSize(swaydb.eventually.persistent.Map$.MODULE$.apply$default$4())
+                        .withMaxSegmentsToPush(swaydb.eventually.persistent.Map$.MODULE$.apply$default$5())
+                        .withMemoryLevelSegmentSize(swaydb.eventually.persistent.Map$.MODULE$.apply$default$6())
+                        .withPersistentLevelSegmentSize(swaydb.eventually.persistent.Map$.MODULE$.apply$default$7())
+                        .withPersistentLevelAppendixFlushCheckpointSize(
+                                swaydb.eventually.persistent.Map$.MODULE$.apply$default$8())
+                        .withMmapPersistentSegments(swaydb.eventually.persistent.Map$.MODULE$.apply$default$9())
+                        .withMmapPersistentAppendix(swaydb.eventually.persistent.Map$.MODULE$.apply$default$10())
+                        .withCacheSize(swaydb.eventually.persistent.Map$.MODULE$.apply$default$11())
+                        .withOtherDirs(swaydb.eventually.persistent.Map$.MODULE$.apply$default$12())
+                        .withCacheCheckDelay(swaydb.eventually.persistent.Map$.MODULE$.apply$default$13())
+                        .withSegmentsOpenCheckDelay(swaydb.eventually.persistent.Map$.MODULE$.apply$default$14())
+                        .withBloomFilterFalsePositiveRate(swaydb.eventually.persistent.Map$.MODULE$.apply$default$15())
+                        .withCompressDuplicateValues(swaydb.eventually.persistent.Map$.MODULE$.apply$default$16())
+                        .withDeleteSegmentsEventually(swaydb.eventually.persistent.Map$.MODULE$.apply$default$17())
+                        .withGroupingStrategy(swaydb.eventually.persistent.Map$.MODULE$.apply$default$18())
+                        .withAcceleration(swaydb.eventually.persistent.Map$.MODULE$.apply$default$19())
                         .build()) {
             // db.put(1, "one").get
             db.put(1, "one");
