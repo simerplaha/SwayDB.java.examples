@@ -18,17 +18,9 @@
  */
 package swaydb.java.configuringlevels;
 
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.concurrent.TimeUnit;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import scala.Option;
-import scala.Predef$;
-import scala.collection.Seq;
 import scala.concurrent.ExecutionContext;
 import scala.runtime.AbstractFunction1;
 import swaydb.base.TestBase;
@@ -36,15 +28,23 @@ import swaydb.data.accelerate.Accelerator;
 import swaydb.data.accelerate.Level0Meter;
 import swaydb.data.compaction.LevelMeter;
 import swaydb.data.compaction.Throttle;
-import swaydb.data.config.Dir;
 import swaydb.data.config.MMAP;
 import swaydb.data.config.SwayDBPersistentConfig;
 import swaydb.data.order.KeyOrder;
 import swaydb.java.ConfigWizard;
+import swaydb.java.Dirs;
 import swaydb.java.Duration;
 import swaydb.java.RecoveryMode;
 import swaydb.java.Serializer;
 import swaydb.java.StorageDoubleImplicits;
+
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.concurrent.TimeUnit;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
 
 @SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
 public class PersistentMapTest extends TestBase {
@@ -89,9 +89,9 @@ public class PersistentMapTest extends TestBase {
                             }
                     })
                 .addPersistentLevel(addTarget(Paths.get("Disk1/myDB")),
-                        (Seq) Predef$.MODULE$.wrapRefArray((Object[]) new Dir[]{
-                    swaydb.package$.MODULE$.pathStringToDir("target/Disk2/myDB"),
-                    swaydb.package$.MODULE$.pathStringToDir("target/Disk3/myDB")}),
+                        Dirs.create(
+                           addTarget(Paths.get("Disk2/myDB")),
+                           addTarget(Paths.get("Disk3/myDB"))),
                         StorageDoubleImplicits.mb(4.0),
                         MMAP.WriteAndRead$.MODULE$, true, 0, true, 0, true, true, (Option) scala.None$.MODULE$,
                         new AbstractFunction1<LevelMeter, Throttle>() {

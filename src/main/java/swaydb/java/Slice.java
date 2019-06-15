@@ -22,7 +22,7 @@ import java.nio.charset.StandardCharsets;
 import swaydb.data.slice.Slice$;
 
 /**
- * The RecoveryMode wrapper.
+ * The Slice wrapper.
  */
 public class Slice {
 
