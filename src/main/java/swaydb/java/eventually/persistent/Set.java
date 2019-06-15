@@ -632,7 +632,6 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
     /**
      * Creates the builder.
      * @param <K> the type of the key element
-     * @param <V> the type of the value element
      *
      * @return the builder
      */

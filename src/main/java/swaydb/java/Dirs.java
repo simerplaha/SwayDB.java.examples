@@ -30,7 +30,7 @@ import java.nio.file.Path;
 public class Dirs {
 
     /**
-     * Creates the Seq<Dir> object.
+     * Creates the dir objects.
      * @param paths the path
      *
      * @return the Slice object

@@ -1,6 +1,6 @@
 # SwayDB.java 
 
-[![Maven Central](https://img.shields.io/maven-central/v/io.swaydb/swaydb-java.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22io.swaydb%22%20AND%20a%3A%22swaydb-java%22)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.javadev/swaydb-java.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.github.javadev%22%20AND%20a%3A%22swaydb-java%22)
 [![Build Status](https://travis-ci.com/simerplaha/SwayDB.java.svg?branch=master)](https://travis-ci.com/simerplaha/SwayDB.java)
 [![codecov.io](http://codecov.io/github/simerplaha/SwayDB.java/coverage.svg?branch=master)](http://codecov.io/github/simerplaha/SwayDB.java?branch=master)
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=SwayDB.java&metric=sqale_rating)](https://sonarcloud.io/dashboard/index/SwayDB.java)
@@ -23,9 +23,9 @@ Include the following in your `pom.xml` for Maven:
 ```
 <dependencies>
   <dependency>
-    <groupId>io.swaydb</groupId>
+    <groupId>com.github.javadev</groupId>
     <artifactId>swaydb-java</artifactId>
-    <version>0.8-beta.8.7</version>
+    <version>0.8-beta.8.8</version>
   </dependency>
   ...
 </dependencies>
@@ -34,7 +34,7 @@ Include the following in your `pom.xml` for Maven:
 Gradle:
 
 ```groovy
-compile 'io.swaydb:swaydb-java:0.8-beta.8.7'
+compile 'com.github.javadev:swaydb-java:0.8-beta.8.8'
 ```
 
 ### Usage
