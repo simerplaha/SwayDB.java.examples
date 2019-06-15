@@ -26,8 +26,6 @@ import scala.runtime.AbstractFunction1;
 import swaydb.base.TestBase;
 import swaydb.data.accelerate.Accelerator;
 import swaydb.data.accelerate.Level0Meter;
-import swaydb.data.compaction.LevelMeter;
-import swaydb.data.compaction.Throttle;
 import swaydb.data.config.MMAP;
 import swaydb.data.config.SwayDBPersistentConfig;
 import swaydb.data.order.KeyOrder;
@@ -37,6 +35,7 @@ import swaydb.java.Duration;
 import swaydb.java.RecoveryMode;
 import swaydb.java.Serializer;
 import swaydb.java.StorageDoubleImplicits;
+import swaydb.java.Throttle;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -77,34 +76,25 @@ public class PersistentMapTest extends TestBase {
                         true,
                         true,
                         (Option) scala.None$.MODULE$,
-                        new AbstractFunction1<LevelMeter, Throttle>() {
-                            @Override
-                            public final Throttle apply(LevelMeter levelMeter) {
-                                return levelMeter.levelSize()
-                                        > StorageDoubleImplicits.gb(1.0)
-                                        ? new swaydb.data.compaction.Throttle(
-                                             Duration.zero(), 10)
-                                        : new swaydb.data.compaction.Throttle(
-                                             Duration.zero(), 0);
-                            }
-                    })
+                        Throttle.create(levelMeter -> levelMeter.levelSize()
+                            > StorageDoubleImplicits.gb(1.0)
+                            ? new swaydb.data.compaction.Throttle(
+                            Duration.zero(), 10)
+                            : new swaydb.data.compaction.Throttle(
+                            Duration.zero(), 0)))
                 .addPersistentLevel(addTarget(Paths.get("Disk1/myDB")),
                         Dirs.create(
                            addTarget(Paths.get("Disk2/myDB")),
                            addTarget(Paths.get("Disk3/myDB"))),
                         StorageDoubleImplicits.mb(4.0),
                         MMAP.WriteAndRead$.MODULE$, true, 0, true, 0, true, true, (Option) scala.None$.MODULE$,
-                        new AbstractFunction1<LevelMeter, Throttle>() {
-                            public static final long serialVersionUID = 0L;
-
-                            public final Throttle apply(LevelMeter levelMeter) {
-                                return levelMeter.segmentsCount() > 100 ? new swaydb.data.compaction.Throttle(
+                        Throttle.create(levelMeter -> levelMeter.segmentsCount() > 100
+                              ? new swaydb.data.compaction.Throttle(
                                              Duration.zero(), 10)
                                         : new swaydb.data.compaction.Throttle(
-                                             Duration.zero(), 0);
-                            }
-                        });
-        KeyOrder ordering = (KeyOrder) swaydb.data.order.KeyOrder$.MODULE$.reverse();
+                                             Duration.zero(), 0))
+                      );
+        KeyOrder ordering = swaydb.data.order.KeyOrder$.MODULE$.reverse();
         ExecutionContext ec = swaydb.SwayDB$.MODULE$.defaultExecutionContext();
 
         try (swaydb.java.persistent.Map<Integer, String> db = new swaydb.java.persistent.Map<>(
