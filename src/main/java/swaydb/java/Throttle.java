@@ -25,15 +25,15 @@ import swaydb.data.compaction.LevelMeter;
 import java.util.function.Function;
 
 /**
- * The Slice wrapper.
+ * The Throttle function wrapper.
  */
 public class Throttle {
 
     /**
-     * Creates the function.
-     * @param function the function
+     * Creates the scala throttle function.
+     * @param function the throttle function
      *
-     * @return the function
+     * @return the scala throttle function
      */
     public static Function1<LevelMeter, swaydb.data.compaction.Throttle> create(
             Function<LevelMeter, swaydb.data.compaction.Throttle> function) {
