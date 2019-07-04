@@ -19,7 +19,8 @@
 package swaydb.java;
 
 import swaydb.data.accelerate.Accelerator$;
-import swaydb.data.accelerate.Level0Meter;
+import swaydb.data.accelerate.LevelZeroMeter;
+
 
 /**
  * The Accelerator wrapper.
@@ -31,7 +32,7 @@ public class Accelerator {
      *
      * @return the Accelerator object
      */
-    public static swaydb.data.accelerate.Accelerator cruise(Level0Meter level0Meter) {
+    public static swaydb.data.accelerate.Accelerator cruise(LevelZeroMeter level0Meter) {
         return Accelerator$.MODULE$.cruise(level0Meter);
     }
 }

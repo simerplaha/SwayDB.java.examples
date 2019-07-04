@@ -20,30 +20,22 @@ package swaydb.java.configuringlevels;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import scala.Option;
 import scala.concurrent.ExecutionContext;
+import scala.concurrent.duration.FiniteDuration;
 import scala.runtime.AbstractFunction1;
 import swaydb.base.TestBase;
 import swaydb.data.accelerate.Accelerator;
-import swaydb.data.accelerate.Level0Meter;
-import swaydb.data.config.MMAP;
-import swaydb.data.config.SwayDBPersistentConfig;
+import swaydb.data.accelerate.LevelZeroMeter;
+import swaydb.data.config.LevelZeroPersistentConfig;
 import swaydb.data.order.KeyOrder;
 import swaydb.java.ConfigWizard;
-import swaydb.java.Dirs;
 import swaydb.java.Duration;
 import swaydb.java.RecoveryMode;
-import swaydb.java.Serializer;
 import swaydb.java.StorageDoubleImplicits;
-import swaydb.java.Throttle;
 
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
 
 @SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
 public class PersistentMapTest extends TestBase {
@@ -58,61 +50,68 @@ public class PersistentMapTest extends TestBase {
     @SuppressWarnings("unchecked")
     @Test
     public void persistentMapIntStringConfig() {
-        SwayDBPersistentConfig config = ConfigWizard.addPersistentLevel0(
+        LevelZeroPersistentConfig config = ConfigWizard.addPersistentLevel0(
                 StorageDoubleImplicits.mb(4.0),
                 addTarget(Paths.get("Disk1/myDB")),
                 true,
+                null,
                 RecoveryMode.ReportFailure.get(),
-                new AbstractFunction1<Level0Meter, Accelerator>() {
+                new AbstractFunction1<LevelZeroMeter, Accelerator>() {
                     @Override
-                    public Accelerator apply(Level0Meter level0Meter) {
+                    public Accelerator apply(LevelZeroMeter level0Meter) {
                         return swaydb.java.Accelerator.cruise(level0Meter);
                     }
-                })
-                .addMemoryLevel1(
-                        StorageDoubleImplicits.mb(4.0),
-                        false,
-                        0.1,
-                        true,
-                        true,
-                        (Option) scala.None$.MODULE$,
-                        Throttle.create(levelMeter -> levelMeter.levelSize()
-                            > StorageDoubleImplicits.gb(1.0)
-                            ? new swaydb.data.compaction.Throttle(
-                            Duration.zero(), 10)
-                            : new swaydb.data.compaction.Throttle(
-                            Duration.zero(), 0)))
-                .addPersistentLevel(addTarget(Paths.get("Disk1/myDB")),
-                        Dirs.create(
-                           addTarget(Paths.get("Disk2/myDB")),
-                           addTarget(Paths.get("Disk3/myDB"))),
-                        StorageDoubleImplicits.mb(4.0),
-                        MMAP.WriteAndRead$.MODULE$, true, 0, true, 0, true, true, (Option) scala.None$.MODULE$,
-                        Throttle.create(levelMeter -> levelMeter.segmentsCount() > 100
-                              ? new swaydb.data.compaction.Throttle(
-                                             Duration.zero(), 10)
-                                        : new swaydb.data.compaction.Throttle(
-                                             Duration.zero(), 0))
-                      );
-        KeyOrder ordering = swaydb.data.order.KeyOrder$.MODULE$.reverse();
+                },
+                new AbstractFunction1<LevelZeroMeter, FiniteDuration>() {
+                    @Override
+                    public FiniteDuration apply(LevelZeroMeter level0Meter) {
+                        return Duration.of(5, TimeUnit.SECONDS);
+                    }
+                });
+//                .addMemoryLevel1(
+//                        StorageDoubleImplicits.mb(4.0),
+//                        false,
+//                      false,
+//                        0.1,
+//                        true,
+//                        true,
+//                        (Option) scala.None$.MODULE$
+//                        )
+//                .addPersistentLevel1(addTarget(Paths.get("Disk1/myDB")),
+//                        (Seq) Predef$.MODULE$.wrapRefArray((Object[]) new Dir[]{
+//                    swaydb.package$.MODULE$.pathStringToDir("target/Disk2/myDB"),
+//                    swaydb.package$.MODULE$.pathStringToDir("target/Disk3/myDB")}),
+//                        StorageDoubleImplicits.mb(4.0),
+//                        MMAP.WriteAndRead$.MODULE$, true, 0, true, 0, true, true, (Option) scala.None$.MODULE$,
+//                        new AbstractFunction1<LevelMeter, Throttle>() {
+//                            public static final long serialVersionUID = 0L;
+//
+//                            public final Throttle apply(LevelMeter levelMeter) {
+//                                return levelMeter.segmentsCount() > 100 ? new swaydb.data.compaction.Throttle(
+//                                             Duration.zero(), 10)
+//                                        : new swaydb.data.compaction.Throttle(
+//                                             Duration.zero(), 0);
+//                            }
+//                        });
+        KeyOrder ordering = swaydb.data.order.KeyOrder$.MODULE$.lexicographic();
         ExecutionContext ec = swaydb.SwayDB$.MODULE$.defaultExecutionContext();
 
-        try (swaydb.java.persistent.Map<Integer, String> db = new swaydb.java.persistent.Map<>(
-              (swaydb.Map<Integer, String, swaydb.data.IO>)
-                    swaydb.SwayDB$.MODULE$.apply(config, 1000, StorageDoubleImplicits.gb(1.0),
-                          Duration.of(5, TimeUnit.SECONDS),
-                          Duration.of(5, TimeUnit.SECONDS),
-                          Serializer.classToType(Integer.class),
-                          Serializer.classToType(String.class),
-                          ordering, ec).get())) {
-            db.put(1, "one");
-            // db.get(1).get
-            String result = db.get(1);
-            assertThat(result, equalTo("one"));
-            // db.remove(1).get
-            db.remove(1);
-            String result2 = db.get(1);
-            assertThat("Empty result", result2, nullValue());
-        }
+//        try (swaydb.java.persistent.Map<Integer, String> db = new swaydb.java.persistent.Map<>(
+//              (swaydb.Map<Integer, String, swaydb.data.IO>)
+//                    swaydb.SwayDB$.MODULE$.apply(config, 1000, StorageDoubleImplicits.gb(1.0),
+//                          Duration.of(5, TimeUnit.SECONDS),
+//                          Duration.of(5, TimeUnit.SECONDS),
+//                          Serializer.classToType(Integer.class),
+//                          Serializer.classToType(String.class),
+//                          ordering, ec).get())) {
+//            db.put(1, "one");
+//            // db.get(1).get
+//            String result = db.get(1);
+//            assertThat(result, equalTo("one"));
+//            // db.remove(1).get
+//            db.remove(1);
+//            String result2 = db.get(1);
+//            assertThat("Empty result", result2, nullValue());
+//        }
     }
 }

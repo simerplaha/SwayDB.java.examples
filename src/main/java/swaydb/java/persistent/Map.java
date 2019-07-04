@@ -47,7 +47,7 @@ import scala.runtime.AbstractFunction1;
 import swaydb.Apply;
 import swaydb.Prepare;
 import swaydb.data.IO;
-import swaydb.data.accelerate.Level0Meter;
+import swaydb.data.accelerate.LevelZeroMeter;
 import swaydb.data.compaction.LevelMeter;
 import swaydb.java.Serializer;
 
@@ -169,7 +169,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      * @return the level of meter for zerro level
      */
     @Override
-    public Level0Meter level0Meter() {
+    public LevelZeroMeter level0Meter() {
         return database.level0Meter();
     }
 
@@ -769,11 +769,11 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public Level0Meter commit(Prepare<K, V>... prepares) {
+    public swaydb.data.IO.OK commit(Prepare<K, V>... prepares) {
         List<Prepare<K, V>> preparesList = Arrays.asList(prepares);
         Iterable<Prepare<K, V>> prepareIterator
                 = JavaConverters.iterableAsScalaIterableConverter(preparesList).asScala();
-        return (Level0Meter) database.commit(prepareIterator).get();
+        return (swaydb.data.IO.OK) database.commit(prepareIterator).get();
     }
 
     /**
@@ -825,7 +825,8 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
                 cacheCheckDelay, segmentsOpenCheckDelay,
                 bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
                 lastLevelGroupingStrategy, acceleration,
-                Serializer.classToType(keySerializer), Serializer.classToType(valueSerializer), keyOrder, ec).get());
+                Serializer.classToType(keySerializer), Serializer.classToType(valueSerializer),
+                    keyOrder, ec, ec).get());
     }
 
     @SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
@@ -973,7 +974,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
                             appendixFlushCheckpointSize, otherDirs, cacheCheckDelay, segmentsOpenCheckDelay,
                             bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
                             lastLevelGroupingStrategy, acceleration, Serializer.classToType(keySerializer),
-                            Serializer.classToType(valueSerializer), keyOrder, ec).get());
+                            Serializer.classToType(valueSerializer), keyOrder, ec, ec).get());
         }
     }
 

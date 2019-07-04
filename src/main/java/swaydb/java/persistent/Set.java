@@ -39,7 +39,7 @@ import scala.concurrent.duration.Deadline;
 import scala.concurrent.duration.FiniteDuration;
 import swaydb.Prepare;
 import swaydb.data.IO;
-import swaydb.data.accelerate.Level0Meter;
+import swaydb.data.accelerate.LevelZeroMeter;
 import swaydb.data.compaction.LevelMeter;
 import swaydb.java.Serializer;
 
@@ -343,7 +343,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
      * @return the level of meter for zerro level
      */
     @Override
-    public Level0Meter level0Meter() {
+    public LevelZeroMeter level0Meter() {
         return database.level0Meter();
     }
 
@@ -414,11 +414,11 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public Level0Meter commit(Prepare<K, scala.runtime.Nothing$>... prepares) {
+    public swaydb.data.IO.OK commit(Prepare<K, scala.runtime.Nothing$>... prepares) {
         List<Prepare<K, scala.runtime.Nothing$>> preparesList = Arrays.asList(prepares);
         Iterable<Prepare<K, scala.runtime.Nothing$>> prepareIterator
                 = JavaConverters.iterableAsScalaIterableConverter(preparesList).asScala();
-        return (Level0Meter) database.commit(prepareIterator).get();
+        return (swaydb.data.IO.OK) database.commit(prepareIterator).get();
     }
 
     /**
@@ -467,7 +467,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
                 cacheCheckDelay, segmentsOpenCheckDelay,
                 bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
                 lastLevelGroupingStrategy, acceleration, Serializer.classToType(keySerializer),
-                keyOrder, ec).get());
+                keyOrder, ec, ec).get());
     }
 
     @SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
@@ -609,7 +609,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
                     cacheCheckDelay, segmentsOpenCheckDelay,
                     bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
                     lastLevelGroupingStrategy, acceleration, Serializer.classToType(keySerializer),
-                    keyOrder, ec).get());
+                    keyOrder, ec, ec).get());
         }
     }
 

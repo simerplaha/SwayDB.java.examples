@@ -31,7 +31,7 @@ import scala.concurrent.ExecutionContext;
 import scala.concurrent.duration.FiniteDuration;
 import swaydb.Prepare;
 import swaydb.data.accelerate.Accelerator;
-import swaydb.data.accelerate.Level0Meter;
+import swaydb.data.accelerate.LevelZeroMeter;
 import swaydb.data.api.grouping.KeyValueGroupingStrategy;
 import swaydb.extensions.Maps;
 import swaydb.extensions.memory.Map$;
@@ -256,7 +256,7 @@ public class Map<K, V> implements Closeable {
                 (swaydb.extensions.Map) Map$.MODULE$.apply(mapSize, segmentSize, cacheSize, cacheCheckDelay,
                         bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
                         groupingStrategy, acceleration, Serializer.classToType(keySerializer),
-                        Serializer.classToType(valueSerializer), keyOrder, ec).get());
+                        Serializer.classToType(valueSerializer), keyOrder, ec, ec).get());
     }
 
     @SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
@@ -270,7 +270,7 @@ public class Map<K, V> implements Closeable {
         private boolean compressDuplicateValues = Map$.MODULE$.apply$default$6();
         private boolean deleteSegmentsEventually = Map$.MODULE$.apply$default$7();
         private Option<KeyValueGroupingStrategy> groupingStrategy = Map$.MODULE$.apply$default$8();
-        private Function1<Level0Meter, Accelerator> acceleration = Map$.MODULE$.apply$default$9();
+        private Function1<LevelZeroMeter, Accelerator> acceleration = Map$.MODULE$.apply$default$9();
         private Object keySerializer;
         private Object valueSerializer;
 
@@ -314,7 +314,7 @@ public class Map<K, V> implements Closeable {
             return this;
         }
 
-        public Builder<K, V> withAcceleration(Function1<Level0Meter, Accelerator> acceleration) {
+        public Builder<K, V> withAcceleration(Function1<LevelZeroMeter, Accelerator> acceleration) {
             this.acceleration = acceleration;
             return this;
         }
@@ -341,7 +341,7 @@ public class Map<K, V> implements Closeable {
                 (swaydb.extensions.Map) Map$.MODULE$.apply(mapSize, segmentSize, cacheSize, cacheCheckDelay,
                         bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
                         groupingStrategy, acceleration, Serializer.classToType(keySerializer),
-                        Serializer.classToType(valueSerializer), keyOrder, ec).get());
+                        Serializer.classToType(valueSerializer), keyOrder, ec, ec).get());
         }
     }
 

@@ -21,7 +21,7 @@ package swaydb.java;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import org.junit.Test;
-import swaydb.data.accelerate.Level0Meter;
+
 
 @SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
 public class AcceleratorTest {
@@ -31,8 +31,8 @@ public class AcceleratorTest {
         assertThat(new Accelerator(), notNullValue());
     }
 
-    @Test
-    public void cruise() {
-        assertThat(Accelerator.cruise(new Level0Meter(0, 0, 0)), notNullValue());
-    }
+//    @Test
+//    public void cruise() {
+//        assertThat(Accelerator.cruise(new LevelZeroMeter()), notNullValue());
+//    }
 }

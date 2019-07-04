@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import swaydb.Prepare;
-import swaydb.data.accelerate.Level0Meter;
+import swaydb.data.accelerate.LevelZeroMeter;
 import swaydb.data.compaction.LevelMeter;
 
 /**
@@ -207,7 +207,7 @@ public interface Set<K> {
      *
      * @return the level of meter for zerro level
      */
-    Level0Meter level0Meter();
+    LevelZeroMeter level0Meter();
 
     /**
      * Returns the level of meter for level.
@@ -244,5 +244,5 @@ public interface Set<K> {
      * @return the level zerro for this set
      */
     @SuppressWarnings("unchecked")
-    Level0Meter commit(Prepare<K, scala.runtime.Nothing$>... prepares);
+    swaydb.data.IO.OK commit(Prepare<K, scala.runtime.Nothing$>... prepares);
 }

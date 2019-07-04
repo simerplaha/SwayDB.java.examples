@@ -48,7 +48,7 @@ import swaydb.Apply;
 import swaydb.Prepare;
 import swaydb.data.IO;
 import swaydb.data.accelerate.Accelerator;
-import swaydb.data.accelerate.Level0Meter;
+import swaydb.data.accelerate.LevelZeroMeter;
 import swaydb.data.api.grouping.KeyValueGroupingStrategy;
 import swaydb.data.compaction.LevelMeter;
 import swaydb.memory.Map$;
@@ -172,7 +172,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      * @return the level of meter for zerro level
      */
     @Override
-    public Level0Meter level0Meter() {
+    public LevelZeroMeter level0Meter() {
         return database.level0Meter();
     }
 
@@ -772,11 +772,11 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public Level0Meter commit(Prepare<K, V>... prepares) {
+    public swaydb.data.IO.OK commit(Prepare<K, V>... prepares) {
         List<Prepare<K, V>> preparesList = Arrays.asList(prepares);
         Iterable<Prepare<K, V>> prepareIterator
                 = JavaConverters.iterableAsScalaIterableConverter(preparesList).asScala();
-        return (Level0Meter) database.commit(prepareIterator).get();
+        return (swaydb.data.IO.OK) database.commit(prepareIterator).get();
     }
 
     /**
@@ -798,7 +798,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
         boolean compressDuplicateValues = Map$.MODULE$.apply$default$6();
         boolean deleteSegmentsEventually = Map$.MODULE$.apply$default$7();
         Option<KeyValueGroupingStrategy> groupingStrategy = Map$.MODULE$.apply$default$8();
-        Function1<Level0Meter, Accelerator> acceleration = Map$.MODULE$.apply$default$9();
+        Function1<LevelZeroMeter, Accelerator> acceleration = Map$.MODULE$.apply$default$9();
 
         swaydb.data.order.KeyOrder keyOrder = Map$.MODULE$.apply$default$12(mapSize, segmentSize,
                 cacheSize, cacheCheckDelay, bloomFilterFalsePositiveRate, compressDuplicateValues,
@@ -811,7 +811,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
                 (swaydb.Map<K, V, IO>) Map$.MODULE$.apply(mapSize, segmentSize, cacheSize,
                         cacheCheckDelay, bloomFilterFalsePositiveRate, compressDuplicateValues,
                         deleteSegmentsEventually, groupingStrategy, acceleration, Serializer.classToType(keySerializer),
-                        Serializer.classToType(valueSerializer), keyOrder, ec).get());
+                        Serializer.classToType(valueSerializer), keyOrder, ec, ec).get());
     }
 
     @SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
@@ -825,7 +825,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
         private boolean compressDuplicateValues = Map$.MODULE$.apply$default$6();
         private boolean deleteSegmentsEventually = Map$.MODULE$.apply$default$7();
         private Option<KeyValueGroupingStrategy> groupingStrategy = Map$.MODULE$.apply$default$8();
-        private Function1<Level0Meter, Accelerator> acceleration = Map$.MODULE$.apply$default$9();
+        private Function1<LevelZeroMeter, Accelerator> acceleration = Map$.MODULE$.apply$default$9();
         private Object keySerializer;
         private Object valueSerializer;
 
@@ -869,7 +869,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
             return this;
         }
 
-        public Builder<K, V> withAcceleration(Function1<Level0Meter, Accelerator> acceleration) {
+        public Builder<K, V> withAcceleration(Function1<LevelZeroMeter, Accelerator> acceleration) {
             this.acceleration = acceleration;
             return this;
         }
@@ -897,7 +897,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
                             cacheCheckDelay, bloomFilterFalsePositiveRate, compressDuplicateValues,
                             deleteSegmentsEventually, groupingStrategy, acceleration,
                             Serializer.classToType(keySerializer), Serializer.classToType(valueSerializer),
-                            keyOrder, ec).get());
+                            keyOrder, ec, ec).get());
         }
     }
 

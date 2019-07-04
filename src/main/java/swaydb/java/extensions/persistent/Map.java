@@ -272,7 +272,8 @@ public class Map<K, V> implements Closeable {
                 cacheCheckDelay, segmentsOpenCheckDelay,
                 bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
                 lastLevelGroupingStrategy, acceleration,
-                Serializer.classToType(keySerializer), Serializer.classToType(valueSerializer), keyOrder, ec).get());
+                Serializer.classToType(keySerializer), Serializer.classToType(valueSerializer),
+                      keyOrder, ec, ec).get());
     }
 
     @SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
@@ -420,7 +421,8 @@ public class Map<K, V> implements Closeable {
                 cacheCheckDelay, segmentsOpenCheckDelay,
                 bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
                 lastLevelGroupingStrategy, acceleration,
-                Serializer.classToType(keySerializer), Serializer.classToType(valueSerializer), keyOrder, ec).get());
+                Serializer.classToType(keySerializer), Serializer.classToType(valueSerializer),
+                      keyOrder, ec, ec).get());
         }
     }
 
