@@ -18,17 +18,6 @@
  */
 package swaydb.java.persistent;
 
-import java.io.Closeable;
-import java.nio.file.Path;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 import scala.Function1;
 import scala.Option;
 import scala.collection.Iterable;
@@ -38,10 +27,16 @@ import scala.collection.mutable.Buffer;
 import scala.concurrent.duration.Deadline;
 import scala.concurrent.duration.FiniteDuration;
 import swaydb.Prepare;
-import swaydb.data.IO;
 import swaydb.data.accelerate.Level0Meter;
 import swaydb.data.compaction.LevelMeter;
 import swaydb.java.Serializer;
+
+import java.io.Closeable;
+import java.nio.file.Path;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * The persistent Set of data.
@@ -50,13 +45,13 @@ import swaydb.java.Serializer;
  */
 public class Set<K> implements swaydb.java.Set<K>, Closeable {
 
-    private final swaydb.Set<K, IO> database;
+    private final swaydb.Set<K> database;
 
     /**
      * Constructs the Set object.
      * @param database the database
      */
-    public Set(swaydb.Set<K, IO> database) {
+    public Set(swaydb.Set<K> database) {
         this.database = database;
     }
 
@@ -89,7 +84,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
      */
     @Override
     public Iterator<K> iterator() {
-        Seq<K> entries = database.asScala().toSeq();
+        Seq<K> entries = database.toSeq();
         java.util.List<K> result = new ArrayList<>();
         for (int index = 0; index < entries.size(); index += 1) {
             result.add(entries.apply(index));
@@ -104,7 +99,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
      */
     @Override
     public Object[] toArray() {
-        Seq<K> entries = database.asScala().toSeq();
+        Seq<K> entries = database.toSeq();
         java.util.List<K> result = new ArrayList<>();
         for (int index = 0; index < entries.size(); index += 1) {
             result.add(entries.apply(index));
@@ -234,7 +229,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
     @SuppressWarnings("unchecked")
     @Override
     public boolean retainAll(Collection<K> collection) {
-        Seq<K> entries = database.asScala().toSeq();
+        Seq<K> entries = database.toSeq();
         java.util.List<K> result = new ArrayList<>();
         for (int index = 0; index < entries.size(); index += 1) {
             result.add(entries.apply(index));
@@ -272,7 +267,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
     @SuppressWarnings("unchecked")
     @Override
     public int size() {
-        return database.asScala().size();
+        return database.toSeq().size();
     }
 
     /**
@@ -282,7 +277,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
      */
     @Override
     public boolean isEmpty() {
-        return (boolean) database.isEmpty().get();
+        return database.toSeq().isEmpty();
     }
 
     /**
@@ -292,7 +287,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
      */
     @Override
     public boolean nonEmpty() {
-        return (boolean) database.nonEmpty().get();
+        return database.toSeq().nonEmpty();
     }
 
     /**
@@ -373,7 +368,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
      */
     @Override
     public void clear() {
-        database.asScala().clear();
+        database.remove(database.toSeq()).get();
     }
 
     /**
@@ -395,7 +390,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
      */
     @Override
     public java.util.Set<K> asJava() {
-        return JavaConverters.setAsJavaSetConverter(database.asScala()).asJava();
+        return new HashSet<K>(JavaConverters.seqAsJavaListConverter(database.toSeq()).asJava());
     }
 
     /**
@@ -461,7 +456,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
                 bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
                 lastLevelGroupingStrategy, acceleration);
         return new Set<>(
-                (swaydb.Set<K, IO>) swaydb.persistent.Set$.MODULE$.apply(dir,
+                (swaydb.Set<K>) swaydb.persistent.Set$.MODULE$.apply(dir,
                 maxOpenSegments, cacheSize, mapSize, mmapMaps, recoveryMode,
                 mmapAppendix, mmapSegments, segmentSize, appendixFlushCheckpointSize, otherDirs,
                 cacheCheckDelay, segmentsOpenCheckDelay,
@@ -603,7 +598,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
                     bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
                     lastLevelGroupingStrategy, acceleration);
             return new Set<>(
-                    (swaydb.Set<K, IO>) swaydb.persistent.Set$.MODULE$.apply(dir,
+                    (swaydb.Set<K>) swaydb.persistent.Set$.MODULE$.apply(dir,
                     maxOpenSegments, cacheSize, mapSize, mmapMaps, recoveryMode,
                     mmapAppendix, mmapSegments, segmentSize, appendixFlushCheckpointSize, otherDirs,
                     cacheCheckDelay, segmentsOpenCheckDelay,

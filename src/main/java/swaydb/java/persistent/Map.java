@@ -18,23 +18,6 @@
  */
 package swaydb.java.persistent;
 
-import java.io.Closeable;
-import java.nio.file.Path;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.UnaryOperator;
-
 import scala.Function1;
 import scala.Option;
 import scala.Tuple2;
@@ -46,10 +29,19 @@ import scala.concurrent.duration.FiniteDuration;
 import scala.runtime.AbstractFunction1;
 import swaydb.Apply;
 import swaydb.Prepare;
-import swaydb.data.IO;
 import swaydb.data.accelerate.Level0Meter;
 import swaydb.data.compaction.LevelMeter;
 import swaydb.java.Serializer;
+
+import java.io.Closeable;
+import java.nio.file.Path;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.Set;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * The persistent Map of data.
@@ -59,13 +51,13 @@ import swaydb.java.Serializer;
  */
 public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
 
-    private final swaydb.Map<K, V, IO> database;
+    private final swaydb.Map<K, V> database;
 
     /**
      * Constructs the Map object.
      * @param database the database
      */
-    public Map(swaydb.Map<K, V, IO> database) {
+    public Map(swaydb.Map<K, V> database) {
         this.database = database;
     }
 
@@ -76,7 +68,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      */
     @Override
     public int size() {
-        return database.asScala().size();
+        return database.toSeq().size();
     }
 
     /**
@@ -86,7 +78,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      */
     @Override
     public boolean isEmpty() {
-        return (boolean) database.isEmpty().get();
+        return database.isEmpty();
     }
 
     /**
@@ -96,7 +88,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      */
     @Override
     public boolean nonEmpty() {
-        return (boolean) database.nonEmpty().get();
+        return database.nonEmpty();
     }
 
     /**
@@ -225,7 +217,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     @SuppressWarnings("unchecked")
     @Override
     public java.util.Map.Entry<K, V> head() {
-        Object result = database.headOption().get();
+        Object result = database.headOption();
         if (result instanceof scala.Some) {
             scala.Tuple2<K, V> tuple2 = (scala.Tuple2<K, V>) ((scala.Some) result).get();
             return new AbstractMap.SimpleEntry<>(tuple2._1(), tuple2._2());
@@ -252,7 +244,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     @SuppressWarnings("unchecked")
     @Override
     public java.util.Map.Entry<K, V> last() {
-        Object result = database.lastOption().get();
+        Object result = database.lastOption();
         if (result instanceof scala.Some) {
             scala.Tuple2<K, V> tuple2 = (scala.Tuple2<K, V>) ((scala.Some) result).get();
             return new AbstractMap.SimpleEntry<>(tuple2._1(), tuple2._2());
@@ -318,7 +310,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      */
     @Override
     public void clear() {
-        database.asScala().clear();
+        database.remove(database.keys().toSeq()).get();
     }
 
     /**
@@ -328,7 +320,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      */
     @Override
     public Set<K> keySet() {
-        Seq<Tuple2<K, V>> entries = database.asScala().toSeq();
+        Seq<Tuple2<K, V>> entries = database.toSeq();
         Set<K> result = new LinkedHashSet<>();
         for (int index = 0; index < entries.size(); index += 1) {
             Tuple2<K, V> tuple2 = entries.apply(index);
@@ -345,7 +337,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     @SuppressWarnings("unchecked")
     @Override
     public K keysHead() {
-        Object result = database.keys().headOption().get();
+        Object result = database.keys().headOption();
         if (result instanceof scala.Some) {
             return (K) ((scala.Some) result).get();
         }
@@ -370,7 +362,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     @SuppressWarnings("unchecked")
     @Override
     public K keysLast() {
-        Object result = database.keys().lastOption().get();
+        Object result = database.keys().lastOption();
         if (result instanceof scala.Some) {
             return (K) ((scala.Some) result).get();
         }
@@ -394,7 +386,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      */
     @Override
     public List<V> values() {
-        Seq<Tuple2<K, V>> entries = database.asScala().toSeq();
+        Seq<Tuple2<K, V>> entries = database.toSeq();
         List<V> result = new ArrayList<>();
         for (int index = 0; index < entries.size(); index += 1) {
             Tuple2<K, V> tuple2 = entries.apply(index);
@@ -411,7 +403,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     @SuppressWarnings("unchecked")
     @Override
     public Set<java.util.Map.Entry<K, V>> entrySet() {
-        Seq<Tuple2<K, V>> entries = database.asScala().toSeq();
+        Seq<Tuple2<K, V>> entries = database.toSeq();
         Set<java.util.Map.Entry<K, V>> result = new LinkedHashSet<>();
         for (int index = 0; index < entries.size(); index += 1) {
             Tuple2<K, V> tuple2 = entries.apply(index);
@@ -565,7 +557,12 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      */
     @Override
     public java.util.Map<K, V> asJava() {
-        return JavaConverters.mapAsJavaMapConverter(database.asScala()).asJava();
+        List<Tuple2<K, V>> list = JavaConverters.seqAsJavaListConverter(database.toSeq()).asJava();
+        java.util.Map<K, V> map = new LinkedHashMap<>();
+        for (Tuple2<K, V> item : list) {
+            map.put(item._1(), item._2());
+        }
+        return map;
     }
 
     /**
@@ -634,123 +631,23 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      * @return the key objects for this map
      */
     @Override
-    public swaydb.Set<K, IO> keys() {
+    public swaydb.Set<K> keys() {
         return database.keys();
-    }
-
-    /**
-     * Returns the reversed map object for this map.
-     *
-     * @return the reversed map object for this map
-     */
-    @Override
-    public Map<K, V> reverse() {
-        return new Map<>(database.reverse());
-    }
-
-    /**
-     * Starts the map function for this map.
-     * @param function the function
-     *
-     * @return the stream object for this map
-     */
-    @Override
-    public swaydb.java.Stream<K, V> map(UnaryOperator<java.util.Map.Entry<K, V>> function) {
-        return new swaydb.java.Stream<>(database.map(new AbstractFunction1<Tuple2<K, V>, Object>() {
-            @Override
-            public Object apply(Tuple2<K, V> tuple2) {
-                java.util.Map.Entry<K, V> result = function.apply(
-                      new AbstractMap.SimpleEntry<>(tuple2._1(), tuple2._2()));
-                return Tuple2.apply(result.getKey(), result.getValue());
-            }
-        }));
-    }
-
-    /**
-     * Starts the drop function for this map.
-     * @param count the count
-     *
-     * @return the stream object for this map
-     */
-    @Override
-    public swaydb.java.Stream<K, V> drop(int count) {
-        return new swaydb.java.Stream<>(database.drop(count));
-    }
-
-    /**
-     * Starts the dropWhile function for this map.
-     * @param predicate the function
-     *
-     * @return the stream object for this map
-     */
-    @Override
-    public swaydb.java.Stream<K, V> dropWhile(final Predicate<java.util.Map.Entry<K, V>> predicate) {
-        return new swaydb.java.Stream<>(database.dropWhile(new AbstractFunction1<Tuple2<K, V>, Object>() {
-            @Override
-            public Object apply(Tuple2<K, V> tuple2) {
-                return predicate.test(new AbstractMap.SimpleEntry<>(tuple2._1(), tuple2._2()));
-            }
-        }));
-    }
-
-    /**
-     * Starts the take function for this map.
-     * @param count the count
-     *
-     * @return the stream object for this map
-     */
-    @Override
-    public swaydb.java.Stream<K, V> take(int count) {
-        return new swaydb.java.Stream<>(database.take(count));
-    }
-
-    /**
-     * Starts the takeWhile function for this map.
-     * @param predicate the function
-     *
-     * @return the stream object for this map
-     */
-    @Override
-    public swaydb.java.Stream<K, V> takeWhile(final Predicate<java.util.Map.Entry<K, V>> predicate) {
-        return new swaydb.java.Stream<>(database.takeWhile(new AbstractFunction1<Tuple2<K, V>, Object>() {
-            @Override
-            public Object apply(Tuple2<K, V> tuple2) {
-                return predicate.test(new AbstractMap.SimpleEntry<>(tuple2._1(), tuple2._2()));
-            }
-        }));
     }
 
     /**
      * Starts the foreach function for this map.
      * @param consumer the consumer
-     *
-     * @return the stream object for this map
      */
     @Override
-    public swaydb.java.Stream<K, V> foreach(Consumer<java.util.Map.Entry<K, V>> consumer) {
-        return new swaydb.java.Stream<>(database.foreach(new AbstractFunction1<Tuple2<K, V>, Object>() {
+    public void foreach(Consumer<java.util.Map.Entry<K, V>> consumer) {
+        database.foreach(new AbstractFunction1<Tuple2<K, V>, Object>() {
             @Override
             public Object apply(Tuple2<K, V> tuple2) {
                 consumer.accept(new AbstractMap.SimpleEntry<>(tuple2._1(), tuple2._2()));
                 return null;
             }
-        }));
-    }
-
-    /**
-     * Starts the filter function for this map.
-     * @param predicate the function
-     *
-     * @return the stream object for this map
-     */
-    @Override
-    public swaydb.java.Stream<K, V> filter(final Predicate<java.util.Map.Entry<K, V>> predicate) {
-        return new swaydb.java.Stream<>(database.filter(new AbstractFunction1<Tuple2<K, V>, Object>() {
-            @Override
-            public Object apply(Tuple2<K, V> tuple2) {
-                return predicate.test(new AbstractMap.SimpleEntry<>(tuple2._1(), tuple2._2()));
-            }
-        }));
+        });
     }
 
     /**
@@ -819,7 +716,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
                 bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
                 lastLevelGroupingStrategy, acceleration);
         return new Map<>(
-                (swaydb.Map<K, V, IO>) swaydb.persistent.Map$.MODULE$.apply(dir,
+                (swaydb.Map<K, V>) swaydb.persistent.Map$.MODULE$.apply(dir,
                 maxOpenSegments, cacheSize, mapSize, mmapMaps, recoveryMode,
                 mmapAppendix, mmapSegments, segmentSize, appendixFlushCheckpointSize, otherDirs,
                 cacheCheckDelay, segmentsOpenCheckDelay,
@@ -967,7 +864,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
                     bloomFilterFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
                     lastLevelGroupingStrategy, acceleration);
             return new Map<>(
-                    (swaydb.Map<K, V, IO>) swaydb.persistent.Map$.MODULE$.apply(dir,
+                    (swaydb.Map<K, V>) swaydb.persistent.Map$.MODULE$.apply(dir,
                             maxOpenSegments,
                             cacheSize, mapSize, mmapMaps, recoveryMode, mmapAppendix, mmapSegments, segmentSize,
                             appendixFlushCheckpointSize, otherDirs, cacheCheckDelay, segmentsOpenCheckDelay,

@@ -18,6 +18,12 @@
  */
 package swaydb.quickstart;
 
+import org.junit.BeforeClass;
+import org.junit.Test;
+import swaydb.base.TestBase;
+import swaydb.data.config.MMAP;
+import swaydb.data.config.RecoveryMode;
+
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
@@ -27,15 +33,11 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
 import static org.awaitility.Awaitility.await;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import swaydb.base.TestBase;
-import swaydb.data.config.MMAP;
-import swaydb.data.config.RecoveryMode;
 
 @SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
 public class QuickStartPersistentSetTest extends TestBase {

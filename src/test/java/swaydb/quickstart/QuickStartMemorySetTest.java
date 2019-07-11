@@ -18,6 +18,9 @@
  */
 package swaydb.quickstart;
 
+import org.junit.Test;
+import swaydb.base.TestBase;
+
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -25,12 +28,11 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
 import static org.awaitility.Awaitility.await;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
-import org.junit.Test;
-import swaydb.base.TestBase;
 
 @SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
 public class QuickStartMemorySetTest extends TestBase {

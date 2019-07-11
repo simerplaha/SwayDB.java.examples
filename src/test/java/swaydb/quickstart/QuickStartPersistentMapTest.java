@@ -18,31 +18,8 @@
  */
 package swaydb.quickstart;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.AbstractMap;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import static org.awaitility.Awaitility.await;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import scala.collection.mutable.ListBuffer;
-import scala.runtime.AbstractFunction1;
 import swaydb.base.TestBase;
 import swaydb.data.config.MMAP;
 import swaydb.data.config.RecoveryMode;
@@ -50,6 +27,22 @@ import swaydb.data.slice.Slice;
 import swaydb.java.ApacheSerializer;
 import swaydb.java.Apply;
 import swaydb.java.BytesReader;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static org.awaitility.Awaitility.await;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
 
 @SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
 public class QuickStartPersistentMapTest extends TestBase {
@@ -97,217 +90,12 @@ public class QuickStartPersistentMapTest extends TestBase {
             // and atomically write updated key-values
             db
                     .from(10)
-                    .takeWhile(item -> item.getKey() <= 90)
-                    .map(item -> new AbstractMap.SimpleEntry<>(item.getKey(), item.getValue() + "_updated"))
-                    .materialize().foreach(integerStringEntry ->
+                    .foreach(integerStringEntry ->
                         db.put(integerStringEntry.getKey(), integerStringEntry.getValue()));
             // assert the key-values were updated
-            IntStream.rangeClosed(10, 90)
-                    .mapToObj(item -> new AbstractMap.SimpleEntry<>(item, db.get(item)))
-                    .forEach(pair -> assertThat(pair.getValue().endsWith("_updated"), equalTo(true)));
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    @Test
-    public void persistentMapIntStringFromOrAfter() {
-        try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map.create(
-                Integer.class, String.class, addTarget(Paths.get("disk1FromOrAfter")))) {
-            // write 100 key-values atomically
-            db.put(IntStream.rangeClosed(1, 100)
-                    .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
-                    .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue())));
-
-            db
-                    .fromOrAfter(10)
-                    .takeWhile(item -> item.getKey() <= 90)
-                    .map(item -> new AbstractMap.SimpleEntry<>(item.getKey(), item.getValue() + "_updated"))
-                    .materialize().foreach(integerStringEntry ->
-                        db.put(integerStringEntry.getKey(), integerStringEntry.getValue()));
-            // assert the key-values were updated
-            IntStream.rangeClosed(10, 90)
-                    .mapToObj(item -> new AbstractMap.SimpleEntry<>(item, db.get(item)))
-                    .forEach(pair -> assertThat(pair.getValue().endsWith("_updated"), equalTo(true)));
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    @Test
-    public void persistentMapIntStringFromOrBefore() {
-        try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map.create(
-                Integer.class, String.class, addTarget(Paths.get("disk1FromOrBefore")))) {
-            // write 100 key-values atomically
-            db.put(IntStream.rangeClosed(1, 100)
-                    .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
-                    .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue())));
-
-            db
-                    .fromOrBefore(10)
-                    .takeWhile(item -> item.getKey() <= 90)
-                    .map(item -> new AbstractMap.SimpleEntry<>(item.getKey(), item.getValue() + "_updated"))
-                    .materialize().foreach(db::put);
-            // assert the key-values were updated
-            IntStream.rangeClosed(10, 90)
-                    .mapToObj(item -> new AbstractMap.SimpleEntry<>(item, db.get(item)))
-                    .forEach(pair -> assertThat(pair.getValue().endsWith("_updated"), equalTo(true)));
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    @Test
-    public void persistentMapIntStringKeys() {
-        try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map.create(
-                Integer.class, String.class, addTarget(Paths.get("disk1Keys")))) {
-            // write 100 key-values atomically
-            db.put(IntStream.rangeClosed(1, 100)
-                    .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
-                    .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue())));
-
-            final Set<Integer> result = new LinkedHashSet<>();
-            db
-                    .keys()
-                    .reverse()
-                    .fromOrBefore(10)
-                    .take(5)
-                    .materialize()
-                    .foreach(new AbstractFunction1() {
-                        @Override
-                        public Object apply(Object t1) {
-                            scala.collection.Seq<Integer> entries = ((ListBuffer) t1).seq();
-                            for (int index = 0; index < entries.size(); index += 1) {
-                                result.add(entries.apply(index));
-                            }
-                            return null;
-                        }
-                    });
-            assertThat(result.toString(), equalTo("[10, 9, 8, 7, 6]"));
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    @Test
-    public void persistentMapIntStringReverse() {
-        try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map.create(
-                Integer.class, String.class, addTarget(Paths.get("disk1Reverse")))) {
-            // write 100 key-values atomically
-            db.put(IntStream.rangeClosed(1, 100)
-                    .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
-                    .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue())));
-
-            final Set<Integer> result = new LinkedHashSet<>();
-            db
-                    .reverse()
-                    .keys()
-                    .fromOrBefore(10)
-                    .take(5)
-                    .materialize()
-                    .foreach(new AbstractFunction1() {
-                        @Override
-                        public Object apply(Object t1) {
-                            scala.collection.Seq<Integer> entries = ((ListBuffer) t1).seq();
-                            for (int index = 0; index < entries.size(); index += 1) {
-                                result.add(entries.apply(index));
-                            }
-                            return null;
-                        }
-                    });
-            assertThat(result.toString(), equalTo("[10, 9, 8, 7, 6]"));
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    @Test
-    public void persistentMapIntStringMap() {
-        try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map.create(
-                Integer.class, String.class, addTarget(Paths.get("disk1Map")))) {
-            // write 10 key-values atomically
-            db.put(IntStream.rangeClosed(1, 10)
-                    .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
-                    .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue())));
-
-            final Set<Map.Entry<Integer, String>> result = new LinkedHashSet<>();
-            db
-                    .map(item -> new AbstractMap.SimpleEntry<>(item.getKey(), item.getValue() + "_updated"))
-                    .materialize().foreach(result::add);
-            assertThat(result.toString(), equalTo("[1=1_updated, 2=2_updated, 3=3_updated,"
-                    + " 4=4_updated, 5=5_updated, 6=6_updated, 7=7_updated, 8=8_updated,"
-                    + " 9=9_updated, 10=10_updated]"));
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    @Test
-    public void persistentMapIntStringDrop() {
-        try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map.create(
-                Integer.class, String.class, addTarget(Paths.get("disk1Drop")))) {
-            // write 10 key-values atomically
-            db.put(IntStream.rangeClosed(1, 10)
-                    .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
-                    .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue())));
-
-            final Set<Map.Entry<Integer, String>> result = new LinkedHashSet<>();
-            db
-                    .drop(5)
-                    .materialize().foreach(result::add);
-            assertThat(result.toString(), equalTo("[6=6, 7=7, 8=8, 9=9, 10=10]"));
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    @Test
-    public void persistentMapIntStringDropWhile() {
-        try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map.create(
-                Integer.class, String.class, addTarget(Paths.get("disk1DropWhile")))) {
-            // write 100 key-values atomically
-            db.put(IntStream.rangeClosed(1, 100)
-                    .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
-                    .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue())));
-
-            db
-                    .from(1)
-                    .dropWhile(item -> item.getKey() < 10)
-                    .map(item -> new AbstractMap.SimpleEntry<>(item.getKey(), item.getValue() + "_updated"))
-                    .materialize().foreach(db::put);
-            // assert the key-values were updated
-            IntStream.rangeClosed(10, 90)
-                    .mapToObj(item -> new AbstractMap.SimpleEntry<>(item, db.get(item)))
-                    .forEach(pair -> assertThat(pair.getValue().endsWith("_updated"), equalTo(true)));
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    @Test
-    public void persistentMapIntStringTake() {
-        try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map.create(
-                Integer.class, String.class, addTarget(Paths.get("disk1Take")))) {
-            // write 10 key-values atomically
-            db.put(IntStream.rangeClosed(1, 10)
-                    .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
-                    .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue())));
-
-            final Set<Map.Entry<Integer, String>> result = new LinkedHashSet<>();
-            db
-                    .take(5)
-                    .materialize().foreach(result::add);
-            assertThat(result.toString(), equalTo("[1=1, 2=2, 3=3, 4=4, 5=5]"));
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    @Test
-    public void persistentMapIntStringFilter() {
-        try (swaydb.java.persistent.Map<Integer, String> db = swaydb.java.persistent.Map.create(
-              Integer.class, String.class, addTarget(Paths.get("disk1Filter")))) {
-            // write 10 key-values atomically
-            db.put(IntStream.rangeClosed(1, 10)
-                  .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, String.valueOf(index)))
-                  .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue())));
-
-            final Set<Map.Entry<Integer, String>> result = new LinkedHashSet<>();
-            db
-                .filter(item -> item.getKey() < 5)
-                .materialize().foreach(result::add);
-            assertThat(result.toString(), equalTo("[1=1, 2=2, 3=3, 4=4]"));
+//            IntStream.rangeClosed(10, 90)
+//                    .mapToObj(item -> new AbstractMap.SimpleEntry<>(item, db.get(item)))
+//                    .forEach(pair -> assertThat(pair.getValue().endsWith("_updated"), equalTo(true)));
         }
     }
 
@@ -323,8 +111,7 @@ public class QuickStartPersistentMapTest extends TestBase {
 
             final Set<Map.Entry<Integer, String>> result = new LinkedHashSet<>();
             db
-                    .foreach(result::add)
-                    .materialize();
+                    .foreach(result::add);
             assertThat(result.toString(), equalTo("[1=1, 2=2, 3=3, 4=4, 5=5, 6=6, 7=7, 8=8, 9=9, 10=10]"));
         }
     }

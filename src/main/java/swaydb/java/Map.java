@@ -18,18 +18,15 @@
  */
 package swaydb.java;
 
+import swaydb.data.accelerate.Level0Meter;
+import swaydb.data.compaction.LevelMeter;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.UnaryOperator;
-
-import swaydb.data.IO;
-import swaydb.data.accelerate.Level0Meter;
-import swaydb.data.compaction.LevelMeter;
 
 /**
  * The Map of data.
@@ -377,70 +374,13 @@ public interface Map<K, V> {
      *
      * @return the key objects for this map
      */
-    swaydb.Set<K, IO> keys();
-
-    /**
-     * Returns the reversed map object for this map.
-     *
-     * @return the reversed map object for this map
-     */
-    Map<K, V> reverse();
-
-    /**
-     * Starts the map function for this map.
-     * @param function the function
-     *
-     * @return the stream object for this map
-     */
-    swaydb.java.Stream<K, V> map(UnaryOperator<java.util.Map.Entry<K, V>> function);
-
-    /**
-     * Starts the drop function for this map.
-     * @param count the count
-     *
-     * @return the stream object for this map
-     */
-    swaydb.java.Stream<K, V> drop(int count);
-
-    /**
-     * Starts the dropWhile function for this map.
-     * @param predicate the predicate
-     *
-     * @return the stream object for this map
-     */
-    swaydb.java.Stream<K, V> dropWhile(final Predicate<java.util.Map.Entry<K, V>> predicate);
-
-    /**
-     * Starts the take function for this map.
-     * @param count the count
-     *
-     * @return the stream object for this map
-     */
-    swaydb.java.Stream<K, V> take(int count);
-
-    /**
-     * Starts the takeWhile function for this map.
-     * @param predicate the predicate
-     *
-     * @return the stream object for this map
-     */
-    swaydb.java.Stream<K, V> takeWhile(final Predicate<java.util.Map.Entry<K, V>> predicate);
+    swaydb.Set<K> keys();
 
     /**
      * Starts the foreach function for this map.
      * @param consumer the consumer
-     *
-     * @return the stream object for this map
      */
-    swaydb.java.Stream<K, V> foreach(Consumer<java.util.Map.Entry<K, V>> consumer);
-
-    /**
-     * Starts the filter function for this map.
-     * @param predicate the predicate
-     *
-     * @return the stream object for this map
-     */
-    swaydb.java.Stream<K, V> filter(final Predicate<java.util.Map.Entry<K, V>> predicate);
+    void foreach(Consumer<java.util.Map.Entry<K, V>> consumer);
 
     /**
      * Starts the commit function for this map.

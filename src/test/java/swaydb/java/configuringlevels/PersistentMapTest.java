@@ -18,12 +18,6 @@
  */
 package swaydb.java.configuringlevels;
 
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.concurrent.TimeUnit;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import scala.Option;
@@ -39,12 +33,13 @@ import swaydb.data.compaction.Throttle;
 import swaydb.data.config.Dir;
 import swaydb.data.config.MMAP;
 import swaydb.data.config.SwayDBPersistentConfig;
-import swaydb.data.order.KeyOrder;
 import swaydb.java.ConfigWizard;
 import swaydb.java.Duration;
 import swaydb.java.RecoveryMode;
-import swaydb.java.Serializer;
 import swaydb.java.StorageDoubleImplicits;
+
+import java.io.IOException;
+import java.nio.file.Paths;
 
 @SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
 public class PersistentMapTest extends TestBase {
@@ -104,25 +99,25 @@ public class PersistentMapTest extends TestBase {
                                              Duration.zero(), 0);
                             }
                         });
-        KeyOrder ordering = (KeyOrder) swaydb.data.order.KeyOrder$.MODULE$.reverse();
+//        KeyOrder ordering = (KeyOrder) swaydb.data.order.KeyOrder$.MODULE$.reverse();
         ExecutionContext ec = swaydb.SwayDB$.MODULE$.defaultExecutionContext();
 
-        try (swaydb.java.persistent.Map<Integer, String> db = new swaydb.java.persistent.Map<>(
-              (swaydb.Map<Integer, String, swaydb.data.IO>)
-                    swaydb.SwayDB$.MODULE$.apply(config, 1000, StorageDoubleImplicits.gb(1.0),
-                          Duration.of(5, TimeUnit.SECONDS),
-                          Duration.of(5, TimeUnit.SECONDS),
-                          Serializer.classToType(Integer.class),
-                          Serializer.classToType(String.class),
-                          ordering, ec).get())) {
-            db.put(1, "one");
-            // db.get(1).get
-            String result = db.get(1);
-            assertThat(result, equalTo("one"));
-            // db.remove(1).get
-            db.remove(1);
-            String result2 = db.get(1);
-            assertThat("Empty result", result2, nullValue());
-        }
+//        try (swaydb.java.persistent.Map<Integer, String> db = new swaydb.java.persistent.Map<>(
+//              (swaydb.Map<Integer, String>)
+//                    swaydb.SwayDB$.MODULE$.apply(config, 1000, StorageDoubleImplicits.gb(1.0),
+//                          Duration.of(5, TimeUnit.SECONDS),
+//                          Duration.of(5, TimeUnit.SECONDS),
+//                          Serializer.classToType(Integer.class),
+//                          Serializer.classToType(String.class),
+//                          ordering, ec).get())) {
+//            db.put(1, "one");
+//            // db.get(1).get
+//            String result = db.get(1);
+//            assertThat(result, equalTo("one"));
+//            // db.remove(1).get
+//            db.remove(1);
+//            String result2 = db.get(1);
+//            assertThat("Empty result", result2, nullValue());
+//        }
     }
 }
