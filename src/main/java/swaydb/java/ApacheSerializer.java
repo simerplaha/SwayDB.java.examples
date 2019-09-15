@@ -39,7 +39,7 @@ public class ApacheSerializer<T extends Serializable> implements swaydb.serializ
     @Override
     public Slice<Object> write(T myData) {
         byte[] data = SerializationUtils.serialize(myData);
-        return Slice$.MODULE$.ByteSliceImplicits(Slice$.MODULE$.create(data.length,
+        return Slice$.MODULE$.ByteSliceImplicits(Slice$.MODULE$.create(data.length, true,
                 scala.reflect.ClassTag$.MODULE$.Any()))
                 .addBytes(Slice$.MODULE$.apply(data, scala.reflect.ClassTag$.MODULE$.Any()));
     }
@@ -52,7 +52,7 @@ public class ApacheSerializer<T extends Serializable> implements swaydb.serializ
      */
     @Override
     public T read(Slice<Object> data) {
-        Slice<Object> byteSlice = Slice$.MODULE$.ByteSliceImplicits(data).createReader()
+        Slice<Object> byteSlice = Slice$.MODULE$.ByteSliceImplicits(data).createReaderUnsafe()
                 .readRemaining();
         byte[] result = new byte[byteSlice.size()];
         for (int index = 0; index < byteSlice.size(); index += 1) {

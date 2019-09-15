@@ -27,7 +27,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
-import swaydb.data.IO;
+import swaydb.IO;
 import swaydb.data.accelerate.LevelZeroMeter;
 import swaydb.data.compaction.LevelMeter;
 
@@ -449,5 +449,5 @@ public interface Map<K, V> {
      * @return the level zerro for this map
      */
     @SuppressWarnings("unchecked")
-    swaydb.data.IO.OK commit(swaydb.Prepare<K, V>... prepares);
+    swaydb.IO.Done commit(swaydb.Prepare<K, V>... prepares);
 }

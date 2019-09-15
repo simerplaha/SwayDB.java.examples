@@ -216,7 +216,7 @@ public class Map<K, V> implements Closeable {
      * @return the IO.OK for this map
      */
     @SuppressWarnings("unchecked")
-    public swaydb.data.IO.OK commit(Prepare<K, V>... prepares) {
+    public swaydb.IO.Done commit(Prepare<K, V>... prepares) {
         List<Prepare<K, V>> preparesList = Arrays.asList(prepares);
         Iterable<Prepare<K, V>> prepareIterator
                 = JavaConverters.iterableAsScalaIterableConverter(preparesList).asScala();

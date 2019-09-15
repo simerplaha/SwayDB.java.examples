@@ -244,5 +244,5 @@ public interface Set<K> {
      * @return the level zerro for this set
      */
     @SuppressWarnings("unchecked")
-    swaydb.data.IO.OK commit(Prepare<K, scala.runtime.Nothing$>... prepares);
+    swaydb.IO.Done commit(Prepare<K, scala.runtime.Nothing$>... prepares);
 }

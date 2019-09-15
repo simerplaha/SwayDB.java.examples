@@ -38,11 +38,12 @@ import scala.concurrent.ExecutionContext;
 import scala.concurrent.duration.Deadline;
 import scala.concurrent.duration.FiniteDuration;
 import swaydb.Prepare;
-import swaydb.data.IO;
+import swaydb.IO;
 import swaydb.data.accelerate.Accelerator;
 import swaydb.data.accelerate.LevelZeroMeter;
-import swaydb.data.api.grouping.KeyValueGroupingStrategy;
+import swaydb.data.api.grouping.GroupBy.KeyValues;
 import swaydb.data.compaction.LevelMeter;
+import swaydb.data.order.KeyOrder;
 import swaydb.memory.Map$;
 import swaydb.memory.Set$;
 import swaydb.java.Serializer;
@@ -418,11 +419,11 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public swaydb.data.IO.OK commit(Prepare<K, scala.runtime.Nothing$>... prepares) {
+    public swaydb.IO.Done commit(Prepare<K, scala.runtime.Nothing$>... prepares) {
         List<Prepare<K, scala.runtime.Nothing$>> preparesList = Arrays.asList(prepares);
         Iterable<Prepare<K, scala.runtime.Nothing$>> prepareIterator
                 = JavaConverters.iterableAsScalaIterableConverter(preparesList).asScala();
-        return (swaydb.data.IO.OK) database.commit(prepareIterator).get();
+        return (swaydb.IO.Done) database.commit(prepareIterator).get();
     }
 
     /**
@@ -436,38 +437,50 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
     public static <K> Set<K> create(Object keySerializer) {
         int mapSize = Map$.MODULE$.apply$default$1();
         int segmentSize = Map$.MODULE$.apply$default$2();
-        int cacheSize = Map$.MODULE$.apply$default$3();
-        FiniteDuration cacheCheckDelay = Map$.MODULE$.apply$default$4();
-        double bloomFilterFalsePositiveRate = Map$.MODULE$.apply$default$5();
-        boolean compressDuplicateValues = Map$.MODULE$.apply$default$6();
-        boolean deleteSegmentsEventually = Map$.MODULE$.apply$default$7();
-        Option<KeyValueGroupingStrategy> groupingStrategy = Map$.MODULE$.apply$default$8();
-        Function1<LevelZeroMeter, Accelerator> acceleration = Map$.MODULE$.apply$default$9();
-        swaydb.data.order.KeyOrder keyOrder = Map$.MODULE$.apply$default$12(mapSize, segmentSize,
-                cacheSize, cacheCheckDelay, bloomFilterFalsePositiveRate, compressDuplicateValues,
-                deleteSegmentsEventually, groupingStrategy, acceleration);
-        ExecutionContext ec = Map$.MODULE$.apply$default$13(mapSize, segmentSize, cacheSize,
-                cacheCheckDelay, bloomFilterFalsePositiveRate,
-                compressDuplicateValues, deleteSegmentsEventually, groupingStrategy, acceleration);
+        int memoryCacheSize = Map$.MODULE$.apply$default$3();
+        int maxOpenSegments = Map$.MODULE$.apply$default$4();
+        FiniteDuration memorySweeperPollInterval = Map$.MODULE$.apply$default$5();
+        FiniteDuration fileSweeperPollInterval = Map$.MODULE$.apply$default$6();
+        double mightContainFalsePositiveRate = Map$.MODULE$.apply$default$7();
+        boolean compressDuplicateValues = Map$.MODULE$.apply$default$8();
+        boolean deleteSegmentsEventually = Map$.MODULE$.apply$default$9();
+        Option groupBy = Map$.MODULE$.apply$default$10();
+        Function1 acceleration = Map$.MODULE$.apply$default$11();
+        KeyOrder keyOrder = Map$.MODULE$.apply$default$14(mapSize, segmentSize, memoryCacheSize, maxOpenSegments,
+                memorySweeperPollInterval, fileSweeperPollInterval,
+                mightContainFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually, groupBy,
+                acceleration);
+        ExecutionContext fileSweeperEC = Map$.MODULE$.apply$default$15(mapSize, segmentSize, memoryCacheSize,
+                maxOpenSegments,
+                memorySweeperPollInterval, fileSweeperPollInterval, mightContainFalsePositiveRate,
+                compressDuplicateValues, deleteSegmentsEventually, groupBy, acceleration);
+        ExecutionContext memorySweeperEC = Map$.MODULE$.apply$default$16(mapSize, segmentSize, memoryCacheSize,
+                maxOpenSegments,
+                memorySweeperPollInterval, fileSweeperPollInterval, mightContainFalsePositiveRate,
+                compressDuplicateValues, deleteSegmentsEventually, groupBy, acceleration);
+
         return new Set<>(
-                (swaydb.Set<K, IO>) Set$.MODULE$.apply(mapSize, segmentSize, cacheSize,
-                cacheCheckDelay, bloomFilterFalsePositiveRate, compressDuplicateValues,
-                deleteSegmentsEventually, groupingStrategy, acceleration, Serializer.classToType(keySerializer),
-                keyOrder, ec, ec).get());
+                (swaydb.Set<K, IO>) Set$.MODULE$.apply(mapSize, segmentSize, memoryCacheSize,
+                        maxOpenSegments, memorySweeperPollInterval, fileSweeperPollInterval,
+                        mightContainFalsePositiveRate, compressDuplicateValues,
+                deleteSegmentsEventually, groupBy, acceleration, Serializer.<K>classToType(keySerializer),
+                keyOrder, fileSweeperEC, memorySweeperEC).get());
     }
 
     @SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
     public static class Builder<K> {
 
-        private int mapSize = Map$.MODULE$.apply$default$1();
-        private int segmentSize = Map$.MODULE$.apply$default$2();
-        private int cacheSize = Map$.MODULE$.apply$default$3();
-        private FiniteDuration cacheCheckDelay = Map$.MODULE$.apply$default$4();
-        private double bloomFilterFalsePositiveRate = Map$.MODULE$.apply$default$5();
-        private boolean compressDuplicateValues = Map$.MODULE$.apply$default$6();
-        private boolean deleteSegmentsEventually = Map$.MODULE$.apply$default$7();
-        private Option<KeyValueGroupingStrategy> groupingStrategy = Map$.MODULE$.apply$default$8();
-        private Function1<LevelZeroMeter, Accelerator> acceleration = Map$.MODULE$.apply$default$9();
+        int mapSize = Map$.MODULE$.apply$default$1();
+        int segmentSize = Map$.MODULE$.apply$default$2();
+        int memoryCacheSize = Map$.MODULE$.apply$default$3();
+        int maxOpenSegments = Map$.MODULE$.apply$default$4();
+        FiniteDuration memorySweeperPollInterval = Map$.MODULE$.apply$default$5();
+        FiniteDuration fileSweeperPollInterval = Map$.MODULE$.apply$default$6();
+        double mightContainFalsePositiveRate = Map$.MODULE$.apply$default$7();
+        boolean compressDuplicateValues = Map$.MODULE$.apply$default$8();
+        boolean deleteSegmentsEventually = Map$.MODULE$.apply$default$9();
+        Option<KeyValues> groupBy = Map$.MODULE$.apply$default$10();
+        Function1<LevelZeroMeter,Accelerator> acceleration = Map$.MODULE$.apply$default$11();
         private Object keySerializer;
 
         public Builder<K> withMapSize(int mapSize) {
@@ -480,21 +493,31 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
             return this;
         }
 
-        public Builder<K> withCacheSize(int cacheSize) {
-            this.cacheSize = cacheSize;
+        public Builder<K> withMemoryCacheSize(int memoryCacheSize) {
+            this.memoryCacheSize = memoryCacheSize;
             return this;
         }
 
-        public Builder<K> withCacheCheckDelay(FiniteDuration cacheCheckDelay) {
-            this.cacheCheckDelay = cacheCheckDelay;
+        public Builder<K> withMaxOpenSegments(int maxOpenSegments) {
+            this.maxOpenSegments = maxOpenSegments;
             return this;
         }
 
-        public Builder<K> withBloomFilterFalsePositiveRate(double bloomFilterFalsePositiveRate) {
-            this.bloomFilterFalsePositiveRate = bloomFilterFalsePositiveRate;
+        public Builder<K> withMemorySweeperPollInterval(FiniteDuration memorySweeperPollInterval) {
+            this.memorySweeperPollInterval = memorySweeperPollInterval;
             return this;
         }
 
+        public Builder<K> withFileSweeperPollInterval(FiniteDuration fileSweeperPollInterval) {
+            this.fileSweeperPollInterval = fileSweeperPollInterval;
+            return this;
+        }
+
+        public Builder<K> withMightContainFalsePositiveRate(double mightContainFalsePositiveRate) {
+            this.mightContainFalsePositiveRate = mightContainFalsePositiveRate;
+            return this;
+        }
+        
         public Builder<K> withCompressDuplicateValues(boolean compressDuplicateValues) {
             this.compressDuplicateValues = compressDuplicateValues;
             return this;
@@ -505,8 +528,8 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
             return this;
         }
 
-        public Builder<K> withGroupingStrategy(Option<KeyValueGroupingStrategy> groupingStrategy) {
-            this.groupingStrategy = groupingStrategy;
+        public Builder<K> withGroupingStrategy(Option<KeyValues> groupBy) {
+            this.groupBy = groupBy;
             return this;
         }
 
@@ -522,17 +545,24 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
 
         @SuppressWarnings("unchecked")
         public Set<K> build() {
-            swaydb.data.order.KeyOrder keyOrder = Map$.MODULE$.apply$default$12(mapSize, segmentSize,
-                    cacheSize, cacheCheckDelay, bloomFilterFalsePositiveRate, compressDuplicateValues,
-                    deleteSegmentsEventually, groupingStrategy, acceleration);
-            ExecutionContext ec = Map$.MODULE$.apply$default$13(mapSize, segmentSize, cacheSize,
-                    cacheCheckDelay, bloomFilterFalsePositiveRate,
-                    compressDuplicateValues, deleteSegmentsEventually, groupingStrategy, acceleration);
-            return new Set<>(
-                    (swaydb.Set<K, IO>) Set$.MODULE$.apply(mapSize, segmentSize, cacheSize,
-                    cacheCheckDelay, bloomFilterFalsePositiveRate, compressDuplicateValues,
-                    deleteSegmentsEventually, groupingStrategy, acceleration, Serializer.classToType(keySerializer),
-                    keyOrder, ec, ec).get());
+            KeyOrder keyOrder = Map$.MODULE$.apply$default$14(mapSize, segmentSize, memoryCacheSize, maxOpenSegments,
+                memorySweeperPollInterval, fileSweeperPollInterval,
+                mightContainFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually, groupBy,
+                acceleration);
+            ExecutionContext fileSweeperEC = Map$.MODULE$.apply$default$15(mapSize, segmentSize, memoryCacheSize,
+                maxOpenSegments,
+                memorySweeperPollInterval, fileSweeperPollInterval, mightContainFalsePositiveRate,
+                compressDuplicateValues, deleteSegmentsEventually, groupBy, acceleration);
+            ExecutionContext memorySweeperEC = Map$.MODULE$.apply$default$16(mapSize, segmentSize, memoryCacheSize,
+                maxOpenSegments,
+                memorySweeperPollInterval, fileSweeperPollInterval, mightContainFalsePositiveRate,
+                compressDuplicateValues, deleteSegmentsEventually, groupBy, acceleration);
+        return new Set<>(
+                    (swaydb.Set<K, IO>) Set$.MODULE$.apply(mapSize, segmentSize, memoryCacheSize,
+                        maxOpenSegments, memorySweeperPollInterval, fileSweeperPollInterval,
+                        mightContainFalsePositiveRate, compressDuplicateValues,
+                deleteSegmentsEventually, groupBy, acceleration, Serializer.<K>classToType(keySerializer),
+                keyOrder, fileSweeperEC, memorySweeperEC).get());
         }
     }
 

@@ -32,7 +32,7 @@ import scala.concurrent.duration.FiniteDuration;
 import swaydb.Prepare;
 import swaydb.data.accelerate.Accelerator;
 import swaydb.data.accelerate.LevelZeroMeter;
-import swaydb.data.api.grouping.KeyValueGroupingStrategy;
+import swaydb.data.api.grouping.GroupBy.KeyValues;
 import swaydb.extensions.Maps;
 import swaydb.extensions.memory.Map$;
 import swaydb.java.Serializer;
