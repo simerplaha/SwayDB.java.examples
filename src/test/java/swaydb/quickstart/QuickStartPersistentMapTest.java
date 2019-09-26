@@ -770,7 +770,7 @@ public class QuickStartPersistentMapTest extends TestBase {
                         .withKeySerializer(Integer.class)
                         .withValueSerializer(String.class)
                         .withMaxOpenSegments(1000)
-                        .withCacheSize(100000000)
+                        .withMemoryCacheSize(100000000)
                         .withMapSize(4000000)
                         .withMmapMaps(true)
                         .withRecoveryMode(RecoveryMode.ReportFailure$.MODULE$)
@@ -779,14 +779,11 @@ public class QuickStartPersistentMapTest extends TestBase {
                         .withSegmentSize(2000000)
                         .withAppendixFlushCheckpointSize(2000000)
                         .withOtherDirs(scala.collection.immutable.Nil$.MODULE$)
-                        .withCacheCheckDelay(scala.concurrent.duration.FiniteDuration.apply(5, TimeUnit.SECONDS))
-                        .withSegmentsOpenCheckDelay(
-                                scala.concurrent.duration.FiniteDuration.apply(5, TimeUnit.SECONDS))
-                        .withBloomFilterFalsePositiveRate(0.01)
+                        .withMemorySweeperPollInterval(scala.concurrent.duration.FiniteDuration.apply(5, TimeUnit.SECONDS))
                         .withCompressDuplicateValues(true)
                         .withDeleteSegmentsEventually(false)
-                        .withLastLevelGroupingStrategy(scala.Option.empty())
-                        .withAcceleration(swaydb.persistent.Map$.MODULE$.apply$default$18())
+                        .withLastLevelGroupBy(scala.Option.empty())
+                        .withAcceleration(swaydb.persistent.Map$.MODULE$.apply$default$19())
                         .build()) {
             // db.put(1, "one").get
             db.put(1, "one");

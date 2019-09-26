@@ -460,12 +460,12 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
             mmapMaps, recoveryMode, mmapAppendix, mmapSegments, segmentSize, appendixFlushCheckpointSize,
             otherDirs, memorySweeperPollInterval, fileSweeperPollInterval, mightContainFalsePositiveRate,
             compressDuplicateValues, deleteSegmentsEventually, lastLevelGroupBy, acceleration);
-        ExecutionContext fileSweeperEC = Map$.MODULE$.apply$default$23(dir, maxOpenSegments, memoryCacheSize,
+        ExecutionContext fileSweeperEc = Map$.MODULE$.apply$default$23(dir, maxOpenSegments, memoryCacheSize,
             blockSize, mapSize, mmapMaps, recoveryMode, mmapAppendix, mmapSegments, segmentSize,
             appendixFlushCheckpointSize, otherDirs, memorySweeperPollInterval, fileSweeperPollInterval,
             mightContainFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
             lastLevelGroupBy, acceleration);
-        ExecutionContext memorySweeperEC = Map$.MODULE$.apply$default$24(dir, maxOpenSegments, memoryCacheSize,
+        ExecutionContext memorySweeperEc = Map$.MODULE$.apply$default$24(dir, maxOpenSegments, memoryCacheSize,
             blockSize, mapSize, mmapMaps, recoveryMode, mmapAppendix, mmapSegments, segmentSize,
             appendixFlushCheckpointSize, otherDirs, memorySweeperPollInterval, fileSweeperPollInterval,
             mightContainFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
@@ -476,7 +476,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
                 appendixFlushCheckpointSize, otherDirs, memorySweeperPollInterval, fileSweeperPollInterval,
                 mightContainFalsePositiveRate, blockSize, compressDuplicateValues, deleteSegmentsEventually,
                 lastLevelGroupBy, acceleration, Serializer.classToType(keySerializer),
-                keyOrder, fileSweeperEC, memorySweeperEC).get());
+                keyOrder, fileSweeperEc, memorySweeperEc).get());
     }
 
     @SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
@@ -522,7 +522,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
             this.blockSize = blockSize;
             return this;
         }
-        
+
         public Builder<K> withMapSize(int mapSize) {
             this.mapSize = mapSize;
             return this;
@@ -609,12 +609,12 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
                 mmapMaps, recoveryMode, mmapAppendix, mmapSegments, segmentSize, appendixFlushCheckpointSize,
                 otherDirs, memorySweeperPollInterval, fileSweeperPollInterval, mightContainFalsePositiveRate,
                 compressDuplicateValues, deleteSegmentsEventually, lastLevelGroupBy, acceleration);
-            ExecutionContext fileSweeperEC = Map$.MODULE$.apply$default$23(dir, maxOpenSegments, memoryCacheSize,
+            ExecutionContext fileSweeperEc = Map$.MODULE$.apply$default$23(dir, maxOpenSegments, memoryCacheSize,
                 blockSize, mapSize, mmapMaps, recoveryMode, mmapAppendix, mmapSegments, segmentSize,
                 appendixFlushCheckpointSize, otherDirs, memorySweeperPollInterval, fileSweeperPollInterval,
                 mightContainFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
                 lastLevelGroupBy, acceleration);
-            ExecutionContext memorySweeperEC = Map$.MODULE$.apply$default$24(dir, maxOpenSegments, memoryCacheSize,
+            ExecutionContext memorySweeperEc = Map$.MODULE$.apply$default$24(dir, maxOpenSegments, memoryCacheSize,
                 blockSize, mapSize, mmapMaps, recoveryMode, mmapAppendix, mmapSegments, segmentSize,
                 appendixFlushCheckpointSize, otherDirs, memorySweeperPollInterval, fileSweeperPollInterval,
                 mightContainFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
@@ -625,7 +625,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
                     appendixFlushCheckpointSize, otherDirs, memorySweeperPollInterval, fileSweeperPollInterval,
                     mightContainFalsePositiveRate, blockSize, compressDuplicateValues, deleteSegmentsEventually,
                     lastLevelGroupBy, acceleration, Serializer.classToType(keySerializer),
-                    keyOrder, fileSweeperEC, memorySweeperEC).get());
+                    keyOrder, fileSweeperEc, memorySweeperEc).get());
         }
     }
 

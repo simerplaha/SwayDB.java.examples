@@ -450,11 +450,11 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
                 memorySweeperPollInterval, fileSweeperPollInterval,
                 mightContainFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually, groupBy,
                 acceleration);
-        ExecutionContext fileSweeperEC = Map$.MODULE$.apply$default$15(mapSize, segmentSize, memoryCacheSize,
+        ExecutionContext fileSweeperEc = Map$.MODULE$.apply$default$15(mapSize, segmentSize, memoryCacheSize,
                 maxOpenSegments,
                 memorySweeperPollInterval, fileSweeperPollInterval, mightContainFalsePositiveRate,
                 compressDuplicateValues, deleteSegmentsEventually, groupBy, acceleration);
-        ExecutionContext memorySweeperEC = Map$.MODULE$.apply$default$16(mapSize, segmentSize, memoryCacheSize,
+        ExecutionContext memorySweeperEc = Map$.MODULE$.apply$default$16(mapSize, segmentSize, memoryCacheSize,
                 maxOpenSegments,
                 memorySweeperPollInterval, fileSweeperPollInterval, mightContainFalsePositiveRate,
                 compressDuplicateValues, deleteSegmentsEventually, groupBy, acceleration);
@@ -464,7 +464,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
                         maxOpenSegments, memorySweeperPollInterval, fileSweeperPollInterval,
                         mightContainFalsePositiveRate, compressDuplicateValues,
                 deleteSegmentsEventually, groupBy, acceleration, Serializer.<K>classToType(keySerializer),
-                keyOrder, fileSweeperEC, memorySweeperEC).get());
+                keyOrder, fileSweeperEc, memorySweeperEc).get());
     }
 
     @SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
@@ -517,7 +517,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
             this.mightContainFalsePositiveRate = mightContainFalsePositiveRate;
             return this;
         }
-        
+
         public Builder<K> withCompressDuplicateValues(boolean compressDuplicateValues) {
             this.compressDuplicateValues = compressDuplicateValues;
             return this;
@@ -549,20 +549,20 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
                 memorySweeperPollInterval, fileSweeperPollInterval,
                 mightContainFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually, groupBy,
                 acceleration);
-            ExecutionContext fileSweeperEC = Map$.MODULE$.apply$default$15(mapSize, segmentSize, memoryCacheSize,
+            ExecutionContext fileSweeperEc = Map$.MODULE$.apply$default$15(mapSize, segmentSize, memoryCacheSize,
                 maxOpenSegments,
                 memorySweeperPollInterval, fileSweeperPollInterval, mightContainFalsePositiveRate,
                 compressDuplicateValues, deleteSegmentsEventually, groupBy, acceleration);
-            ExecutionContext memorySweeperEC = Map$.MODULE$.apply$default$16(mapSize, segmentSize, memoryCacheSize,
+            ExecutionContext memorySweeperEc = Map$.MODULE$.apply$default$16(mapSize, segmentSize, memoryCacheSize,
                 maxOpenSegments,
                 memorySweeperPollInterval, fileSweeperPollInterval, mightContainFalsePositiveRate,
                 compressDuplicateValues, deleteSegmentsEventually, groupBy, acceleration);
-        return new Set<>(
+            return new Set<>(
                     (swaydb.Set<K, IO>) Set$.MODULE$.apply(mapSize, segmentSize, memoryCacheSize,
                         maxOpenSegments, memorySweeperPollInterval, fileSweeperPollInterval,
                         mightContainFalsePositiveRate, compressDuplicateValues,
                 deleteSegmentsEventually, groupBy, acceleration, Serializer.<K>classToType(keySerializer),
-                keyOrder, fileSweeperEC, memorySweeperEC).get());
+                keyOrder, fileSweeperEc, memorySweeperEc).get());
         }
     }
 

@@ -51,7 +51,6 @@ import swaydb.IO;
 import swaydb.data.accelerate.Accelerator;
 import swaydb.data.accelerate.LevelZeroMeter;
 import swaydb.data.api.grouping.GroupBy;
-import swaydb.data.api.grouping.GroupBy.KeyValues;
 import swaydb.data.compaction.LevelMeter;
 import swaydb.data.config.MMAP;
 import swaydb.data.config.RecoveryMode;
@@ -819,12 +818,12 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
                 mmapMaps, recoveryMode, mmapAppendix, mmapSegments, segmentSize, appendixFlushCheckpointSize,
                 otherDirs, memorySweeperPollInterval, fileSweeperPollInterval, mightContainFalsePositiveRate,
                 compressDuplicateValues, deleteSegmentsEventually, lastLevelGroupBy, acceleration);
-        ExecutionContext fileSweeperEC = Map$.MODULE$.apply$default$23(dir, maxOpenSegments, memoryCacheSize,
+        ExecutionContext fileSweeperEc = Map$.MODULE$.apply$default$23(dir, maxOpenSegments, memoryCacheSize,
                 blockSize, mapSize, mmapMaps, recoveryMode, mmapAppendix, mmapSegments, segmentSize,
                 appendixFlushCheckpointSize, otherDirs, memorySweeperPollInterval, fileSweeperPollInterval,
                 mightContainFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
                 lastLevelGroupBy, acceleration);
-        ExecutionContext memorySweeperEC = Map$.MODULE$.apply$default$24(dir, maxOpenSegments, memoryCacheSize,
+        ExecutionContext memorySweeperEc = Map$.MODULE$.apply$default$24(dir, maxOpenSegments, memoryCacheSize,
                 blockSize, mapSize, mmapMaps, recoveryMode, mmapAppendix, mmapSegments, segmentSize,
                 appendixFlushCheckpointSize, otherDirs, memorySweeperPollInterval, fileSweeperPollInterval,
                 mightContainFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
@@ -835,7 +834,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
                         appendixFlushCheckpointSize, otherDirs, memorySweeperPollInterval, fileSweeperPollInterval,
                         mightContainFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
                         lastLevelGroupBy, acceleration, Serializer.classToType(keySerializer),
-                        Serializer.classToType(valueSerializer), keyOrder, fileSweeperEC, memorySweeperEC).get());
+                        Serializer.classToType(valueSerializer), keyOrder, fileSweeperEc, memorySweeperEc).get());
     }
 
     @SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
@@ -882,7 +881,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
             this.blockSize = blockSize;
             return this;
         }
-        
+
         public Builder<K, V> withMapSize(int mapSize) {
             this.mapSize = mapSize;
             return this;
@@ -974,12 +973,12 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
                 mmapMaps, recoveryMode, mmapAppendix, mmapSegments, segmentSize, appendixFlushCheckpointSize,
                 otherDirs, memorySweeperPollInterval, fileSweeperPollInterval, mightContainFalsePositiveRate,
                 compressDuplicateValues, deleteSegmentsEventually, lastLevelGroupBy, acceleration);
-            ExecutionContext fileSweeperEC = Map$.MODULE$.apply$default$23(dir, maxOpenSegments, memoryCacheSize,
+            ExecutionContext fileSweeperEc = Map$.MODULE$.apply$default$23(dir, maxOpenSegments, memoryCacheSize,
                 blockSize, mapSize, mmapMaps, recoveryMode, mmapAppendix, mmapSegments, segmentSize,
                 appendixFlushCheckpointSize, otherDirs, memorySweeperPollInterval, fileSweeperPollInterval,
                 mightContainFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
                 lastLevelGroupBy, acceleration);
-            ExecutionContext memorySweeperEC = Map$.MODULE$.apply$default$24(dir, maxOpenSegments, memoryCacheSize,
+            ExecutionContext memorySweeperEc = Map$.MODULE$.apply$default$24(dir, maxOpenSegments, memoryCacheSize,
                 blockSize, mapSize, mmapMaps, recoveryMode, mmapAppendix, mmapSegments, segmentSize,
                 appendixFlushCheckpointSize, otherDirs, memorySweeperPollInterval, fileSweeperPollInterval,
                 mightContainFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
@@ -990,7 +989,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
                         appendixFlushCheckpointSize, otherDirs, memorySweeperPollInterval, fileSweeperPollInterval,
                         mightContainFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
                         lastLevelGroupBy, acceleration, Serializer.classToType(keySerializer),
-                        Serializer.classToType(valueSerializer), keyOrder, fileSweeperEC, memorySweeperEC).get());
+                        Serializer.classToType(valueSerializer), keyOrder, fileSweeperEc, memorySweeperEc).get());
         }
     }
 
