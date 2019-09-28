@@ -19,8 +19,6 @@
 package swaydb.java;
 
 import scala.Tuple2;
-import scala.collection.mutable.ListBuffer;
-import scala.collection.mutable.Seq;
 import scala.runtime.AbstractFunction1;
 import swaydb.IO;
 
@@ -37,7 +35,7 @@ import java.util.function.UnaryOperator;
  */
 public class Stream<K, V> {
     private final swaydb.Stream streamObject;
-    private final IO.Done success;
+    private final IO success;
 
     /**
      * Constructs the Stream object.
@@ -52,7 +50,7 @@ public class Stream<K, V> {
      * Constructs the Stream object.
      * @param success the success
      */
-    private Stream(final IO.Done success) {
+    private Stream(final IO success) {
         this.streamObject = null;
         this.success = success;
     }
@@ -69,7 +67,7 @@ public class Stream<K, V> {
             public Object apply(Object tuple2) {
                 java.util.Map.Entry<K, V> result = function.apply(
                         new AbstractMap.SimpleEntry<>((K) ((Tuple2) tuple2)._1(), (V) ((Tuple2) tuple2)._2()));
-                return IO.Done$.MODULE$.apply(Tuple2.apply(result.getKey(), result.getValue()));
+                return IO.Right$.MODULE$.apply(Tuple2.apply(result.getKey(), result.getValue()), null);
             }
         }));
     }
@@ -80,7 +78,7 @@ public class Stream<K, V> {
      * @return the stream object for this map
      */
     public Stream<K, V> materialize() {
-        return new Stream<>((IO.Done) streamObject.materialize());
+        return new Stream<>((IO.Right) streamObject.materialize());
     }
 
     /**
@@ -91,20 +89,13 @@ public class Stream<K, V> {
      */
     @SuppressWarnings("unchecked")
     public Stream<K, V> foreach(Consumer<Map.Entry<K, V>> consumer) {
-        success.foreach(entry -> {
-                Seq entries =  ((ListBuffer) entry.gt1).seq();
-                for (int index = 0; index < entries.size(); index += 1) {
-                    if (entries.apply(index) instanceof Tuple2) {
-                        Tuple2<K, V> tuple2 = (Tuple2<K, V>) entries.apply(index);
-                        consumer.accept(new AbstractMap.SimpleEntry<>(tuple2._1(), tuple2._2()));
-                    } else {
-                        IO.Done<Tuple2<K, V>> tuple2 = (IO.Done<Tuple2<K, V>>) entries.apply(index);
-                        consumer.accept(new AbstractMap.SimpleEntry<>(tuple2.get()._1(), tuple2.get()._2()));
-                    }
-                }
-                return null;
+        success.foreach(new AbstractFunction1() {
+            public Object apply(Object tuple2) {
+                consumer.accept(
+                        new AbstractMap.SimpleEntry<>((K) ((Tuple2) tuple2)._1(), (V) ((Tuple2) tuple2)._2()));
+                return IO.Right$.MODULE$.apply(Tuple2.apply(((Tuple2) tuple2)._1(), ((Tuple2) tuple2)._2()), null);
             }
-        );
+        });
         return this;
     }
 

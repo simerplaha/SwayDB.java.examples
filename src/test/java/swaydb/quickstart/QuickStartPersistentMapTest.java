@@ -779,7 +779,8 @@ public class QuickStartPersistentMapTest extends TestBase {
                         .withSegmentSize(2000000)
                         .withAppendixFlushCheckpointSize(2000000)
                         .withOtherDirs(scala.collection.immutable.Nil$.MODULE$)
-                        .withMemorySweeperPollInterval(scala.concurrent.duration.FiniteDuration.apply(5, TimeUnit.SECONDS))
+                        .withMemorySweeperPollInterval(scala.concurrent.duration.FiniteDuration.apply(
+                            5, TimeUnit.SECONDS))
                         .withCompressDuplicateValues(true)
                         .withDeleteSegmentsEventually(false)
                         .withLastLevelGroupBy(scala.Option.empty())
