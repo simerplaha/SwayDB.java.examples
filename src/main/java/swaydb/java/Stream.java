@@ -26,6 +26,7 @@ import java.util.AbstractMap;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
+import scala.collection.mutable.ListBuffer;
 
 /**
  * The Stream of data.
@@ -90,10 +91,22 @@ public class Stream<K, V> {
     @SuppressWarnings("unchecked")
     public Stream<K, V> foreach(Consumer<Map.Entry<K, V>> consumer) {
         success.foreach(new AbstractFunction1() {
-            public Object apply(Object tuple2) {
-                consumer.accept(
-                        new AbstractMap.SimpleEntry<>((K) ((Tuple2) tuple2)._1(), (V) ((Tuple2) tuple2)._2()));
-                return IO.Right$.MODULE$.apply(Tuple2.apply(((Tuple2) tuple2)._1(), ((Tuple2) tuple2)._2()), null);
+            public Object apply(Object t1) {
+                if (!((ListBuffer) t1).seq().isEmpty() && ((ListBuffer) t1).seq().apply(0) instanceof IO.Right) {
+                    scala.collection.Seq<IO.Right> entries = ((ListBuffer) t1).seq();
+                    for (int index = 0; index < entries.size(); index += 1) {
+                        consumer.accept(new AbstractMap.SimpleEntry<>(
+                                (K) ((Tuple2) entries.apply(index).get())._1(),
+                                (V) ((Tuple2) entries.apply(index).get())._2()));
+                    }
+                } else {
+                    scala.collection.Seq<Tuple2> entries = ((ListBuffer) t1).seq();
+                    for (int index = 0; index < entries.size(); index += 1) {
+                        consumer.accept(new AbstractMap.SimpleEntry<>(
+                                (K) entries.apply(index)._1(), (V) entries.apply(index)._2()));
+                    }
+                }
+                return IO.Right$.MODULE$.apply(((ListBuffer) t1), null);
             }
         });
         return this;
