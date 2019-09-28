@@ -20,6 +20,7 @@ package swaydb.java;
 
 import java.io.Serializable;
 import org.apache.commons.lang3.SerializationUtils;
+import scala.reflect.ClassTag$;
 import swaydb.data.slice.Slice;
 import swaydb.data.slice.Slice$;
 
@@ -39,8 +40,8 @@ public class ApacheSerializer<T extends Serializable> implements swaydb.serializ
     @Override
     public Slice<Object> write(T myData) {
         byte[] data = SerializationUtils.serialize(myData);
-        return Slice$.MODULE$.ByteSliceImplicits(Slice$.MODULE$.create(data.length, true,
-                scala.reflect.ClassTag$.MODULE$.Any()))
+        return Slice$.MODULE$.ByteSliceImplicits(Slice$.MODULE$.create(data.length,
+                Slice$.MODULE$.create$default$2(), ClassTag$.MODULE$.Byte()))
                 .addBytes(Slice$.MODULE$.apply(data, scala.reflect.ClassTag$.MODULE$.Any()));
     }
 

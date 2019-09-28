@@ -19,6 +19,7 @@
 package swaydb.java;
 
 import java.nio.charset.StandardCharsets;
+import scala.reflect.ClassTag$;
 import swaydb.data.slice.Slice$;
 
 /**
@@ -29,7 +30,7 @@ public class Slice {
     private swaydb.data.slice.Slice<Object> sliceObject;
 
     private Slice(int size) {
-        sliceObject = Slice$.MODULE$.create(size, true, scala.reflect.ClassTag$.MODULE$.Any());
+        sliceObject = Slice$.MODULE$.create(size, Slice$.MODULE$.create$default$2(), ClassTag$.MODULE$.Byte());
     }
 
     /**

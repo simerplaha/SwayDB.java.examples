@@ -593,7 +593,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
             return this;
         }
 
-        public Builder<K> withAcceleration(Function1 acceleration) {
+        public Builder<K> withAcceleration(Function1<LevelZeroMeter, Accelerator> acceleration) {
             this.acceleration = acceleration;
             return this;
         }

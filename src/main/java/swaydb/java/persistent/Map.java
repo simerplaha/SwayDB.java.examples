@@ -952,7 +952,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
             return this;
         }
 
-        public Builder<K, V> withAcceleration(Function1 acceleration) {
+        public Builder<K, V> withAcceleration(Function1<LevelZeroMeter, Accelerator> acceleration) {
             this.acceleration = acceleration;
             return this;
         }
