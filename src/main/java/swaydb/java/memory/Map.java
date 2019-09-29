@@ -836,7 +836,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
         boolean compressDuplicateValues = Map$.MODULE$.apply$default$8();
         boolean deleteSegmentsEventually = Map$.MODULE$.apply$default$9();
         Option<KeyValues> groupBy = Map$.MODULE$.apply$default$10();
-        Function1<LevelZeroMeter,Accelerator> acceleration = Map$.MODULE$.apply$default$11();
+        Function1<LevelZeroMeter, Accelerator> acceleration = Map$.MODULE$.apply$default$11();
         private Object keySerializer;
         private Object valueSerializer;
 

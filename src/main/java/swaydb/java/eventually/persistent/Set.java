@@ -458,7 +458,7 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
         boolean compressDuplicateValues = Set$.MODULE$.apply$default$19();
         boolean deleteSegmentsEventually = Set$.MODULE$.apply$default$20();
         Option groupBy = Set$.MODULE$.apply$default$21();
-        Function1 acceleration = Set$.MODULE$.apply$default$22();
+        Function1<LevelZeroMeter, Accelerator> acceleration = Set$.MODULE$.apply$default$22();
 
         KeyOrder keyOrder = Set$.MODULE$.apply$default$24(dir, maxSegmentsOpen, mapSize, maxMemoryLevelSize,
                 maxSegmentsToPush, memoryLevelSegmentSize, persistentLevelSegmentSize,

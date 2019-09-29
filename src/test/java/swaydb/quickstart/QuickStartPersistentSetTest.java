@@ -383,7 +383,7 @@ public class QuickStartPersistentSetTest extends TestBase {
                 .withMmapSegments(MMAP.WriteAndRead$.MODULE$)
                 .withSegmentSize(2000000)
                 .withAppendixFlushCheckpointSize(2000000)
-                .withOtherDirs(scala.collection.immutable.Nil$.MODULE$)
+                .withOtherDirs(swaydb.persistent.Set$.MODULE$.apply$default$11())
                 .withMemorySweeperPollInterval(scala.concurrent.duration.FiniteDuration.apply(5, TimeUnit.SECONDS))
                 .withCompressDuplicateValues(true)
                 .withDeleteSegmentsEventually(false)
