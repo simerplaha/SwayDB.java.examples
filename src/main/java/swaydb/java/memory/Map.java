@@ -826,17 +826,17 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     @SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
     public static class Builder<K, V> {
 
-        int mapSize = Map$.MODULE$.apply$default$1();
-        int segmentSize = Map$.MODULE$.apply$default$2();
-        int memoryCacheSize = Map$.MODULE$.apply$default$3();
-        int maxOpenSegments = Map$.MODULE$.apply$default$4();
-        FiniteDuration memorySweeperPollInterval = Map$.MODULE$.apply$default$5();
-        FiniteDuration fileSweeperPollInterval = Map$.MODULE$.apply$default$6();
-        double mightContainFalsePositiveRate = Map$.MODULE$.apply$default$7();
-        boolean compressDuplicateValues = Map$.MODULE$.apply$default$8();
-        boolean deleteSegmentsEventually = Map$.MODULE$.apply$default$9();
-        Option<KeyValues> groupBy = Map$.MODULE$.apply$default$10();
-        Function1<LevelZeroMeter, Accelerator> acceleration = Map$.MODULE$.apply$default$11();
+        private int mapSize = Map$.MODULE$.apply$default$1();
+        private int segmentSize = Map$.MODULE$.apply$default$2();
+        private int memoryCacheSize = Map$.MODULE$.apply$default$3();
+        private int maxOpenSegments = Map$.MODULE$.apply$default$4();
+        private FiniteDuration memorySweeperPollInterval = Map$.MODULE$.apply$default$5();
+        private FiniteDuration fileSweeperPollInterval = Map$.MODULE$.apply$default$6();
+        private double mightContainFalsePositiveRate = Map$.MODULE$.apply$default$7();
+        private boolean compressDuplicateValues = Map$.MODULE$.apply$default$8();
+        private boolean deleteSegmentsEventually = Map$.MODULE$.apply$default$9();
+        private Option<KeyValues> groupBy = Map$.MODULE$.apply$default$10();
+        private Function1<LevelZeroMeter, Accelerator> acceleration = Map$.MODULE$.apply$default$11();
         private Object keySerializer;
         private Object valueSerializer;
 

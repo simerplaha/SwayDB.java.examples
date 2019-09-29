@@ -172,13 +172,13 @@ public class QuickStartExtensionsMemoryMapTest {
                         .withValueSerializer(String.class)
                         .withMapSize(4000000)
                         .withSegmentSize(2000000)
-                        .withCacheSize(100000000)
-                        .withCacheCheckDelay(scala.concurrent.duration.FiniteDuration.apply(5, TimeUnit.SECONDS))
-                        .withBloomFilterFalsePositiveRate(0.01)
+                        .withMemoryCacheSize(100000000)
+                        .withMemorySweeperPollInterval(
+                                scala.concurrent.duration.FiniteDuration.apply(5, TimeUnit.SECONDS))
                         .withCompressDuplicateValues(true)
                         .withDeleteSegmentsEventually(false)
-                        .withGroupingStrategy(scala.Option.empty())
-                        .withAcceleration(swaydb.memory.Map$.MODULE$.apply$default$9())
+                        .withGroupBy(scala.Option.empty())
+                        .withAcceleration(swaydb.extensions.memory.Map$.MODULE$.apply$default$11())
                         .build()) {
             // db.put(1, "one").get
             db.put(1, "one");

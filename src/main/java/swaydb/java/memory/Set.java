@@ -466,17 +466,17 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
     @SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
     public static class Builder<K> {
 
-        int mapSize = Set$.MODULE$.apply$default$1();
-        int maxOpenSegments = Set$.MODULE$.apply$default$2();
-        int segmentSize = Set$.MODULE$.apply$default$3();
-        int memoryCacheSize = Set$.MODULE$.apply$default$4();
-        FiniteDuration memorySweeperPollInterval = Set$.MODULE$.apply$default$5();
-        FiniteDuration fileSweeperPollInterval = Set$.MODULE$.apply$default$6();
-        double mightContainFalsePositiveRate = Set$.MODULE$.apply$default$7();
-        boolean compressDuplicateValues = Set$.MODULE$.apply$default$8();
-        boolean deleteSegmentsEventually = Set$.MODULE$.apply$default$9();
-        Option<KeyValues> groupBy = Set$.MODULE$.apply$default$10();
-        Function1<LevelZeroMeter, Accelerator> acceleration = Set$.MODULE$.apply$default$11();
+        private int mapSize = Set$.MODULE$.apply$default$1();
+        private int maxOpenSegments = Set$.MODULE$.apply$default$2();
+        private int segmentSize = Set$.MODULE$.apply$default$3();
+        private int memoryCacheSize = Set$.MODULE$.apply$default$4();
+        private FiniteDuration memorySweeperPollInterval = Set$.MODULE$.apply$default$5();
+        private FiniteDuration fileSweeperPollInterval = Set$.MODULE$.apply$default$6();
+        private double mightContainFalsePositiveRate = Set$.MODULE$.apply$default$7();
+        private boolean compressDuplicateValues = Set$.MODULE$.apply$default$8();
+        private boolean deleteSegmentsEventually = Set$.MODULE$.apply$default$9();
+        private Option<KeyValues> groupBy = Set$.MODULE$.apply$default$10();
+        private Function1<LevelZeroMeter, Accelerator> acceleration = Set$.MODULE$.apply$default$11();
         private Object keySerializer;
 
         public Builder<K> withMapSize(int mapSize) {

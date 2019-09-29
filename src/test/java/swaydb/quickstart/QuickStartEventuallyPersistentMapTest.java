@@ -780,7 +780,7 @@ public class QuickStartEventuallyPersistentMapTest extends TestBase {
                         .withMmapPersistentSegments(MMAP.WriteAndRead$.MODULE$)
                         .withMaxSegmentsToPush(2000000)
                         .withPersistentLevelAppendixFlushCheckpointSize(2000000)
-                        .withOtherDirs(scala.collection.immutable.Nil$.MODULE$)
+                        .withOtherDirs(swaydb.eventually.persistent.Map$.MODULE$.apply$default$11())
                         .withMemorySweeperPollInterval(scala.concurrent.duration.FiniteDuration.apply(
                             5, TimeUnit.SECONDS))
                         .withCompressDuplicateValues(true)

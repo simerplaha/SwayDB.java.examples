@@ -52,6 +52,7 @@ import swaydb.data.accelerate.Accelerator;
 import swaydb.data.accelerate.LevelZeroMeter;
 import swaydb.data.api.grouping.GroupBy;
 import swaydb.data.compaction.LevelMeter;
+import swaydb.data.config.Dir;
 import swaydb.data.config.MMAP;
 import swaydb.data.order.KeyOrder;
 import swaydb.java.Serializer;
@@ -804,7 +805,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
         int persistentLevelAppendixFlushCheckpointSize = Map$.MODULE$.apply$default$8();
         MMAP mmapPersistentSegments = Map$.MODULE$.apply$default$9();
         boolean mmapPersistentAppendix = Map$.MODULE$.apply$default$10();
-        Seq otherDirs = Map$.MODULE$.apply$default$11();
+        Seq<Dir> otherDirs = Map$.MODULE$.apply$default$11();
         int blockSize = Map$.MODULE$.apply$default$12();
         int memoryCacheSize = Map$.MODULE$.apply$default$13();
         FiniteDuration memorySweeperPollInterval = Map$.MODULE$.apply$default$14();
@@ -847,25 +848,25 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     public static class Builder<K, V> {
 
         private Path dir;
-        int maxOpenSegments = Map$.MODULE$.apply$default$2();
-        int mapSize = Map$.MODULE$.apply$default$3();
-        int maxMemoryLevelSize = Map$.MODULE$.apply$default$4();
-        int maxSegmentsToPush = Map$.MODULE$.apply$default$5();
-        int memoryLevelSegmentSize = Map$.MODULE$.apply$default$6();
-        int persistentLevelSegmentSize = Map$.MODULE$.apply$default$7();
-        int persistentLevelAppendixFlushCheckpointSize = Map$.MODULE$.apply$default$8();
-        MMAP mmapPersistentSegments = Map$.MODULE$.apply$default$9();
-        boolean mmapPersistentAppendix = Map$.MODULE$.apply$default$10();
-        Seq otherDirs = Map$.MODULE$.apply$default$11();
-        int blockSize = Map$.MODULE$.apply$default$12();
-        int memoryCacheSize = Map$.MODULE$.apply$default$13();
-        FiniteDuration memorySweeperPollInterval = Map$.MODULE$.apply$default$14();
-        FiniteDuration fileSweeperPollInterval = Map$.MODULE$.apply$default$15();
-        double mightContainFalsePositiveRate = Map$.MODULE$.apply$default$16();
-        boolean compressDuplicateValues = Map$.MODULE$.apply$default$17();
-        boolean deleteSegmentsEventually = Map$.MODULE$.apply$default$18();
-        Option<GroupBy.KeyValues> groupBy = Map$.MODULE$.apply$default$19();
-        Function1<LevelZeroMeter, Accelerator> acceleration = Map$.MODULE$.apply$default$20();
+        private int maxOpenSegments = Map$.MODULE$.apply$default$2();
+        private int mapSize = Map$.MODULE$.apply$default$3();
+        private int maxMemoryLevelSize = Map$.MODULE$.apply$default$4();
+        private int maxSegmentsToPush = Map$.MODULE$.apply$default$5();
+        private int memoryLevelSegmentSize = Map$.MODULE$.apply$default$6();
+        private int persistentLevelSegmentSize = Map$.MODULE$.apply$default$7();
+        private int persistentLevelAppendixFlushCheckpointSize = Map$.MODULE$.apply$default$8();
+        private MMAP mmapPersistentSegments = Map$.MODULE$.apply$default$9();
+        private boolean mmapPersistentAppendix = Map$.MODULE$.apply$default$10();
+        private Seq<Dir> otherDirs = Map$.MODULE$.apply$default$11();
+        private int blockSize = Map$.MODULE$.apply$default$12();
+        private int memoryCacheSize = Map$.MODULE$.apply$default$13();
+        private FiniteDuration memorySweeperPollInterval = Map$.MODULE$.apply$default$14();
+        private FiniteDuration fileSweeperPollInterval = Map$.MODULE$.apply$default$15();
+        private double mightContainFalsePositiveRate = Map$.MODULE$.apply$default$16();
+        private boolean compressDuplicateValues = Map$.MODULE$.apply$default$17();
+        private boolean deleteSegmentsEventually = Map$.MODULE$.apply$default$18();
+        private Option<GroupBy.KeyValues> groupBy = Map$.MODULE$.apply$default$19();
+        private Function1<LevelZeroMeter, Accelerator> acceleration = Map$.MODULE$.apply$default$20();
         private Object keySerializer;
         private Object valueSerializer;
 
@@ -920,7 +921,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
             return this;
         }
 
-        public Builder<K, V> withOtherDirs(Seq otherDirs) {
+        public Builder<K, V> withOtherDirs(Seq<Dir> otherDirs) {
             this.otherDirs = otherDirs;
             return this;
         }
