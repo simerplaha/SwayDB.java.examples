@@ -34,8 +34,7 @@ import static org.junit.Assert.assertThat;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import swaydb.base.TestBase;
-import swaydb.data.config.MMAP;
-import swaydb.data.config.RecoveryMode;
+import swaydb.eventually.persistent.Set$;
 
 @SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
 public class QuickStartEventuallyPersistentSetTest extends TestBase {
@@ -374,21 +373,27 @@ public class QuickStartEventuallyPersistentSetTest extends TestBase {
                 .<Integer>builder()
                 .withDir(addTarget(Paths.get("disk4builder")))
                 .withKeySerializer(Integer.class)
-                .withMaxOpenSegments(1000)
-                .withMemoryCacheSize(100000000)
-                .withMapSize(4000000)
-                .withMmapMaps(true)
-                .withRecoveryMode(RecoveryMode.ReportFailure$.MODULE$)
-                .withMmapAppendix(true)
-                .withMmapSegments(MMAP.WriteAndRead$.MODULE$)
-                .withSegmentSize(2000000)
-                .withAppendixFlushCheckpointSize(2000000)
-                .withOtherDirs(scala.collection.immutable.Nil$.MODULE$)
-                .withMemorySweeperPollInterval(scala.concurrent.duration.FiniteDuration.apply(5, TimeUnit.SECONDS))
-                .withCompressDuplicateValues(true)
-                .withDeleteSegmentsEventually(false)
-                .withLastLevelGroupBy(scala.Option.empty())
-                .withAcceleration(swaydb.persistent.Map$.MODULE$.apply$default$19())
+                .withMaxSegmentsOpen(Set$.MODULE$.apply$default$2())
+                .withMapSize(Set$.MODULE$.apply$default$3())
+                .withMaxMemoryLevelSize(Set$.MODULE$.apply$default$4())
+                .withMaxSegmentsToPush(Set$.MODULE$.apply$default$5())
+                .withMemoryLevelSegmentSize(Set$.MODULE$.apply$default$6())
+                .withPersistentLevelSegmentSize(Set$.MODULE$.apply$default$7())
+                .withPersistentLevelAppendixFlushCheckpointSize(Set$.MODULE$.apply$default$8())
+                .withMmapPersistentSegments(Set$.MODULE$.apply$default$9())
+                .withMmapPersistentAppendix(Set$.MODULE$.apply$default$10())
+                .withOtherDirs(Set$.MODULE$.apply$default$11())
+                .withKeyValueCacheCheckDelay(Set$.MODULE$.apply$default$12())
+                .withSegmentsOpenCheckDelay(Set$.MODULE$.apply$default$13())
+                .withBlockSize(Set$.MODULE$.apply$default$14())
+                .withMemoryCacheSize(Set$.MODULE$.apply$default$15())
+                .withMemorySweeperPollInterval(Set$.MODULE$.apply$default$16())
+                .withFileSweeperPollInterval(Set$.MODULE$.apply$default$17())
+                .withMightContainFalsePositiveRate(Set$.MODULE$.apply$default$18())
+                .withCompressDuplicateValues(Set$.MODULE$.apply$default$19())
+                .withDeleteSegmentsEventually(Set$.MODULE$.apply$default$20())
+                .withGroupBy(Set$.MODULE$.apply$default$21())
+                .withAcceleration(Set$.MODULE$.apply$default$22())
                 .build();
         // db.add(1).get
         db.add(1);

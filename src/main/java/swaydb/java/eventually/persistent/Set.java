@@ -44,11 +44,11 @@ import swaydb.data.accelerate.Accelerator;
 import swaydb.data.accelerate.LevelZeroMeter;
 import swaydb.data.api.grouping.GroupBy;
 import swaydb.data.compaction.LevelMeter;
+import swaydb.data.config.Dir;
 import swaydb.data.config.MMAP;
-import swaydb.data.config.RecoveryMode;
 import swaydb.data.order.KeyOrder;
+import swaydb.eventually.persistent.Set$;
 import swaydb.java.Serializer;
-import swaydb.persistent.Map$;
 
 /**
  * The persistent Set of data.
@@ -438,69 +438,81 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
      */
     @SuppressWarnings("unchecked")
     public static <K> Set<K> create(Object keySerializer, Path dir) {
-        int maxOpenSegments = Map$.MODULE$.apply$default$2();
-        int memoryCacheSize = Map$.MODULE$.apply$default$3();
-        int blockSize = Map$.MODULE$.apply$default$4();
-        int mapSize = Map$.MODULE$.apply$default$5();
-        boolean mmapMaps = Map$.MODULE$.apply$default$6();
-        RecoveryMode recoveryMode = Map$.MODULE$.apply$default$7();
-        boolean mmapAppendix = Map$.MODULE$.apply$default$8();
-        MMAP mmapSegments = Map$.MODULE$.apply$default$9();
-        int segmentSize = Map$.MODULE$.apply$default$10();
-        int appendixFlushCheckpointSize = Map$.MODULE$.apply$default$11();
-        Seq otherDirs = Map$.MODULE$.apply$default$12();
-        FiniteDuration memorySweeperPollInterval = Map$.MODULE$.apply$default$13();
-        FiniteDuration fileSweeperPollInterval = Map$.MODULE$.apply$default$14();
-        double mightContainFalsePositiveRate = Map$.MODULE$.apply$default$15();
-        boolean compressDuplicateValues = Map$.MODULE$.apply$default$16();
-        boolean deleteSegmentsEventually = Map$.MODULE$.apply$default$17();
-        Option<GroupBy.KeyValues> lastLevelGroupBy = Map$.MODULE$.apply$default$18();
-        Function1<LevelZeroMeter, Accelerator> acceleration = Map$.MODULE$.apply$default$19();
-        KeyOrder keyOrder = Map$.MODULE$.apply$default$22(dir, maxOpenSegments, memoryCacheSize, blockSize, mapSize,
-            mmapMaps, recoveryMode, mmapAppendix, mmapSegments, segmentSize, appendixFlushCheckpointSize,
-            otherDirs, memorySweeperPollInterval, fileSweeperPollInterval, mightContainFalsePositiveRate,
-            compressDuplicateValues, deleteSegmentsEventually, lastLevelGroupBy, acceleration);
-        ExecutionContext fileSweeperEc = Map$.MODULE$.apply$default$23(dir, maxOpenSegments, memoryCacheSize,
-            blockSize, mapSize, mmapMaps, recoveryMode, mmapAppendix, mmapSegments, segmentSize,
-            appendixFlushCheckpointSize, otherDirs, memorySweeperPollInterval, fileSweeperPollInterval,
-            mightContainFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
-            lastLevelGroupBy, acceleration);
-        ExecutionContext memorySweeperEc = Map$.MODULE$.apply$default$24(dir, maxOpenSegments, memoryCacheSize,
-            blockSize, mapSize, mmapMaps, recoveryMode, mmapAppendix, mmapSegments, segmentSize,
-            appendixFlushCheckpointSize, otherDirs, memorySweeperPollInterval, fileSweeperPollInterval,
-            mightContainFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
-            lastLevelGroupBy, acceleration);
+        int maxSegmentsOpen = Set$.MODULE$.apply$default$2();
+        int mapSize = Set$.MODULE$.apply$default$3();
+        int maxMemoryLevelSize = Set$.MODULE$.apply$default$4();
+        int maxSegmentsToPush = Set$.MODULE$.apply$default$5();
+        int memoryLevelSegmentSize = Set$.MODULE$.apply$default$6();
+        int persistentLevelSegmentSize = Set$.MODULE$.apply$default$7();
+        int persistentLevelAppendixFlushCheckpointSize = Set$.MODULE$.apply$default$8();
+        MMAP mmapPersistentSegments = Set$.MODULE$.apply$default$9();
+        boolean mmapPersistentAppendix = Set$.MODULE$.apply$default$10();
+        Seq otherDirs = Set$.MODULE$.apply$default$11();
+        FiniteDuration keyValueCacheCheckDelay = Set$.MODULE$.apply$default$12();
+        FiniteDuration segmentsOpenCheckDelay = Set$.MODULE$.apply$default$13();
+        int blockSize = Set$.MODULE$.apply$default$14();
+        int memoryCacheSize = Set$.MODULE$.apply$default$15();
+        FiniteDuration memorySweeperPollInterval = Set$.MODULE$.apply$default$16();
+        FiniteDuration fileSweeperPollInterval = Set$.MODULE$.apply$default$17();
+        double mightContainFalsePositiveRate = Set$.MODULE$.apply$default$18();
+        boolean compressDuplicateValues = Set$.MODULE$.apply$default$19();
+        boolean deleteSegmentsEventually = Set$.MODULE$.apply$default$20();
+        Option groupBy = Set$.MODULE$.apply$default$21();
+        Function1 acceleration = Set$.MODULE$.apply$default$22();
+
+        KeyOrder keyOrder = Set$.MODULE$.apply$default$24(dir, maxSegmentsOpen, mapSize, maxMemoryLevelSize,
+                maxSegmentsToPush, memoryLevelSegmentSize, persistentLevelSegmentSize,
+                persistentLevelAppendixFlushCheckpointSize, mmapPersistentSegments, mmapPersistentAppendix,
+                otherDirs, keyValueCacheCheckDelay, segmentsOpenCheckDelay, blockSize, memoryCacheSize,
+                memorySweeperPollInterval, fileSweeperPollInterval, mightContainFalsePositiveRate,
+                compressDuplicateValues, deleteSegmentsEventually, groupBy, acceleration);
+        ExecutionContext fileSweeperEc = Set$.MODULE$.apply$default$25(dir, maxSegmentsOpen, mapSize,
+                maxMemoryLevelSize, maxSegmentsToPush, memoryLevelSegmentSize, persistentLevelSegmentSize,
+                persistentLevelAppendixFlushCheckpointSize, mmapPersistentSegments, mmapPersistentAppendix,
+                otherDirs, keyValueCacheCheckDelay, segmentsOpenCheckDelay, blockSize, memoryCacheSize,
+                memorySweeperPollInterval, fileSweeperPollInterval, mightContainFalsePositiveRate,
+                compressDuplicateValues, deleteSegmentsEventually, groupBy, acceleration);
+        ExecutionContext memorySweeperEc = Set$.MODULE$.apply$default$26(dir, maxSegmentsOpen, mapSize,
+                maxMemoryLevelSize, maxSegmentsToPush, memoryLevelSegmentSize, persistentLevelSegmentSize,
+                persistentLevelAppendixFlushCheckpointSize, mmapPersistentSegments, mmapPersistentAppendix,
+                otherDirs, keyValueCacheCheckDelay, segmentsOpenCheckDelay, blockSize, memoryCacheSize,
+                memorySweeperPollInterval, fileSweeperPollInterval, mightContainFalsePositiveRate,
+                compressDuplicateValues, deleteSegmentsEventually, groupBy, acceleration);
         return new Set<>(
-            (swaydb.Set<K, IO>) swaydb.persistent.Set$.MODULE$.apply(dir, maxOpenSegments, memoryCacheSize,
-                mapSize, mmapMaps, recoveryMode, mmapAppendix, mmapSegments, segmentSize,
-                appendixFlushCheckpointSize, otherDirs, memorySweeperPollInterval, fileSweeperPollInterval,
-                mightContainFalsePositiveRate, blockSize, compressDuplicateValues, deleteSegmentsEventually,
-                lastLevelGroupBy, acceleration, Serializer.classToType(keySerializer),
-                keyOrder, fileSweeperEc, memorySweeperEc).get());
+            (swaydb.Set<K, IO>) swaydb.eventually.persistent.Set$.MODULE$.apply(dir, maxSegmentsOpen, mapSize,
+                    maxMemoryLevelSize, maxSegmentsToPush, memoryLevelSegmentSize, persistentLevelSegmentSize,
+                    persistentLevelAppendixFlushCheckpointSize, mmapPersistentSegments, mmapPersistentAppendix,
+                    otherDirs, keyValueCacheCheckDelay, segmentsOpenCheckDelay, blockSize, memoryCacheSize,
+                    memorySweeperPollInterval, fileSweeperPollInterval, mightContainFalsePositiveRate,
+                    compressDuplicateValues, deleteSegmentsEventually, groupBy, acceleration,
+                    Serializer.classToType(keySerializer), keyOrder, fileSweeperEc, memorySweeperEc).get());
     }
 
     @SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
     public static class Builder<K> {
 
         private Path dir;
-        private int maxOpenSegments = Map$.MODULE$.apply$default$2();
-        private int memoryCacheSize = Map$.MODULE$.apply$default$3();
-        private int blockSize = Map$.MODULE$.apply$default$4();
-        private int mapSize = Map$.MODULE$.apply$default$5();
-        private boolean mmapMaps = Map$.MODULE$.apply$default$6();
-        private RecoveryMode recoveryMode = Map$.MODULE$.apply$default$7();
-        private boolean mmapAppendix = Map$.MODULE$.apply$default$8();
-        private MMAP mmapSegments = Map$.MODULE$.apply$default$9();
-        private int segmentSize = Map$.MODULE$.apply$default$10();
-        private int appendixFlushCheckpointSize = Map$.MODULE$.apply$default$11();
-        private Seq otherDirs = Map$.MODULE$.apply$default$12();
-        private FiniteDuration memorySweeperPollInterval = Map$.MODULE$.apply$default$13();
-        private FiniteDuration fileSweeperPollInterval = Map$.MODULE$.apply$default$14();
-        private double mightContainFalsePositiveRate = Map$.MODULE$.apply$default$15();
-        private boolean compressDuplicateValues = Map$.MODULE$.apply$default$16();
-        private boolean deleteSegmentsEventually = Map$.MODULE$.apply$default$17();
-        private Option<GroupBy.KeyValues> lastLevelGroupBy = Map$.MODULE$.apply$default$18();
-        private Function1<LevelZeroMeter, Accelerator> acceleration = Map$.MODULE$.apply$default$19();
+        private int maxSegmentsOpen = Set$.MODULE$.apply$default$2();
+        private int mapSize = Set$.MODULE$.apply$default$3();
+        private int maxMemoryLevelSize = Set$.MODULE$.apply$default$4();
+        private int maxSegmentsToPush = Set$.MODULE$.apply$default$5();
+        private int memoryLevelSegmentSize = Set$.MODULE$.apply$default$6();
+        private int persistentLevelSegmentSize = Set$.MODULE$.apply$default$7();
+        private int persistentLevelAppendixFlushCheckpointSize = Set$.MODULE$.apply$default$8();
+        private MMAP mmapPersistentSegments = Set$.MODULE$.apply$default$9();
+        private boolean mmapPersistentAppendix = Set$.MODULE$.apply$default$10();
+        private Seq<Dir> otherDirs = Set$.MODULE$.apply$default$11();
+        private FiniteDuration keyValueCacheCheckDelay = Set$.MODULE$.apply$default$12();
+        private FiniteDuration segmentsOpenCheckDelay = Set$.MODULE$.apply$default$13();
+        private int blockSize = Set$.MODULE$.apply$default$14();
+        private int memoryCacheSize = Set$.MODULE$.apply$default$15();
+        private FiniteDuration memorySweeperPollInterval = Set$.MODULE$.apply$default$16();
+        private FiniteDuration fileSweeperPollInterval = Set$.MODULE$.apply$default$17();
+        private double mightContainFalsePositiveRate = Set$.MODULE$.apply$default$18();
+        private boolean compressDuplicateValues = Set$.MODULE$.apply$default$19();
+        private boolean deleteSegmentsEventually = Set$.MODULE$.apply$default$20();
+        private Option<GroupBy.KeyValues> groupBy = Set$.MODULE$.apply$default$21();
+        private Function1<LevelZeroMeter, Accelerator> acceleration = Set$.MODULE$.apply$default$22();
         private Object keySerializer;
 
         public Builder<K> withDir(Path dir) {
@@ -508,18 +520,8 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
             return this;
         }
 
-        public Builder<K> withMaxOpenSegments(int maxOpenSegments) {
-            this.maxOpenSegments = maxOpenSegments;
-            return this;
-        }
-
-        public Builder<K> withMemoryCacheSize(int memoryCacheSize) {
-            this.memoryCacheSize = memoryCacheSize;
-            return this;
-        }
-
-        public Builder<K> withBlockSize(int blockSize) {
-            this.blockSize = blockSize;
+        public Builder<K> withMaxSegmentsOpen(int maxSegmentsOpen) {
+            this.maxSegmentsOpen = maxSegmentsOpen;
             return this;
         }
 
@@ -528,38 +530,64 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
             return this;
         }
 
-        public Builder<K> withMmapMaps(boolean mmapMaps) {
-            this.mmapMaps = mmapMaps;
+        public Builder<K> withMaxMemoryLevelSize(int maxMemoryLevelSize) {
+            this.maxMemoryLevelSize = maxMemoryLevelSize;
             return this;
         }
 
-        public Builder<K> withRecoveryMode(swaydb.data.config.RecoveryMode recoveryMode) {
-            this.recoveryMode = recoveryMode;
+        public Builder<K> withMaxSegmentsToPush(int maxSegmentsToPush) {
+            this.maxSegmentsToPush = maxSegmentsToPush;
             return this;
         }
 
-        public Builder<K> withMmapAppendix(boolean mmapAppendix) {
-            this.mmapAppendix = mmapAppendix;
+        public Builder<K> withMemoryLevelSegmentSize(int memoryLevelSegmentSize) {
+            this.memoryLevelSegmentSize = memoryLevelSegmentSize;
             return this;
         }
 
-        public Builder<K> withMmapSegments(swaydb.data.config.MMAP mmapSegments) {
-            this.mmapSegments = mmapSegments;
+        public Builder<K> withPersistentLevelSegmentSize(int persistentLevelSegmentSize) {
+            this.persistentLevelSegmentSize = persistentLevelSegmentSize;
             return this;
         }
 
-        public Builder<K> withSegmentSize(int segmentSize) {
-            this.segmentSize = segmentSize;
+        public Builder<K> withPersistentLevelAppendixFlushCheckpointSize(
+                int persistentLevelAppendixFlushCheckpointSize) {
+            this.persistentLevelAppendixFlushCheckpointSize = persistentLevelAppendixFlushCheckpointSize;
             return this;
         }
 
-        public Builder<K> withAppendixFlushCheckpointSize(int appendixFlushCheckpointSize) {
-            this.appendixFlushCheckpointSize = appendixFlushCheckpointSize;
+        public Builder<K> withMmapPersistentSegments(swaydb.data.config.MMAP mmapPersistentSegments) {
+            this.mmapPersistentSegments = mmapPersistentSegments;
             return this;
         }
 
-        public Builder<K> withOtherDirs(Seq otherDirs) {
+        public Builder<K> withMmapPersistentAppendix(boolean mmapPersistentAppendix) {
+            this.mmapPersistentAppendix = mmapPersistentAppendix;
+            return this;
+        }
+
+        public Builder<K> withOtherDirs(Seq<Dir> otherDirs) {
             this.otherDirs = otherDirs;
+            return this;
+        }
+
+        public Builder<K> withKeyValueCacheCheckDelay(FiniteDuration keyValueCacheCheckDelay) {
+            this.keyValueCacheCheckDelay = keyValueCacheCheckDelay;
+            return this;
+        }
+
+        public Builder<K> withSegmentsOpenCheckDelay(FiniteDuration segmentsOpenCheckDelay) {
+            this.segmentsOpenCheckDelay = segmentsOpenCheckDelay;
+            return this;
+        }
+
+        public Builder<K> withBlockSize(int blockSize) {
+            this.blockSize = blockSize;
+            return this;
+        }
+
+        public Builder<K> withMemoryCacheSize(int memoryCacheSize) {
+            this.memoryCacheSize = memoryCacheSize;
             return this;
         }
 
@@ -588,8 +616,8 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
             return this;
         }
 
-        public Builder<K> withLastLevelGroupBy(Option<GroupBy.KeyValues> lastLevelGroupBy) {
-            this.lastLevelGroupBy = lastLevelGroupBy;
+        public Builder<K> withGroupBy(Option<GroupBy.KeyValues> groupBy) {
+            this.groupBy = groupBy;
             return this;
         }
 
@@ -605,26 +633,32 @@ public class Set<K> implements swaydb.java.Set<K>, Closeable {
 
         @SuppressWarnings("unchecked")
         public Set<K> build() {
-            KeyOrder keyOrder = Map$.MODULE$.apply$default$22(dir, maxOpenSegments, memoryCacheSize, blockSize, mapSize,
-                mmapMaps, recoveryMode, mmapAppendix, mmapSegments, segmentSize, appendixFlushCheckpointSize,
-                otherDirs, memorySweeperPollInterval, fileSweeperPollInterval, mightContainFalsePositiveRate,
-                compressDuplicateValues, deleteSegmentsEventually, lastLevelGroupBy, acceleration);
-            ExecutionContext fileSweeperEc = Map$.MODULE$.apply$default$23(dir, maxOpenSegments, memoryCacheSize,
-                blockSize, mapSize, mmapMaps, recoveryMode, mmapAppendix, mmapSegments, segmentSize,
-                appendixFlushCheckpointSize, otherDirs, memorySweeperPollInterval, fileSweeperPollInterval,
-                mightContainFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
-                lastLevelGroupBy, acceleration);
-            ExecutionContext memorySweeperEc = Map$.MODULE$.apply$default$24(dir, maxOpenSegments, memoryCacheSize,
-                blockSize, mapSize, mmapMaps, recoveryMode, mmapAppendix, mmapSegments, segmentSize,
-                appendixFlushCheckpointSize, otherDirs, memorySweeperPollInterval, fileSweeperPollInterval,
-                mightContainFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
-                lastLevelGroupBy, acceleration);
+            KeyOrder keyOrder = Set$.MODULE$.apply$default$24(dir, maxSegmentsOpen, mapSize, maxMemoryLevelSize,
+                maxSegmentsToPush, memoryLevelSegmentSize, persistentLevelSegmentSize,
+                persistentLevelAppendixFlushCheckpointSize, mmapPersistentSegments, mmapPersistentAppendix,
+                otherDirs, keyValueCacheCheckDelay, segmentsOpenCheckDelay, blockSize, memoryCacheSize,
+                memorySweeperPollInterval, fileSweeperPollInterval, mightContainFalsePositiveRate,
+                compressDuplicateValues, deleteSegmentsEventually, groupBy, acceleration);
+            ExecutionContext fileSweeperEc = Set$.MODULE$.apply$default$25(dir, maxSegmentsOpen, mapSize,
+                maxMemoryLevelSize, maxSegmentsToPush, memoryLevelSegmentSize, persistentLevelSegmentSize,
+                persistentLevelAppendixFlushCheckpointSize, mmapPersistentSegments, mmapPersistentAppendix,
+                otherDirs, keyValueCacheCheckDelay, segmentsOpenCheckDelay, blockSize, memoryCacheSize,
+                memorySweeperPollInterval, fileSweeperPollInterval, mightContainFalsePositiveRate,
+                compressDuplicateValues, deleteSegmentsEventually, groupBy, acceleration);
+            ExecutionContext memorySweeperEc = Set$.MODULE$.apply$default$26(dir, maxSegmentsOpen, mapSize,
+                maxMemoryLevelSize, maxSegmentsToPush, memoryLevelSegmentSize, persistentLevelSegmentSize,
+                persistentLevelAppendixFlushCheckpointSize, mmapPersistentSegments, mmapPersistentAppendix,
+                otherDirs, keyValueCacheCheckDelay, segmentsOpenCheckDelay, blockSize, memoryCacheSize,
+                memorySweeperPollInterval, fileSweeperPollInterval, mightContainFalsePositiveRate,
+                compressDuplicateValues, deleteSegmentsEventually, groupBy, acceleration);
             return new Set<>(
-                    (swaydb.Set<K, IO>) swaydb.persistent.Set$.MODULE$.apply(dir, maxOpenSegments, memoryCacheSize,
-                    mapSize, mmapMaps, recoveryMode, mmapAppendix, mmapSegments, segmentSize,
-                    appendixFlushCheckpointSize, otherDirs, memorySweeperPollInterval, fileSweeperPollInterval,
-                    mightContainFalsePositiveRate, blockSize, compressDuplicateValues, deleteSegmentsEventually,
-                    lastLevelGroupBy, acceleration, Serializer.classToType(keySerializer),
+                    (swaydb.Set<K, IO>) swaydb.eventually.persistent.Set$.MODULE$.apply(dir, maxSegmentsOpen,
+                    mapSize, maxMemoryLevelSize, maxSegmentsToPush, memoryLevelSegmentSize,
+                    persistentLevelSegmentSize, persistentLevelAppendixFlushCheckpointSize,
+                    mmapPersistentSegments, mmapPersistentAppendix, otherDirs, keyValueCacheCheckDelay,
+                    segmentsOpenCheckDelay, blockSize, memoryCacheSize, memorySweeperPollInterval,
+                    fileSweeperPollInterval, mightContainFalsePositiveRate, compressDuplicateValues,
+                    deleteSegmentsEventually, groupBy, acceleration, Serializer.classToType(keySerializer),
                     keyOrder, fileSweeperEc, memorySweeperEc).get());
         }
     }
