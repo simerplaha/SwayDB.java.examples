@@ -344,13 +344,12 @@ public class QuickStartMemorySetTest extends TestBase {
                 .withKeySerializer(Integer.class)
                 .withMapSize(4000000)
                 .withSegmentSize(2000000)
-                .withCacheSize(100000000)
-                .withCacheCheckDelay(scala.concurrent.duration.FiniteDuration.apply(5, TimeUnit.SECONDS))
-                .withBloomFilterFalsePositiveRate(0.01)
+                .withMemoryCacheSize(100000000)
+                .withMemorySweeperPollInterval(scala.concurrent.duration.FiniteDuration.apply(5, TimeUnit.SECONDS))
                 .withCompressDuplicateValues(true)
                 .withDeleteSegmentsEventually(false)
                 .withGroupingStrategy(scala.Option.empty())
-                .withAcceleration(swaydb.memory.Map$.MODULE$.apply$default$9())
+                .withAcceleration(swaydb.memory.Map$.MODULE$.apply$default$11())
                 .build();
         // db.add(1).get
         db.add(1);

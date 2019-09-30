@@ -4,7 +4,7 @@
     <groupId>com.github.javadev</groupId>
     <artifactId>swaydb-java</artifactId>
     <packaging>jar</packaging>
-    <version>0.8-beta.8.8</version>
+    <version>0.9-alpha.2</version>
     <name>swaydb-java</name>
     <description>Java wrapper for SwayDB</description>
     <url>https://github.com/simerplaha/SwayDB.java</url>
@@ -41,7 +41,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>3.8.1</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
@@ -55,7 +55,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.3</version>
+                <version>0.8.4</version>
                 <executions>
                     <execution>
                         <id>prepare-agent</id>
@@ -134,7 +134,7 @@
         <dependency>
             <groupId>io.swaydb</groupId>
             <artifactId>swaydb_2.11</artifactId>
-            <version>0.8-beta.8</version>
+            <version>0.9-ALPHA.2</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.github.alexandrnikitin</groupId>

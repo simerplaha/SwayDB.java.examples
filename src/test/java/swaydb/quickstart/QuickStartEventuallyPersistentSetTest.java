@@ -34,6 +34,7 @@ import static org.junit.Assert.assertThat;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import swaydb.base.TestBase;
+import swaydb.eventually.persistent.Set$;
 
 @SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
 public class QuickStartEventuallyPersistentSetTest extends TestBase {
@@ -372,25 +373,27 @@ public class QuickStartEventuallyPersistentSetTest extends TestBase {
                 .<Integer>builder()
                 .withDir(addTarget(Paths.get("disk4builder")))
                 .withKeySerializer(Integer.class)
-                .withMaxOpenSegments(swaydb.eventually.persistent.Map$.MODULE$.apply$default$2())
-                .withMapSize(swaydb.eventually.persistent.Map$.MODULE$.apply$default$3())
-                .withMaxMemoryLevelSize(swaydb.eventually.persistent.Map$.MODULE$.apply$default$4())
-                .withMaxSegmentsToPush(swaydb.eventually.persistent.Map$.MODULE$.apply$default$5())
-                .withMemoryLevelSegmentSize(swaydb.eventually.persistent.Map$.MODULE$.apply$default$6())
-                .withPersistentLevelSegmentSize(swaydb.eventually.persistent.Map$.MODULE$.apply$default$7())
-                .withPersistentLevelAppendixFlushCheckpointSize(
-                        swaydb.eventually.persistent.Map$.MODULE$.apply$default$8())
-                .withMmapPersistentSegments(swaydb.eventually.persistent.Map$.MODULE$.apply$default$9())
-                .withMmapPersistentAppendix(swaydb.eventually.persistent.Map$.MODULE$.apply$default$10())
-                .withCacheSize(swaydb.eventually.persistent.Map$.MODULE$.apply$default$11())
-                .withOtherDirs(swaydb.eventually.persistent.Map$.MODULE$.apply$default$12())
-                .withCacheCheckDelay(swaydb.eventually.persistent.Map$.MODULE$.apply$default$13())
-                .withSegmentsOpenCheckDelay(swaydb.eventually.persistent.Map$.MODULE$.apply$default$14())
-                .withBloomFilterFalsePositiveRate(swaydb.eventually.persistent.Map$.MODULE$.apply$default$15())
-                .withCompressDuplicateValues(swaydb.eventually.persistent.Map$.MODULE$.apply$default$16())
-                .withDeleteSegmentsEventually(swaydb.eventually.persistent.Map$.MODULE$.apply$default$17())
-                .withGroupingStrategy(swaydb.eventually.persistent.Map$.MODULE$.apply$default$18())
-                .withAcceleration(swaydb.eventually.persistent.Map$.MODULE$.apply$default$19())
+                .withMaxSegmentsOpen(Set$.MODULE$.apply$default$2())
+                .withMapSize(Set$.MODULE$.apply$default$3())
+                .withMaxMemoryLevelSize(Set$.MODULE$.apply$default$4())
+                .withMaxSegmentsToPush(Set$.MODULE$.apply$default$5())
+                .withMemoryLevelSegmentSize(Set$.MODULE$.apply$default$6())
+                .withPersistentLevelSegmentSize(Set$.MODULE$.apply$default$7())
+                .withPersistentLevelAppendixFlushCheckpointSize(Set$.MODULE$.apply$default$8())
+                .withMmapPersistentSegments(Set$.MODULE$.apply$default$9())
+                .withMmapPersistentAppendix(Set$.MODULE$.apply$default$10())
+                .withOtherDirs(Set$.MODULE$.apply$default$11())
+                .withKeyValueCacheCheckDelay(Set$.MODULE$.apply$default$12())
+                .withSegmentsOpenCheckDelay(Set$.MODULE$.apply$default$13())
+                .withBlockSize(Set$.MODULE$.apply$default$14())
+                .withMemoryCacheSize(Set$.MODULE$.apply$default$15())
+                .withMemorySweeperPollInterval(Set$.MODULE$.apply$default$16())
+                .withFileSweeperPollInterval(Set$.MODULE$.apply$default$17())
+                .withMightContainFalsePositiveRate(Set$.MODULE$.apply$default$18())
+                .withCompressDuplicateValues(Set$.MODULE$.apply$default$19())
+                .withDeleteSegmentsEventually(Set$.MODULE$.apply$default$20())
+                .withGroupBy(Set$.MODULE$.apply$default$21())
+                .withAcceleration(Set$.MODULE$.apply$default$22())
                 .build();
         // db.add(1).get
         db.add(1);

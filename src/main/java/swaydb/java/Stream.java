@@ -19,15 +19,14 @@
 package swaydb.java;
 
 import scala.Tuple2;
-import scala.collection.mutable.ListBuffer;
-import scala.collection.mutable.Seq;
 import scala.runtime.AbstractFunction1;
-import swaydb.data.IO;
+import swaydb.IO;
 
 import java.util.AbstractMap;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
+import scala.collection.mutable.ListBuffer;
 
 /**
  * The Stream of data.
@@ -37,7 +36,7 @@ import java.util.function.UnaryOperator;
  */
 public class Stream<K, V> {
     private final swaydb.Stream streamObject;
-    private final IO.Success success;
+    private final IO success;
 
     /**
      * Constructs the Stream object.
@@ -52,7 +51,7 @@ public class Stream<K, V> {
      * Constructs the Stream object.
      * @param success the success
      */
-    private Stream(final IO.Success success) {
+    private Stream(final IO success) {
         this.streamObject = null;
         this.success = success;
     }
@@ -69,7 +68,7 @@ public class Stream<K, V> {
             public Object apply(Object tuple2) {
                 java.util.Map.Entry<K, V> result = function.apply(
                         new AbstractMap.SimpleEntry<>((K) ((Tuple2) tuple2)._1(), (V) ((Tuple2) tuple2)._2()));
-                return IO.Success$.MODULE$.apply(Tuple2.apply(result.getKey(), result.getValue()));
+                return IO.Right$.MODULE$.apply(Tuple2.apply(result.getKey(), result.getValue()), null);
             }
         }));
     }
@@ -80,7 +79,7 @@ public class Stream<K, V> {
      * @return the stream object for this map
      */
     public Stream<K, V> materialize() {
-        return new Stream<>((IO.Success) streamObject.materialize());
+        return new Stream<>((IO.Right) streamObject.materialize());
     }
 
     /**
@@ -91,20 +90,23 @@ public class Stream<K, V> {
      */
     @SuppressWarnings("unchecked")
     public Stream<K, V> foreach(Consumer<Map.Entry<K, V>> consumer) {
-        success.foreach(new AbstractFunction1<Object, Object>() {
-            @Override
+        success.foreach(new AbstractFunction1() {
             public Object apply(Object t1) {
-                Seq entries =  ((ListBuffer) t1).seq();
-                for (int index = 0; index < entries.size(); index += 1) {
-                    if (entries.apply(index) instanceof Tuple2) {
-                        Tuple2<K, V> tuple2 = (Tuple2<K, V>) entries.apply(index);
-                        consumer.accept(new AbstractMap.SimpleEntry<>(tuple2._1(), tuple2._2()));
-                    } else {
-                        IO.Success<Tuple2<K, V>> tuple2 = (IO.Success<Tuple2<K, V>>) entries.apply(index);
-                        consumer.accept(new AbstractMap.SimpleEntry<>(tuple2.get()._1(), tuple2.get()._2()));
+                if (!((ListBuffer) t1).seq().isEmpty() && ((ListBuffer) t1).seq().apply(0) instanceof IO.Right) {
+                    scala.collection.Seq<IO.Right> entries = ((ListBuffer) t1).seq();
+                    for (int index = 0; index < entries.size(); index += 1) {
+                        consumer.accept(new AbstractMap.SimpleEntry<>(
+                                (K) ((Tuple2) entries.apply(index).get())._1(),
+                                (V) ((Tuple2) entries.apply(index).get())._2()));
+                    }
+                } else {
+                    scala.collection.Seq<Tuple2> entries = ((ListBuffer) t1).seq();
+                    for (int index = 0; index < entries.size(); index += 1) {
+                        consumer.accept(new AbstractMap.SimpleEntry<>(
+                                (K) entries.apply(index)._1(), (V) entries.apply(index)._2()));
                     }
                 }
-                return null;
+                return IO.Right$.MODULE$.apply(((ListBuffer) t1), null);
             }
         });
         return this;

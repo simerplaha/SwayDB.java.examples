@@ -375,7 +375,7 @@ public class QuickStartPersistentSetTest extends TestBase {
                 .withDir(addTarget(Paths.get("disk3builder")))
                 .withKeySerializer(Integer.class)
                 .withMaxOpenSegments(1000)
-                .withCacheSize(100000000)
+                .withMemoryCacheSize(100000000)
                 .withMapSize(4000000)
                 .withMmapMaps(true)
                 .withRecoveryMode(RecoveryMode.ReportFailure$.MODULE$)
@@ -383,15 +383,12 @@ public class QuickStartPersistentSetTest extends TestBase {
                 .withMmapSegments(MMAP.WriteAndRead$.MODULE$)
                 .withSegmentSize(2000000)
                 .withAppendixFlushCheckpointSize(2000000)
-                .withOtherDirs(scala.collection.immutable.Nil$.MODULE$)
-                .withCacheCheckDelay(scala.concurrent.duration.FiniteDuration.apply(5, TimeUnit.SECONDS))
-                .withSegmentsOpenCheckDelay(
-                        scala.concurrent.duration.FiniteDuration.apply(5, TimeUnit.SECONDS))
-                .withBloomFilterFalsePositiveRate(0.01)
+                .withOtherDirs(swaydb.persistent.Set$.MODULE$.apply$default$11())
+                .withMemorySweeperPollInterval(scala.concurrent.duration.FiniteDuration.apply(5, TimeUnit.SECONDS))
                 .withCompressDuplicateValues(true)
                 .withDeleteSegmentsEventually(false)
-                .withLastLevelGroupingStrategy(scala.Option.empty())
-                .withAcceleration(swaydb.persistent.Map$.MODULE$.apply$default$18())
+                .withLastLevelGroupBy(scala.Option.empty())
+                .withAcceleration(swaydb.persistent.Map$.MODULE$.apply$default$19())
                 .build();
         // db.add(1).get
         db.add(1);
