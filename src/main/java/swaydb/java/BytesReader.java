@@ -27,10 +27,10 @@ import swaydb.data.slice.Slice$;
  */
 public class BytesReader {
 
-    private final swaydb.data.slice.SliceReaderUnsafe reader;
+    private final swaydb.data.slice.SliceReader reader;
 
     private BytesReader(Slice<Object> slice) {
-        reader = Slice$.MODULE$.ByteSliceImplicits(slice).createReaderUnsafe();
+        reader = Slice$.MODULE$.ByteSliceImplicits(slice).createReader();
     }
 
     /**

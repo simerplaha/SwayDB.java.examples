@@ -26,6 +26,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
+import scala.runtime.AbstractFunction1;
 
 import swaydb.IO;
 import swaydb.data.accelerate.LevelZeroMeter;
@@ -232,9 +233,9 @@ public interface Map<K, V> {
     List<V> values();
 
     /**
-     * Returns the entrues for this map.
+     * Returns the entries for this map.
      *
-     * @return the entrues last key for this map
+     * @return the entries last key for this map
      */
     java.util.Set<java.util.Map.Entry<K, V>> entrySet();
 
@@ -339,7 +340,7 @@ public interface Map<K, V> {
      *
      * @return the function id
      */
-    K registerFunction(K functionId, Function<V, swaydb.Apply.Map<V>> function);
+    AbstractFunction1 registerFunction(K functionId, Function<V, swaydb.Apply.Map<V>> function);
 
     /**
      * Executes the registered function for this map.
@@ -377,7 +378,7 @@ public interface Map<K, V> {
      *
      * @return the key objects for this map
      */
-    swaydb.Set<K, IO> keys();
+    swaydb.Set<K, ?, ?> keys();
 
     /**
      * Returns the reversed map object for this map.
@@ -446,7 +447,7 @@ public interface Map<K, V> {
      * Starts the commit function for this map.
      * @param prepares the prepares
      *
-     * @return the level zerro for this map
+     * @return the level zero for this map
      */
     @SuppressWarnings("unchecked")
     swaydb.IO.Done commit(swaydb.Prepare<K, V>... prepares);

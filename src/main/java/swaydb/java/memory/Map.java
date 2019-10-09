@@ -43,13 +43,15 @@ import scala.collection.Seq;
 import scala.concurrent.ExecutionContext;
 import scala.concurrent.duration.Deadline;
 import scala.concurrent.duration.FiniteDuration;
+import scala.reflect.ClassTag;
+import scala.reflect.ClassTag$;
 import scala.runtime.AbstractFunction1;
 import swaydb.Apply;
 import swaydb.Prepare;
-import swaydb.IO;
+import swaydb.Tag;
+import swaydb.Tag$;
 import swaydb.data.accelerate.Accelerator;
 import swaydb.data.accelerate.LevelZeroMeter;
-import swaydb.data.api.grouping.GroupBy.KeyValues;
 import swaydb.data.compaction.LevelMeter;
 import swaydb.data.order.KeyOrder;
 import swaydb.memory.Map$;
@@ -63,13 +65,13 @@ import swaydb.java.Serializer;
  */
 public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
 
-    private final swaydb.Map<K, V, IO> database;
+    private final swaydb.Map<K, V, Object, Tag<?>> database;
 
     /**
      * Constructs the Map object.
      * @param database the database
      */
-    public Map(swaydb.Map<K, V, IO> database) {
+    public Map(swaydb.Map<K, V, Object, Tag<?>> database) {
         this.database = database;
     }
 
@@ -90,7 +92,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      */
     @Override
     public boolean isEmpty() {
-        return (boolean) database.isEmpty().get();
+        return (boolean) database.isEmpty().unit();
     }
 
     /**
@@ -100,7 +102,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      */
     @Override
     public boolean nonEmpty() {
-        return (boolean) database.nonEmpty().get();
+        return (boolean) database.nonEmpty().unit();
     }
 
     /**
@@ -111,7 +113,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      */
     @Override
     public LocalDateTime expiration(K key) {
-        Object result = database.expiration(key).get();
+        Object result = database.expiration(key).unit();
         if (result instanceof scala.Some) {
             Deadline expiration = (Deadline) ((scala.Some) result).get();
             return LocalDateTime.now().plusNanos(expiration.timeLeft().toNanos());
@@ -127,7 +129,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      */
     @Override
     public Duration timeLeft(K key) {
-        Object result = database.timeLeft(key).get();
+        Object result = database.timeLeft(key).unit();
         if (result instanceof scala.Some) {
             FiniteDuration duration = (FiniteDuration) ((scala.Some) result).get();
             return Duration.ofNanos(duration.toNanos());
@@ -168,9 +170,9 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     }
 
     /**
-     * Returns the level of meter for zerro level.
+     * Returns the level of meter for zero level.
      *
-     * @return the level of meter for zerro level
+     * @return the level of meter for zero level
      */
     @Override
     public LevelZeroMeter level0Meter() {
@@ -206,7 +208,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      */
     @Override
     public boolean containsKey(K key) {
-        return (boolean) database.contains(key).get();
+        return (boolean) database.contains(key).unit();
     }
 
     /**
@@ -218,7 +220,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     @SuppressWarnings("unchecked")
     @Override
     public boolean mightContain(K key) {
-        return (boolean) database.mightContain(key).get();
+        return (boolean) database.mightContain(key).unit();
     }
 
     /**
@@ -229,7 +231,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     @SuppressWarnings("unchecked")
     @Override
     public java.util.Map.Entry<K, V> head() {
-        Object result = database.headOption().get();
+        Object result = database.headOption().unit();
         if (result instanceof scala.Some) {
             scala.Tuple2<K, V> tuple2 = (scala.Tuple2<K, V>) ((scala.Some) result).get();
             return new AbstractMap.SimpleEntry<>(tuple2._1(), tuple2._2());
@@ -256,7 +258,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     @SuppressWarnings("unchecked")
     @Override
     public java.util.Map.Entry<K, V> last() {
-        Object result = database.lastOption().get();
+        Object result = database.lastOption().unit();
         if (result instanceof scala.Some) {
             scala.Tuple2<K, V> tuple2 = (scala.Tuple2<K, V>) ((scala.Some) result).get();
             return new AbstractMap.SimpleEntry<>(tuple2._1(), tuple2._2());
@@ -293,7 +295,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     public void put(java.util.Map<K, V> map) {
         scala.collection.mutable.Map<K, V> entries =
                 scala.collection.JavaConverters.mapAsScalaMapConverter(map).asScala();
-        database.put(entries.toSet()).get();
+        database.put(entries.toSet()).unit();
     }
 
     /**
@@ -314,7 +316,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     public void update(java.util.Map<K, V> map) {
         scala.collection.mutable.Map<K, V> entries =
                 scala.collection.JavaConverters.mapAsScalaMapConverter(map).asScala();
-        database.update(entries.toSet()).get();
+        database.update(entries.toSet()).unit();
     }
 
     /**
@@ -349,7 +351,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     @SuppressWarnings("unchecked")
     @Override
     public K keysHead() {
-        Object result = database.keys().headOption().get();
+        Object result = database.keys().headOption().unit();
         if (result instanceof scala.Some) {
             return (K) ((scala.Some) result).get();
         }
@@ -374,7 +376,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     @SuppressWarnings("unchecked")
     @Override
     public K keysLast() {
-        Object result = database.keys().lastOption().get();
+        Object result = database.keys().lastOption().unit();
         if (result instanceof scala.Some) {
             return (K) ((scala.Some) result).get();
         }
@@ -408,9 +410,9 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     }
 
     /**
-     * Returns the entrues for this map.
+     * Returns the entries for this map.
      *
-     * @return the entrues last key for this map
+     * @return the entries last key for this map
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -434,7 +436,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     @Override
     public V put(K key, V value) {
         V oldValue = get(key);
-        database.put(key, value).get();
+        database.put(key, value).unit();
         return oldValue;
     }
 
@@ -450,7 +452,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     @Override
     public V put(K key, V value, long expireAfter, TimeUnit timeUnit) {
         V oldValue = get(key);
-        database.put(key, value, FiniteDuration.create(expireAfter, timeUnit)).get();
+        database.put(key, value, FiniteDuration.create(expireAfter, timeUnit)).unit();
         return oldValue;
     }
 
@@ -466,7 +468,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     public V put(K key, V value, LocalDateTime expireAt) {
         V oldValue = get(key);
         int expireAtNano = Duration.between(LocalDateTime.now(), expireAt).getNano();
-        database.put(key, value, FiniteDuration.create(expireAtNano, TimeUnit.NANOSECONDS).fromNow()).get();
+        database.put(key, value, FiniteDuration.create(expireAtNano, TimeUnit.NANOSECONDS).fromNow()).unit();
         return oldValue;
     }
 
@@ -481,7 +483,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     @Override
     public V expire(K key, long after, TimeUnit timeUnit) {
         V oldValue = get(key);
-        database.expire(key, FiniteDuration.create(after, timeUnit)).get();
+        database.expire(key, FiniteDuration.create(after, timeUnit)).unit();
         return oldValue;
     }
 
@@ -496,7 +498,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     public V expire(K key, LocalDateTime expireAt) {
         V oldValue = get(key);
         int expireAtNano = Duration.between(LocalDateTime.now(), expireAt).getNano();
-        database.expire(key, FiniteDuration.create(expireAtNano, TimeUnit.NANOSECONDS).fromNow()).get();
+        database.expire(key, FiniteDuration.create(expireAtNano, TimeUnit.NANOSECONDS).fromNow()).unit();
         return oldValue;
     }
 
@@ -510,7 +512,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     @Override
     public V update(K key, V value) {
         V oldValue = get(key);
-        database.update(key, value).get();
+        database.update(key, value).unit();
         return oldValue;
     }
 
@@ -523,7 +525,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     @SuppressWarnings("unchecked")
     @Override
     public V get(K key) {
-        Object result = database.get(key).get();
+        Object result = database.get(key).unit();
         if (result instanceof scala.Some) {
             return (V) ((scala.Some) result).get();
         }
@@ -539,7 +541,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
     @Override
     public V remove(K key) {
         V oldValue = get(key);
-        database.remove(key).get();
+        database.remove(key).unit();
         return oldValue;
     }
 
@@ -549,7 +551,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      */
     @Override
     public void remove(Set<K> keys) {
-        database.remove(scala.collection.JavaConverters.asScalaSetConverter(keys).asScala()).get();
+        database.remove(scala.collection.JavaConverters.asScalaSetConverter(keys).asScala()).unit();
     }
 
     /**
@@ -559,7 +561,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      */
     @Override
     public void remove(K from, K to) {
-        database.remove(from, to).get();
+        database.remove(from, to).unit();
     }
 
     /**
@@ -580,13 +582,15 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      * @return the function id
      */
     @Override
-    public K registerFunction(K functionId, Function<V, Apply.Map<V>> function) {
-        return database.registerFunction(functionId, new AbstractFunction1<V, Apply.Map<V>>() {
+    public AbstractFunction1 registerFunction(K functionId, Function<V, Apply.Map<V>> function) {
+        AbstractFunction1 abstractFunction1 = new AbstractFunction1<V, Apply.Map<V>>() {
             @Override
             public Apply.Map<V> apply(V value) {
                 return function.apply(value);
             }
-        });
+        };
+        database.registerFunction(abstractFunction1);
+        return abstractFunction1;
     }
 
     /**
@@ -638,7 +642,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      * @return the key objects for this map
      */
     @Override
-    public swaydb.Set<K, IO> keys() {
+    public swaydb.Set<K, ?, ?> keys() {
         return database.keys();
     }
 
@@ -762,14 +766,14 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
      */
     @Override
     public void close() {
-        database.close().get();
+        database.close().unit();
     }
 
     /**
      * Starts the commit function for this map.
      * @param prepares the prepares
      *
-     * @return the level zerro for this map
+     * @return the level zero for this map
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -777,7 +781,7 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
         List<Prepare<K, V>> preparesList = Arrays.asList(prepares);
         Iterable<Prepare<K, V>> prepareIterator
                 = JavaConverters.iterableAsScalaIterableConverter(preparesList).asScala();
-        return (swaydb.IO.Done) database.commit(prepareIterator).get();
+        return (swaydb.IO.Done) database.commit(prepareIterator).unit();
     }
 
     /**
@@ -795,32 +799,30 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
         int segmentSize = Map$.MODULE$.apply$default$2();
         int memoryCacheSize = Map$.MODULE$.apply$default$3();
         int maxOpenSegments = Map$.MODULE$.apply$default$4();
-        FiniteDuration memorySweeperPollInterval = Map$.MODULE$.apply$default$5();
+        int maxCachedKeyValuesPerSegment = Map$.MODULE$.apply$default$5();
         FiniteDuration fileSweeperPollInterval = Map$.MODULE$.apply$default$6();
         double mightContainFalsePositiveRate = Map$.MODULE$.apply$default$7();
         boolean compressDuplicateValues = Map$.MODULE$.apply$default$8();
         boolean deleteSegmentsEventually = Map$.MODULE$.apply$default$9();
-        Option<KeyValues> groupBy = Map$.MODULE$.apply$default$10();
-        Function1 acceleration = Map$.MODULE$.apply$default$11();
-        KeyOrder keyOrder = Map$.MODULE$.apply$default$14(mapSize, segmentSize, memoryCacheSize, maxOpenSegments,
-                memorySweeperPollInterval, fileSweeperPollInterval,
-                mightContainFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually, groupBy,
-                acceleration);
-        ExecutionContext fileSweeperEc = Map$.MODULE$.apply$default$15(mapSize, segmentSize, memoryCacheSize,
-                maxOpenSegments,
-                memorySweeperPollInterval, fileSweeperPollInterval, mightContainFalsePositiveRate,
-                compressDuplicateValues, deleteSegmentsEventually, groupBy, acceleration);
-        ExecutionContext memorySweeperEc = Map$.MODULE$.apply$default$16(mapSize, segmentSize, memoryCacheSize,
-                maxOpenSegments,
-                memorySweeperPollInterval, fileSweeperPollInterval, mightContainFalsePositiveRate,
-                compressDuplicateValues, deleteSegmentsEventually, groupBy, acceleration);
+        Function1<LevelZeroMeter, Accelerator> acceleration = Map$.MODULE$.apply$default$10();
+        ClassTag functionClassTag = ClassTag$.MODULE$.Nothing();
+        Tag.Sync tag = Tag$.MODULE$.apiIO();
+        KeyOrder keyOrder = Map$.MODULE$.apply$default$15(mapSize, segmentSize, memoryCacheSize,
+            maxOpenSegments, maxCachedKeyValuesPerSegment, fileSweeperPollInterval,
+            mightContainFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
+            acceleration);
+        ExecutionContext fileSweeperEC = Map$.MODULE$.apply$default$16(mapSize, segmentSize,
+            memoryCacheSize, maxOpenSegments, maxCachedKeyValuesPerSegment, fileSweeperPollInterval,
+            mightContainFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually, acceleration);
 
         return new Map<>(
-                (swaydb.Map<K, V, IO>) Map$.MODULE$.apply(mapSize, segmentSize, memoryCacheSize,
-                        maxOpenSegments, memorySweeperPollInterval, fileSweeperPollInterval,
-                        mightContainFalsePositiveRate, compressDuplicateValues,
-                deleteSegmentsEventually, groupBy, acceleration, Serializer.<K>classToType(keySerializer),
-                Serializer.<V>classToType(valueSerializer), keyOrder, fileSweeperEc, memorySweeperEc).get());
+            (swaydb.Map) Map$.MODULE$.apply(mapSize, segmentSize, memoryCacheSize,
+                maxOpenSegments, maxCachedKeyValuesPerSegment, fileSweeperPollInterval,
+                mightContainFalsePositiveRate, compressDuplicateValues,
+                deleteSegmentsEventually, acceleration,
+                Serializer.<K>classToType(keySerializer),
+                Serializer.<V>classToType(valueSerializer), functionClassTag,
+                tag, keyOrder, fileSweeperEC).get());
     }
 
     @SuppressWarnings({"checkstyle:JavadocMethod", "checkstyle:JavadocType"})
@@ -830,13 +832,14 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
         private int segmentSize = Map$.MODULE$.apply$default$2();
         private int memoryCacheSize = Map$.MODULE$.apply$default$3();
         private int maxOpenSegments = Map$.MODULE$.apply$default$4();
-        private FiniteDuration memorySweeperPollInterval = Map$.MODULE$.apply$default$5();
+        private int maxCachedKeyValuesPerSegment = Map$.MODULE$.apply$default$5();
         private FiniteDuration fileSweeperPollInterval = Map$.MODULE$.apply$default$6();
         private double mightContainFalsePositiveRate = Map$.MODULE$.apply$default$7();
         private boolean compressDuplicateValues = Map$.MODULE$.apply$default$8();
         private boolean deleteSegmentsEventually = Map$.MODULE$.apply$default$9();
-        private Option<KeyValues> groupBy = Map$.MODULE$.apply$default$10();
-        private Function1<LevelZeroMeter, Accelerator> acceleration = Map$.MODULE$.apply$default$11();
+        private Function1<LevelZeroMeter, Accelerator> acceleration = Map$.MODULE$.apply$default$10();
+        private ClassTag functionClassTag = ClassTag$.MODULE$.Nothing();
+        private Tag.Sync tag = Tag$.MODULE$.apiIO();
         private Object keySerializer;
         private Object valueSerializer;
 
@@ -860,8 +863,8 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
             return this;
         }
 
-        public Builder<K, V> withMemorySweeperPollInterval(FiniteDuration memorySweeperPollInterval) {
-            this.memorySweeperPollInterval = memorySweeperPollInterval;
+        public Builder<K, V> withMaxCachedKeyValuesPerSegment(int maxCachedKeyValuesPerSegment) {
+            this.maxCachedKeyValuesPerSegment = maxCachedKeyValuesPerSegment;
             return this;
         }
 
@@ -885,11 +888,6 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
             return this;
         }
 
-        public Builder<K, V> withGroupingStrategy(Option<KeyValues> groupBy) {
-            this.groupBy = groupBy;
-            return this;
-        }
-
         public Builder<K, V> withAcceleration(Function1<LevelZeroMeter, Accelerator> acceleration) {
             this.acceleration = acceleration;
             return this;
@@ -907,24 +905,21 @@ public class Map<K, V> implements swaydb.java.Map<K, V>, Closeable {
 
         @SuppressWarnings("unchecked")
         public Map<K, V> build() {
-            KeyOrder keyOrder = Map$.MODULE$.apply$default$14(mapSize, segmentSize, memoryCacheSize, maxOpenSegments,
-                    memorySweeperPollInterval, fileSweeperPollInterval,
-                    mightContainFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually, groupBy,
-                    acceleration);
-            ExecutionContext fileSweeperEc = Map$.MODULE$.apply$default$15(mapSize, segmentSize, memoryCacheSize,
-                    maxOpenSegments,
-                    memorySweeperPollInterval, fileSweeperPollInterval, mightContainFalsePositiveRate,
-                    compressDuplicateValues, deleteSegmentsEventually, groupBy, acceleration);
-            ExecutionContext memorySweeperEc = Map$.MODULE$.apply$default$16(mapSize, segmentSize, memoryCacheSize,
-                    maxOpenSegments,
-                    memorySweeperPollInterval, fileSweeperPollInterval, mightContainFalsePositiveRate,
-                    compressDuplicateValues, deleteSegmentsEventually, groupBy, acceleration);
+            KeyOrder keyOrder = Map$.MODULE$.apply$default$15(mapSize, segmentSize, memoryCacheSize,
+                maxOpenSegments, maxCachedKeyValuesPerSegment, fileSweeperPollInterval,
+                mightContainFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually,
+                acceleration);
+            ExecutionContext fileSweeperEc = Map$.MODULE$.apply$default$16(mapSize, segmentSize,
+                memoryCacheSize, maxOpenSegments, maxCachedKeyValuesPerSegment, fileSweeperPollInterval,
+                mightContainFalsePositiveRate, compressDuplicateValues, deleteSegmentsEventually, acceleration);
             return new Map<>(
-                    (swaydb.Map<K, V, IO>) Map$.MODULE$.apply(mapSize, segmentSize, memoryCacheSize,
-                        maxOpenSegments, memorySweeperPollInterval, fileSweeperPollInterval,
-                        mightContainFalsePositiveRate, compressDuplicateValues,
-                deleteSegmentsEventually, groupBy, acceleration, Serializer.<K>classToType(keySerializer),
-                Serializer.<V>classToType(valueSerializer), keyOrder, fileSweeperEc, memorySweeperEc).get());
+                (swaydb.Map) Map$.MODULE$.apply(mapSize, segmentSize, memoryCacheSize,
+                    maxOpenSegments, maxCachedKeyValuesPerSegment, fileSweeperPollInterval,
+                    mightContainFalsePositiveRate, compressDuplicateValues,
+                    deleteSegmentsEventually, acceleration,
+                    Serializer.<K>classToType(keySerializer),
+                    Serializer.<V>classToType(valueSerializer), functionClassTag,
+                    tag, keyOrder, fileSweeperEc).get());
         }
     }
 

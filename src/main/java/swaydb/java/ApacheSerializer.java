@@ -53,7 +53,7 @@ public class ApacheSerializer<T extends Serializable> implements swaydb.serializ
      */
     @Override
     public T read(Slice<Object> data) {
-        Slice<Object> byteSlice = Slice$.MODULE$.ByteSliceImplicits(data).createReaderUnsafe()
+        Slice<Object> byteSlice = Slice$.MODULE$.ByteSliceImplicits(data).createReader()
                 .readRemaining();
         byte[] result = new byte[byteSlice.size()];
         for (int index = 0; index < byteSlice.size(); index += 1) {

@@ -134,24 +134,7 @@
         <dependency>
             <groupId>io.swaydb</groupId>
             <artifactId>swaydb_2.11</artifactId>
-            <version>0.9-ALPHA.2</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.github.alexandrnikitin</groupId>
-                    <artifactId>bloom-filter_2.11</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.github.alexandrnikitin</groupId>
-            <artifactId>bloom-filter_2.11</artifactId>
-            <version>0.11.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.scala-lang</groupId>
-                    <artifactId>scala-library</artifactId>
-                </exclusion>
-            </exclusions>
+            <version>0.10.3</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
