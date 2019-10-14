@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.github.javadev</groupId>
-    <artifactId>swaydb-java</artifactId>
+    <groupId>io.swaydb</groupId>
+    <artifactId>swaydb-examples-java</artifactId>
     <packaging>jar</packaging>
-    <version>0.9-alpha.2</version>
-    <name>swaydb-java</name>
-    <description>Java wrapper for SwayDB</description>
+    <version>0.10.4</version>
+    <name>swaydb-examples-java</name>
+    <description>Java examples for SwayDB-java</description>
     <url>https://github.com/simerplaha/SwayDB.java</url>
     <developers>
         <developer>
@@ -133,25 +133,8 @@
     <dependencies>
         <dependency>
             <groupId>io.swaydb</groupId>
-            <artifactId>swaydb_2.11</artifactId>
-            <version>0.9-ALPHA.2</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.github.alexandrnikitin</groupId>
-                    <artifactId>bloom-filter_2.11</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.github.alexandrnikitin</groupId>
-            <artifactId>bloom-filter_2.11</artifactId>
-            <version>0.11.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.scala-lang</groupId>
-                    <artifactId>scala-library</artifactId>
-                </exclusion>
-            </exclusions>
+            <artifactId>java_2.12</artifactId>
+            <version>0.10.4</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
