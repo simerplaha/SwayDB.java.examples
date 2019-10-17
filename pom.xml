@@ -2,11 +2,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.github.javadev</groupId>
-    <artifactId>swaydb-java</artifactId>
+    <groupId>io.swaydb</groupId>
+    <artifactId>swaydb-java-examples</artifactId>
     <packaging>jar</packaging>
     <version>0.10.4</version>
-    <name>swaydb-java</name>
+    <name>swaydb-java-examples</name>
     <description>Java API examples for SwayDB</description>
     <url>https://github.com/simerplaha/SwayDB.java.examples</url>
     <developers>
