@@ -1,9 +1,16 @@
-# SwayDB.java.examples 
+# SwayDB.java.examples [![Slack Chat][slack-badge]][slack-link] [![Gitter Chat][gitter-badge]][gitter-link] [![Build status][build-badge]][build-link] [![Maven central][maven-badge]][maven-link]
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.javadev/swaydb-java.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.github.javadev%22%20AND%20a%3A%22swaydb-java%22)
-[![Build Status](https://travis-ci.com/simerplaha/SwayDB.java.svg?branch=master)](https://travis-ci.com/simerplaha/SwayDB.java)
-[![Join the chat at https://gitter.im/SwayDB-chat/Lobby](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/SwayDB-chat/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Join the chat at https://swaydb.slack.com](https://img.shields.io/badge/slack-join%20chat-e01563.svg)](https://join.slack.com/t/swaydb/shared_invite/enQtNjM5MDM2MjYyMTE2LWU3ZTczNjA4YTAxZGNhMzk2MDc1MDViZTE0MzkyMmI2Y2E0OGE1ODg0MGJiZjY3YzY3MTE2MTA4MDcxZmMzMzY)
+[gitter-badge]: https://badges.gitter.im/Join%20Chat.svg
+[gitter-link]: https://gitter.im/SwayDB-chat/Lobby
+
+[slack-badge]: https://img.shields.io/badge/slack-join%20chat-e01563.svg
+[slack-link]: https://join.slack.com/t/swaydb/shared_invite/enQtNzI1NzM1NTA0NzQxLTJiNjRhMDg2NGQ3YzBkNGMxZGRmODlkN2M3MWEwM2U2NWY1ZmU5OWEyYTgyN2ZhYjlhNjdlZTM3YWJjMGZmNzQ
+
+[maven-badge]: https://img.shields.io/maven-central/v/io.swaydb/java_2.12.svg
+[maven-link]: https://search.maven.org/search?q=g:io.swaydb%20AND%20a:java_2.12
+
+[build-badge]: https://travis-ci.com/simerplaha/SwayDB.java.svg?branch=master
+[build-link]: https://travis-ci.com/simerplaha/SwayDB.java
 
 Implements examples demoing [SwayDB](https://github.com/simerplaha/SwayDB)'s Java API.
 
