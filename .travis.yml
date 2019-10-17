@@ -5,17 +5,9 @@ jdk:
   - oraclejdk8
 
 script:
-  - mvn -B clean install jacoco:report
-  - mvn -f examples/pom.xml clean test
+  - mvn clean compile
 
 addons:
    hosts:
        - travis
    hostname: travis
-
-before_script:
-  - pip install --user codecov
-
-after_success:
-  - codecov
-  - mvn sonar:sonar -Dsonar.projectKey=SwayDB.java -Dsonar.organization=simerplaha-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_LOGIN
