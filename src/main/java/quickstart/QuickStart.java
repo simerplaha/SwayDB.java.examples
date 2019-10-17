@@ -12,22 +12,22 @@ import static swaydb.java.serializers.Default.intSerializer;
 class QuickStart {
 
   public static void main(String[] args) {
-//create a memory database.
+    //create a memory database.
     MapIO<Integer, Integer, PureFunction.VoidM<Integer, Integer>> map =
       swaydb.java.memory.Map
         .config(intSerializer(), intSerializer())
         .init()
         .get();
 
-//basic put and expire
+    //basic put and expire
     map.put(1, 1, Duration.ofSeconds(1)).get();
     map.get(1).get(); //get
     map.remove(1).get(); //remove
 
-//atomic write a Stream of key-value
+    //atomic write a Stream of key-value
     map.put(Stream.range(1, 100).map(KeyVal::create)).get();
 
-//create a read stream from 10th key-value to 90th, increment values by 1000000 and insert.
+    //create a read stream from 10th key-value to 90th, increment values by 1000000 and insert.
     map
       .from(10)
       .takeWhile(keyVal -> keyVal.key() <= 90)
@@ -36,7 +36,7 @@ class QuickStart {
       .flatMap(map::put)
       .get();
 
-//print all key-values
+    //print all key-values
     map
       .forEach(System.out::println)
       .materialize()
