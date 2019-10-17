@@ -14,7 +14,7 @@ Java 1.8 and later.
 
 ### Quick start example.
 
-See [QuickStart.java](/src/test/java/swaydb/quickstart/QuickStart.java).
+See [QuickStart.java](/src/main/java/quickstart/QuickStart.java).
 
 ```java
 //create a memory database.
