@@ -1,10 +1,6 @@
 package quickstart;
 
-import swaydb.java.MapIO;
-import swaydb.java.PureFunction;
-import swaydb.java.Return;
-import swaydb.java.Stream;
-import swaydb.java.data.util.KeyVal;
+import swaydb.java.*;
 
 import java.time.Duration;
 
