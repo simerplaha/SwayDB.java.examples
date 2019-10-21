@@ -16,3 +16,5 @@ project/plugins/project/
 #Intellij
 .idea
 *.iml
+
+*Simer.scala
