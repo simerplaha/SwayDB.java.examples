@@ -27,11 +27,13 @@ class LikesTest {
 
     likesMap.put("SwayDB", 0); //initial entry with 0 likes.
 
+    //function that increments likes by 1
+    //in SQL this would be "UPDATE LIKES_TABLE SET LIKES = LIKES + 1"
     PureFunction.OnValue<String, Integer, Return.Map<Integer>> incrementLikesFunction =
       currentLikes ->
         Return.update(currentLikes + 1);
 
-
+    //register the above likes function
     likesMap.registerFunction(incrementLikesFunction).get();
 
     //this could also be applied concurrently and the end result is the same.
@@ -43,6 +45,7 @@ class LikesTest {
           likesMap.applyFunction("SwayDB", incrementLikesFunction).get()
       );
 
+    //assert the number of likes applied.
     assertEquals(100, likesMap.get("SwayDB").get().get());
   }
 }
