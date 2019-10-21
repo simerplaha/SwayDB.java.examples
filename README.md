@@ -9,8 +9,8 @@
 [maven-badge]: https://img.shields.io/maven-central/v/io.swaydb/java_2.12.svg
 [maven-link]: https://search.maven.org/search?q=g:io.swaydb%20AND%20a:java_2.12
 
-[build-badge]: https://travis-ci.com/simerplaha/SwayDB.java.svg?branch=master
-[build-link]: https://travis-ci.com/simerplaha/SwayDB.java
+[build-badge]: https://travis-ci.com/simerplaha/SwayDB.java.examples.svg?branch=master
+[build-link]: https://travis-ci.com/simerplaha/SwayDB.java.examples
 
 Implements examples demoing [SwayDB](https://github.com/simerplaha/SwayDB)'s Java API.
 
