@@ -56,8 +56,5 @@ class QuickStart {
       .forEach(System.out::println)
       .materialize()
       .get();
-
-    //stop app.
-    System.exit(0);
   }
 }
