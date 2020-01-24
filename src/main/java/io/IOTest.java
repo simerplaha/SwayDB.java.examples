@@ -5,8 +5,6 @@ import swaydb.java.IO;
 
 import javax.naming.NoPermissionException;
 
-import java.util.Random;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class IOTest {
@@ -19,7 +17,7 @@ class IOTest {
   @Test
   void divideTest() {
     Integer one = 1;
-    Integer zero = 0;
+    int zero = 0;
 
     Integer division =
       IO

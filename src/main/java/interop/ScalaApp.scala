@@ -1,9 +1,13 @@
 //package interop
 //
+//import swaydb.Bag
+//
 ///**
 // * Test app that demos how a database created in Java can interop with Scala.
 // */
 //object ScalaApp extends App {
+//
+//  implicit val bag = Bag.bagless
 //
 //  //create an instance of JavaApp.
 //  val javaApp = new JavaApp()
@@ -12,13 +16,13 @@
 //
 //  //access the map within the JavaApp call and invoke asScala to get the Scala instance of the Map.
 //  scalaMap
+//    .stream
 //    .foreach(println)
 //    .materialize
-//    .get
 //
 //  import swaydb.java.Interop._
 //  //register java function in Scala.
-//  scalaMap.registerFunction(javaApp.incrementLikesFunction.asScala).get
+//  scalaMap.registerFunction(javaApp.incrementLikesFunction.asScala)
 //  //apply the above registered function in Java.
 //  javaApp.applyFunctionInJava()
 //

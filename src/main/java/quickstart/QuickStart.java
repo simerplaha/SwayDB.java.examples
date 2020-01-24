@@ -3,6 +3,7 @@ package quickstart;
 import swaydb.java.*;
 
 import java.time.Duration;
+import java.util.List;
 
 import static swaydb.java.serializers.Default.intSerializer;
 
@@ -10,28 +11,30 @@ class QuickStart {
 
   public static void main(String[] args) {
     //create a memory database.
-    MapIO<Integer, Integer, PureFunction<Integer, Integer, Return.Map<Integer>>> map =
-      swaydb.java.memory.Map
-        .configWithFunctions(intSerializer(), intSerializer())
-        .init()
-        .get();
+    Map<Integer, Integer, PureFunction<Integer, Integer, Return.Map<Integer>>> map =
+      swaydb.java.memory.MapConfig
+        .withFunctions(intSerializer(), intSerializer())
+        .init();
 
-    map.put(1, 1).get(); //basic put
+    map.put(1, 1); //basic put
     map.get(1).get(); //basic get
-    map.expire(1, Duration.ofSeconds(1)).get(); //basic expire
-    map.remove(1).get(); //basic remove
+    map.expire(1, Duration.ofSeconds(1)); //basic expire
+    map.remove(1); //basic remove
 
     //atomic write a Stream of key-value
-    map.put(Stream.range(1, 100).map(KeyVal::create)).get();
+    map.put(Stream.range(1, 100).map(KeyVal::create));
 
     //create a read stream from 10th key-value to 90th, increment values by 1000000 and insert.
-    map
-      .from(10)
-      .takeWhile(keyVal -> keyVal.key() <= 90)
-      .map(keyVal -> KeyVal.create(keyVal.key(), keyVal.value() + 5000000))
-      .materialize()
-      .flatMap(map::put)
-      .get();
+    List<KeyVal<Integer, Integer>> updatedKeyValues =
+      map
+        .from(10)
+        .stream()
+        .takeWhile(keyVal -> keyVal.key() <= 90)
+        .map(keyVal -> KeyVal.create(keyVal.key(), keyVal.value() + 5000000))
+        .materialize();
+
+    //write updated key-values
+    map.put(updatedKeyValues);
 
     //create a function that reads key & value and applies modifications
     PureFunction.OnKeyValue<Integer, Integer, Return.Map<Integer>> function =
@@ -53,8 +56,8 @@ class QuickStart {
 
     //print all key-values to view the update.
     map
+      .stream()
       .forEach(System.out::println)
-      .materialize()
-      .get();
+      .materialize();
   }
 }

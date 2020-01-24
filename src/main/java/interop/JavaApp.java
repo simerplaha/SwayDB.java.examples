@@ -17,21 +17,23 @@ public class JavaApp {
     currentLikes ->
       Return.update(currentLikes + 1);
 
-  MapIO<Integer, Integer, PureFunction<Integer, Integer, Return.Map<Integer>>> map;
+  Map<Integer, Integer, PureFunction<Integer, Integer, Return.Map<Integer>>> map;
 
   public JavaApp() {
     map =
-      swaydb.java.memory.Map
-        .configWithFunctions(intSerializer(), intSerializer())
-        .init()
-        .get();
+      swaydb.java.memory.MapConfig
+        .withFunctions(intSerializer(), intSerializer())
+        .init();
 
-    map.put(Stream.range(1, 100).map(KeyVal::create)).get();
+    map.put(Stream.range(1, 100).map(KeyVal::create));
   }
 
   void applyFunctionInJava() {
-    map.applyFunction(100, incrementLikesFunction).get();
+    map.applyFunction(100, incrementLikesFunction);
 
-    map.forEach(System.out::println).materialize().get();
+    map
+      .stream()
+      .forEach(System.out::println)
+      .materialize();
   }
 }
