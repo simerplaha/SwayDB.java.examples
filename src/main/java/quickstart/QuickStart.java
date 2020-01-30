@@ -1,9 +1,9 @@
 package quickstart;
 
-import swaydb.java.*;
-
 import java.time.Duration;
 
+import swaydb.java.*;
+import swaydb.java.memory.MapConfig; //for memory database
 import static swaydb.java.serializers.Default.intSerializer;
 
 class QuickStart {
@@ -11,7 +11,7 @@ class QuickStart {
   public static void main(String[] args) {
     //create a memory database with functions enabled.
     Map<Integer, Integer, PureFunction<Integer, Integer, Return.Map<Integer>>> map =
-      swaydb.java.memory.MapConfig
+      MapConfig
         .withFunctions(intSerializer(), intSerializer())
         .init();
 
