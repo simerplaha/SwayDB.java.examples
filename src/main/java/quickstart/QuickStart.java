@@ -3,14 +3,13 @@ package quickstart;
 import swaydb.java.*;
 
 import java.time.Duration;
-import java.util.List;
 
 import static swaydb.java.serializers.Default.intSerializer;
 
 class QuickStart {
 
   public static void main(String[] args) {
-    //create a memory database.
+    //create a memory database with functions enabled.
     Map<Integer, Integer, PureFunction<Integer, Integer, Return.Map<Integer>>> map =
       swaydb.java.memory.MapConfig
         .withFunctions(intSerializer(), intSerializer())
@@ -24,16 +23,15 @@ class QuickStart {
     //atomic write a Stream of key-value
     map.put(Stream.range(1, 100).map(KeyVal::create));
 
-    //create a read stream from 10th key-value to 90th, increment values by 1000000 and insert.
-    List<KeyVal<Integer, Integer>> updatedKeyValues =
+    //Create a stream that updates all values within range 10 to 90.
+    Stream<KeyVal<Integer, Integer>> updatedKeyValues =
       map
         .from(10)
         .stream()
         .takeWhile(keyVal -> keyVal.key() <= 90)
-        .map(keyVal -> KeyVal.create(keyVal.key(), keyVal.value() + 5000000))
-        .materialize();
+        .map(keyVal -> KeyVal.create(keyVal.key(), keyVal.value() + 5000000));
 
-    //write updated key-values
+    //submit the stream to update the key-values as a single transaction.
     map.put(updatedKeyValues);
 
     //create a function that reads key & value and applies modifications
