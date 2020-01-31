@@ -7,7 +7,7 @@
 // */
 //object ScalaApp extends App {
 //
-//  implicit val bag = Bag.bagless
+//  implicit val bag = Bag.less
 //
 //  //create an instance of JavaApp.
 //  val javaApp = new JavaApp()
