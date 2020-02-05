@@ -55,7 +55,6 @@ class QuickStart {
     //print all key-values to view the update.
     map
       .stream()
-      .forEach(System.out::println)
-      .materialize();
+      .forEach(System.out::println);
   }
 }

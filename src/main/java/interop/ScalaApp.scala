@@ -18,7 +18,6 @@
 //  scalaMap
 //    .stream
 //    .foreach(println)
-//    .materialize
 //
 //  import swaydb.java.Interop._
 //  //register java function in Scala.

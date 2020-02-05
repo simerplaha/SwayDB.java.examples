@@ -33,7 +33,6 @@ public class JavaApp {
 
     map
       .stream()
-      .forEach(System.out::println)
-      .materialize();
+      .forEach(System.out::println);
   }
 }
