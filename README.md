@@ -71,6 +71,5 @@ map.applyFunction(1, 100, function); //apply the function to all key-values rang
 //print all key-values to view the update.
 map
   .stream()
-  .forEach(System.out::println)
-  .materialize();
+  .forEach(System.out::println);
 ```
