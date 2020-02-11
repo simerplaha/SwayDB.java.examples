@@ -85,9 +85,9 @@ class PartialKeyExample {
 
   public static void main(String[] args) {
     //create a memory database with functions enabled.
-    SetConfig.Config<Key, PureFunction.VoidS<Key>, Void> setConfig = SetConfig.withoutFunctions(serializer);
+    SetConfig.Config<Key, Void> setConfig = SetConfig.withoutFunctions(serializer);
     setConfig.setComparator(IO.rightNeverException(comparator));
-    Set<Key, PureFunction.VoidS<Key>> set = setConfig.init();
+    Set<Key, Void> set = setConfig.init();
 
     set.add(new Key(1, "one"));
 
