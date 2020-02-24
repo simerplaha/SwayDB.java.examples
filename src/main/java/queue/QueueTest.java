@@ -6,9 +6,10 @@ import swaydb.java.memory.QueueConfig;
 
 import java.time.Duration;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static swaydb.java.serializers.Default.intSerializer;
 
-class QueueExample {
+class QueueTest {
 
   @Test
   void quickStart() {
@@ -20,7 +21,7 @@ class QueueExample {
     queue.push(2, Duration.ofSeconds(0));
     queue.push(3);
 
-    queue.pop(); //returns Optional(2)
-    queue.pop(); //returns Optional(3) because 2 is expired.
+    assertEquals(2, queue.popOrNull()); //2
+    assertEquals(3, queue.popOrNull()); //returns 3 because 2 is expired.
   }
 }
