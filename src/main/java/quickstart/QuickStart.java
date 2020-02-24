@@ -4,15 +4,31 @@ import java.time.Duration;
 
 import swaydb.java.*;
 import swaydb.java.memory.MapConfig; //for memory database
+
 import static swaydb.java.serializers.Default.intSerializer;
 
 class QuickStart {
 
   public static void main(String[] args) {
-    //create a memory database with functions enabled.
+
+    //create a function that reads key & value and applies modifications
+    PureFunction.OnKeyValue<Integer, Integer, Return.Map<Integer>> function =
+      (key, value, deadline) -> {
+        if (key < 25) { //remove if key is less than 25
+          return Return.remove();
+        } else if (key < 50) { //expire after 2 seconds if key is less than 50
+          return Return.expire(Duration.ofSeconds(2));
+        } else if (key < 75) { //update if key is < 75.
+          return Return.update(value + 10000000);
+        } else { //else do nothing
+          return Return.nothing();
+        }
+      };
+
     Map<Integer, Integer, PureFunction<Integer, Integer, Return.Map<Integer>>> map =
       MapConfig
         .withFunctions(intSerializer(), intSerializer())
+        .registerFunction(function)
         .init();
 
     map.put(1, 1); //basic put
@@ -33,22 +49,6 @@ class QuickStart {
 
     //submit the stream to update the key-values as a single transaction.
     map.put(updatedKeyValues);
-
-    //create a function that reads key & value and applies modifications
-    PureFunction.OnKeyValue<Integer, Integer, Return.Map<Integer>> function =
-      (key, value, deadline) -> {
-        if (key < 25) { //remove if key is less than 25
-          return Return.remove();
-        } else if (key < 50) { //expire after 2 seconds if key is less than 50
-          return Return.expire(Duration.ofSeconds(2));
-        } else if (key < 75) { //update if key is < 75.
-          return Return.update(value + 10000000);
-        } else { //else do nothing
-          return Return.nothing();
-        }
-      };
-
-    map.registerFunction(function); //register the function.
 
     map.applyFunction(1, 100, function); //apply the function to all key-values ranging 1 to 100.
 
