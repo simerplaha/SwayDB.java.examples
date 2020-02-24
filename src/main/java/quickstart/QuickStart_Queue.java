@@ -1,10 +1,9 @@
 package quickstart;
 
-import swaydb.java.Queue;
-import swaydb.java.memory.QueueConfig;
-
 import java.time.Duration;
 
+import swaydb.java.Queue;
+import swaydb.java.memory.QueueConfig;
 import static swaydb.java.serializers.Default.intSerializer;
 
 public class QuickStart_Queue {
