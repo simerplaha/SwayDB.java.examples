@@ -22,6 +22,7 @@ class ReverseOrderingTest {
         .setTypedComparator((key1, key2) -> key1.compareTo(key2) * -1)
         .get();
 
+    //insert in natural ordering from 1 to 100
     IntStream
       .rangeClosed(1, 100)
       .forEach(integer -> map.put(integer, integer));
@@ -31,6 +32,9 @@ class ReverseOrderingTest {
         .keys()
         .stream()
         .materialize();
+
+    //print out the stream. Since ordering is in reverse this will print from 100 to 1.
+    actual.forEach(System.out::println);
 
     List<Integer> expected =
       IntStream
