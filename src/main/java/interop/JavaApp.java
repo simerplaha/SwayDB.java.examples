@@ -1,6 +1,10 @@
 package interop;
 
-import swaydb.java.*;
+import swaydb.KeyVal;
+import swaydb.java.Map;
+import swaydb.java.PureFunction;
+import swaydb.java.Return;
+import swaydb.java.Stream;
 
 import static swaydb.java.serializers.Default.intSerializer;
 
@@ -22,8 +26,8 @@ public class JavaApp {
   public JavaApp() {
     map =
       swaydb.java.memory.MapConfig
-        .withFunctions(intSerializer(), intSerializer())
-        .init();
+        .functionsOn(intSerializer(), intSerializer())
+        .get();
 
     map.put(Stream.range(1, 100).map(KeyVal::create));
   }

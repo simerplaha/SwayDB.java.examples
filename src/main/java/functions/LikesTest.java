@@ -24,9 +24,9 @@ class LikesTest {
         Return.update(currentLikes + 1);
 
     Map<String, Integer, PureFunction<String, Integer, Return.Map<Integer>>> likesMap =
-      MapConfig.withFunctions(stringSerializer(), intSerializer())
+      MapConfig.functionsOn(stringSerializer(), intSerializer())
         .registerFunction(incrementLikesFunction)
-        .init();
+        .get();
 
     likesMap.put("SwayDB", 0); //initial entry with 0 likes.
 

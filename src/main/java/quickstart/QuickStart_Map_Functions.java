@@ -2,6 +2,7 @@ package quickstart;
 
 import java.time.Duration;
 
+import swaydb.KeyVal;
 import swaydb.java.*;
 import swaydb.java.memory.MapConfig;
 
@@ -27,9 +28,9 @@ class QuickStart_Map_Functions {
 
     Map<Integer, Integer, PureFunction<Integer, Integer, Return.Map<Integer>>> map =
       MapConfig
-        .withFunctions(intSerializer(), intSerializer())
+        .functionsOn(intSerializer(), intSerializer())
         .registerFunction(function)
-        .init();
+        .get();
 
     map.put(1, 1); //basic put
     map.get(1).get(); //basic get

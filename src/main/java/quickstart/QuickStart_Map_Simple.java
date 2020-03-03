@@ -2,6 +2,7 @@ package quickstart;
 
 import java.time.Duration;
 
+import swaydb.KeyVal;
 import swaydb.java.*;
 import swaydb.java.memory.MapConfig;
 import static swaydb.java.serializers.Default.intSerializer;
@@ -12,8 +13,8 @@ class QuickStart_Map_Simple {
 
     Map<Integer, Integer, Void> map =
       MapConfig
-        .withoutFunctions(intSerializer(), intSerializer())
-        .init();
+        .functionsOff(intSerializer(), intSerializer())
+        .get();
 
     map.put(1, 1); //basic put
     map.get(1).get(); //basic get

@@ -14,14 +14,14 @@ class QueueTest {
   @Test
   void quickStart() {
     Queue<Integer> queue =
-      QueueConfig.configure(intSerializer())
-        .init();
+      QueueConfig.config(intSerializer())
+        .get();
 
     queue.push(1);
     queue.push(2, Duration.ofSeconds(0));
     queue.push(3);
 
-    assertEquals(2, queue.popOrNull()); //2
+    assertEquals(1, queue.popOrNull()); //1
     assertEquals(3, queue.popOrNull()); //returns 3 because 2 is expired.
   }
 }
