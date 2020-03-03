@@ -19,7 +19,7 @@ class ReverseOrderingTest {
     Map<Integer, Integer, Void> map =
       MapConfig.functionsOff(intSerializer(), intSerializer())
         //provide a typed comparator that reverses ordering
-        .setTypedComparator((key1, key2) -> key1.compareTo(key2) * -1)
+        .setTypedComparator((Integer key1, Integer key2) -> key1.compareTo(key2) * -1)
         .get();
 
     //insert in natural ordering from 1 to 100
