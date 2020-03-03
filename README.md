@@ -21,7 +21,7 @@ Java 1.8 and later.
 
 ### Quick start example.
 
-See [QuickStart.java](/src/main/java/quickstart/QuickStart_Map_Functions.java).
+See [QuickStart.java](/src/main/java/quickstart/QuickStart_Map_Simple.java).
 
 ```java
 Map<Integer, Integer, Void> map =
