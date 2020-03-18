@@ -58,7 +58,7 @@
     <dependencies>
         <dependency>
             <groupId>io.swaydb</groupId>
-            <artifactId>java_2.13</artifactId>
+            <artifactId>java_2.12</artifactId>
             <version>0.13.3</version>
         </dependency>
         <dependency>
