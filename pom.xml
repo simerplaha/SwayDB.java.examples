@@ -16,7 +16,7 @@
     </developers>
     <licenses>
         <license>
-            <name>GNU AFFERO GENERAL PUBLIC LICENSE, Version 3 (AGPL-3.0)</name>
+            <name>MIT</name>
             <url>http://opensource.org/licenses/AGPL-3.0</url>
             <distribution>repo</distribution>
         </license>
@@ -59,7 +59,7 @@
         <dependency>
             <groupId>io.swaydb</groupId>
             <artifactId>java_2.13</artifactId>
-            <version>0.13.2</version>
+            <version>0.13.3</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
