@@ -34,6 +34,7 @@ class LikesTest {
     //applyFunction is atomic and thread-safe.
     IntStream
       .rangeClosed(1, 100)
+      .parallel()
       .forEach(
         integer ->
           likesMap.applyFunction("SwayDB", incrementLikesFunction)
