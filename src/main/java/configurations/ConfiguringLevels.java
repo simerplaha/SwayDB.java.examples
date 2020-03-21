@@ -55,13 +55,13 @@ public class ConfiguringLevels {
     MemoryLevelConfig memoryLevel =
       MemoryLevelConfig
         .builder()
-        .withMinSegmentSize(mb(4)) //4.mb
-        .withMaxKeyValuesPerSegment(100000)
-        .withCopyForward(false)
-        .withDeleteSegmentsEventually(true)
+        .minSegmentSize(mb(4)) //4.mb
+        .maxKeyValuesPerSegment(100000)
+        .copyForward(false)
+        .deleteSegmentsEventually(true)
         //todo provide easier way to access Shared from Java
-        .withCompactionExecutionContext(CompactionExecutionContext.shared())
-        .withThrottle(
+        .compactionExecutionContext(CompactionExecutionContext.shared())
+        .throttle(
           (LevelMeter levelMeter) -> {
             if (levelMeter.levelSize() > gb(1)) {
               return new Throttle(Duration.Zero(), 10);
@@ -69,74 +69,68 @@ public class ConfiguringLevels {
               return new Throttle(Duration.Zero(), 0);
             }
           }
-        )
-        .build();
+        );
 
     //sample configuration for a persistent memory level
     PersistentLevelConfig persistentLevel =
       PersistentLevelConfig
         .builder()
-        .withDir(Paths.get("level2"))
+        .dir(Paths.get("level2"))
         //todo provide simpler API for Java
-        .withOtherDirs(Arrays.asList(new Dir(Paths.get("level2-1"), 1), new Dir(Paths.get("level2-3"), 1)))
-        .withMmapAppendix(true)
-        .withAppendixFlushCheckpointSize(mb(4)) //4.mb
-        .withSortedKeyIndex(
+        .otherDirs(Arrays.asList(new Dir(Paths.get("level2-1"), 1), new Dir(Paths.get("level2-3"), 1)))
+        .mmapAppendix(true)
+        .appendixFlushCheckpointSize(mb(4)) //4.mb
+        .sortedKeyIndex(
           SortedKeyIndex
             .builder()
-            .withPrefixCompression(new PrefixCompression.Disable(true))
-            .withEnablePositionIndex(true)
-            .withIoStrategy(ioAction -> new IOStrategy.SynchronisedIO(true))
-            .withCompressions(info -> Collections.emptyList())
-            .build()
+            .prefixCompression(new PrefixCompression.Disable(true))
+            .enablePositionIndex(true)
+            .ioStrategy(ioAction -> new IOStrategy.SynchronisedIO(true))
+            .compressions(info -> Collections.emptyList())
         )
-        .withRandomKeyIndex(
+        .randomKeyIndex(
           RandomKeyIndex
             .builder()
-            .withMaxProbe(1)
-            .withMinimumNumberOfKeys(5)
-            .withMinimumNumberOfHits(2)
-            .withIndexFormat(IndexFormat.Reference$.MODULE$)
-            .withAllocateSpace(RandomKeyIndex.RequiredSpace::requiredSpace)
-            .withIoStrategy(ioAction -> new IOStrategy.SynchronisedIO(true))
-            .withCompression(info -> Collections.emptyList())
-            .build()
+            .maxProbe(1)
+            .minimumNumberOfKeys(5)
+            .minimumNumberOfHits(2)
+            .indexFormat(IndexFormat.Reference$.MODULE$)
+            .allocateSpace(RandomKeyIndex.RequiredSpace::requiredSpace)
+            .ioStrategy(ioAction -> new IOStrategy.SynchronisedIO(true))
+            .compression(info -> Collections.emptyList())
         )
-        .withBinarySearchIndex(
+        .binarySearchIndex(
           BinarySearchIndex.fullIndexBuilder()
-            .withMinimumNumberOfKeys(10)
-            .withIoStrategy(ioAction -> new IOStrategy.SynchronisedIO(true))
-            .withIndexFormat(IndexFormat.copyKey())
-            .withSearchSortedIndexDirectly(true)
-            .withCompression(info -> Collections.emptyList())
-            .build()
+            .minimumNumberOfKeys(10)
+            .ioStrategy(ioAction -> new IOStrategy.SynchronisedIO(true))
+            .indexFormat(IndexFormat.copyKey())
+            .searchSortedIndexDirectly(true)
+            .compression(info -> Collections.emptyList())
         )
-        .withMightContainKeyIndex(
+        .mightContainKeyIndex(
           MightContainIndex.builder()
-            .withFalsePositiveRate(0.01)
-            .withUpdateMaxProbe(optimalMaxProbe -> 1)
-            .withMinimumNumberOfKeys(10)
-            .withIoStrategy(ioAction -> new IOStrategy.SynchronisedIO(true))
-            .withCompression(info -> Collections.emptyList())
-            .build()
+            .falsePositiveRate(0.01)
+            .updateMaxProbe(optimalMaxProbe -> 1)
+            .minimumNumberOfKeys(10)
+            .ioStrategy(ioAction -> new IOStrategy.SynchronisedIO(true))
+            .compression(info -> Collections.emptyList())
         )
-        .withValuesConfig(
+        .valuesConfig(
           ValuesConfig.builder()
-            .withCompressDuplicateValues(true)
-            .withCompressDuplicateRangeValues(true)
-            .withIoStrategy(ioAction -> new IOStrategy.SynchronisedIO(true))
-            .withCompression(info -> Collections.emptyList())
-            .build()
+            .compressDuplicateValues(true)
+            .compressDuplicateRangeValues(true)
+            .ioStrategy(ioAction -> new IOStrategy.SynchronisedIO(true))
+            .compression(info -> Collections.emptyList())
         )
-        .withSegmentConfig(
+        .segmentConfig(
           SegmentConfig.builder()
-            .withCacheSegmentBlocksOnCreate(true)
-            .withDeleteSegmentsEventually(true)
-            .withPushForward(true)
-            .withMmap(MMAP.disabled())
-            .withMinSegmentSize(mb(4))
-            .withMaxKeyValuesPerSegment(100000)
-            .withIoStrategy(
+            .cacheSegmentBlocksOnCreate(true)
+            .deleteSegmentsEventually(true)
+            .pushForward(true)
+            .mmap(MMAP.disabled())
+            .minSegmentSize(mb(4))
+            .maxKeyValuesPerSegment(100000)
+            .ioStrategy(
               ioStrategy -> {
                 if (ioStrategy.isOpenResource()) {
                   return new IOStrategy.SynchronisedIO(true);
@@ -148,7 +142,7 @@ public class ConfiguringLevels {
                 }
               }
             )
-            .withCompression(
+            .compression(
               info ->
                 Arrays.asList(
                   Compression.lz4Pair(
@@ -159,29 +153,27 @@ public class ConfiguringLevels {
                   Compression.noneCompression()
                 )
             )
-            .build()
         )
-        .withCompactionExecutionContext(CompactionExecutionContext.shared())
-        .withThrottle(
+        .compactionExecutionContext(CompactionExecutionContext.shared())
+        .throttle(
           (LevelMeter levelMeter) -> {
             FiniteDuration delay = new FiniteDuration(5 - levelMeter.segmentsCount(), TimeUnit.SECONDS);
             int batch = Math.min(levelMeter.segmentsCount(), 5);
             return new Throttle(delay, batch);
           }
-        )
-        .build();
+        );
 
     //create custom level hierarchy.
     SwayDBPersistentConfig config =
       ConfigWizard
         .withPersistentLevel0() //LEVEL 0
-        .withDir(Paths.get("myMap"))
-        .withMapSize(mb(4)) //4.mb
-        .withMmap(true)
-        .withRecoveryMode(RecoveryMode.reportFailure())
-        .withCompactionExecutionContext(new CompactionExecutionContext.Create(myTestSingleThreadExecutionContext))
-        .withAcceleration(Accelerator::cruise)
-        .withThrottle(
+        .dir(Paths.get("myMap"))
+        .mapSize(mb(4)) //4.mb
+        .mmap(true)
+        .recoveryMode(RecoveryMode.reportFailure())
+        .compactionExecutionContext(new CompactionExecutionContext.Create(myTestSingleThreadExecutionContext))
+        .acceleration(Accelerator::cruise)
+        .throttle(
           (LevelZeroMeter meter) -> {
             int mapsCount = meter.mapsCount();
             if (mapsCount > 3) {
@@ -193,7 +185,6 @@ public class ConfiguringLevels {
             }
           }
         )
-        .build()
         .withMemoryLevel1(memoryLevel) //LEVEL 1
         .withPersistentLevel(persistentLevel) //level2
         .withTrashLevel(); //level3
