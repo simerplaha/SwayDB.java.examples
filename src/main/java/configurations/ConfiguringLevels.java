@@ -28,9 +28,14 @@ import static swaydb.java.StorageUnits.gb;
 import static swaydb.java.StorageUnits.mb;
 
 /**
- * This API requires improvement to suit Java. Currently
- * the following is created from Scala's API. See similar in
- * Scala - https://github.com/simerplaha/SwayDB.scala.examples/blob/master/src/test/scala/configuringlevels/ConfiguringLevels.scala
+ * The following demo all configurations by configuring a 4 Leveled database.
+ *
+ * - Level0 - In-Memory
+ * - Level1 - In-Memory
+ * - Level2 - Persistent
+ * - Level3 - Trash
+ *
+ * For detailed info on each config see documentation: http://swaydb.io/configurations/?language=java/
  */
 public class ConfiguringLevels {
 
@@ -59,7 +64,6 @@ public class ConfiguringLevels {
         .maxKeyValuesPerSegment(100000)
         .copyForward(false)
         .deleteSegmentsEventually(true)
-        //todo provide easier way to access Shared from Java
         .compactionExecutionContext(CompactionExecutionContext.shared())
         .throttle(
           (LevelMeter levelMeter) -> {
@@ -76,7 +80,6 @@ public class ConfiguringLevels {
       PersistentLevelConfig
         .builder()
         .dir(Paths.get("level2"))
-        //todo provide simpler API for Java
         .otherDirs(Arrays.asList(new Dir(Paths.get("level2-1"), 1), new Dir(Paths.get("level2-3"), 1)))
         .mmapAppendix(true)
         .appendixFlushCheckpointSize(mb(4)) //4.mb
