@@ -58,8 +58,8 @@
     <dependencies>
         <dependency>
             <groupId>io.swaydb</groupId>
-            <artifactId>java</artifactId>
-            <version>0.14.3</version>
+            <artifactId>java_2.13</artifactId>
+            <version>0.14.4</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
