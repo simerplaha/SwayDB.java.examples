@@ -2,6 +2,7 @@ package mmapDisabledExample;
 
 import org.junit.jupiter.api.Test;
 import swaydb.data.config.MMAP;
+import swaydb.data.util.OperatingSystem;
 import swaydb.java.Map;
 import swaydb.java.persistent.MapConfig;
 import swaydb.persistent.DefaultConfigs;
@@ -23,8 +24,8 @@ class Example {
     Map<Integer, String, Void> map =
       MapConfig
         .functionsOff(Paths.get("target/myDatabase"), intSerializer(), stringSerializer())
-        .setMmapAppendix(false)
-        .setMmapMaps(false)
+        .setMmapAppendix(MMAP.enabled(OperatingSystem.isWindows()))
+        .setMmapMaps(MMAP.disabled())
         .setSegmentConfig(DefaultConfigs.segmentConfig(true).copyWithMmap(MMAP.disabled()))
         .get();
 

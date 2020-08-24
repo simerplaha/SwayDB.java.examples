@@ -15,6 +15,7 @@ import swaydb.data.compression.LZ4Compressor;
 import swaydb.data.compression.LZ4Decompressor;
 import swaydb.data.compression.LZ4Instance;
 import swaydb.data.config.*;
+import swaydb.data.util.OperatingSystem;
 
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -29,12 +30,12 @@ import static swaydb.java.StorageUnits.mb;
 
 /**
  * The following demo all configurations by configuring a 4 Leveled database.
- *
+ * <p>
  * - Level0 - In-Memory
  * - Level1 - In-Memory
  * - Level2 - Persistent
  * - Level3 - Trash
- *
+ * <p>
  * For detailed info on each config see documentation: http://swaydb.io/configurations/?language=java/
  */
 public class ConfiguringLevels {
@@ -81,14 +82,14 @@ public class ConfiguringLevels {
         .builder()
         .dir(Paths.get("level2"))
         .otherDirs(Arrays.asList(new Dir(Paths.get("level2-1"), 1), new Dir(Paths.get("level2-3"), 1)))
-        .mmapAppendix(true)
+        .mmapAppendix(MMAP.enabled(OperatingSystem.isWindows()))
         .appendixFlushCheckpointSize(mb(4)) //4.mb
         .sortedKeyIndex(
           SortedKeyIndex
             .builder()
             .prefixCompression(new PrefixCompression.Disable(true))
             .enablePositionIndex(true)
-            .ioStrategy(ioAction -> new IOStrategy.SynchronisedIO(true))
+            .blockIOStrategy(ioAction -> new IOStrategy.SynchronisedIO(true))
             .compressions(info -> Collections.emptyList())
         )
         .randomKeyIndex(
@@ -99,15 +100,15 @@ public class ConfiguringLevels {
             .minimumNumberOfHits(2)
             .indexFormat(IndexFormat.Reference$.MODULE$)
             .allocateSpace(RandomKeyIndex.RequiredSpace::requiredSpace)
-            .ioStrategy(ioAction -> new IOStrategy.SynchronisedIO(true))
+            .blockIOStrategy(ioAction -> new IOStrategy.SynchronisedIO(true))
             .compression(info -> Collections.emptyList())
         )
         .binarySearchIndex(
           BinarySearchIndex.fullIndexBuilder()
             .minimumNumberOfKeys(10)
-            .ioStrategy(ioAction -> new IOStrategy.SynchronisedIO(true))
-            .indexFormat(IndexFormat.copyKey())
             .searchSortedIndexDirectly(true)
+            .indexFormat(IndexFormat.copyKey())
+            .blockIOStrategy(ioAction -> new IOStrategy.SynchronisedIO(true))
             .compression(info -> Collections.emptyList())
         )
         .mightContainKeyIndex(
@@ -115,14 +116,14 @@ public class ConfiguringLevels {
             .falsePositiveRate(0.01)
             .updateMaxProbe(optimalMaxProbe -> 1)
             .minimumNumberOfKeys(10)
-            .ioStrategy(ioAction -> new IOStrategy.SynchronisedIO(true))
+            .blockIOStrategy(ioAction -> new IOStrategy.SynchronisedIO(true))
             .compression(info -> Collections.emptyList())
         )
         .valuesConfig(
           ValuesConfig.builder()
             .compressDuplicateValues(true)
             .compressDuplicateRangeValues(true)
-            .ioStrategy(ioAction -> new IOStrategy.SynchronisedIO(true))
+            .blockIOStrategy(ioAction -> new IOStrategy.SynchronisedIO(true))
             .compression(info -> Collections.emptyList())
         )
         .segmentConfig(
@@ -133,15 +134,13 @@ public class ConfiguringLevels {
             .mmap(MMAP.disabled())
             .minSegmentSize(mb(4))
             .maxKeyValuesPerSegment(100000)
-            .ioStrategy(
+            .fileOpenIOStrategy(new IOStrategy.SynchronisedIO(true))
+            .blockIOStrategy(
               ioStrategy -> {
-                if (ioStrategy.isOpenResource()) {
-                  return new IOStrategy.SynchronisedIO(true);
-                } else if (ioStrategy.isReadDataOverview()) {
+                if (ioStrategy.isReadDataOverview()) {
                   return new IOStrategy.SynchronisedIO(true);
                 } else {
-                  IOAction.DataAction action = (IOAction.DataAction) ioStrategy;
-                  return new IOStrategy.SynchronisedIO(action.isCompressed());
+                  return new IOStrategy.SynchronisedIO(ioStrategy.isCompressed());
                 }
               }
             )
@@ -172,7 +171,7 @@ public class ConfiguringLevels {
         .withPersistentLevel0() //LEVEL 0
         .dir(Paths.get("myMap"))
         .mapSize(mb(4)) //4.mb
-        .mmap(true)
+        .mmap(MMAP.enabled(OperatingSystem.isWindows()))
         .recoveryMode(RecoveryMode.reportFailure())
         .compactionExecutionContext(new CompactionExecutionContext.Create(myTestSingleThreadExecutionContext))
         .acceleration(Accelerator::cruise)
