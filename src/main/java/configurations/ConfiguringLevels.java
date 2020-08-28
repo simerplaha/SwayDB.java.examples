@@ -82,7 +82,7 @@ public class ConfiguringLevels {
         .builder()
         .dir(Paths.get("level2"))
         .otherDirs(Arrays.asList(new Dir(Paths.get("level2-1"), 1), new Dir(Paths.get("level2-3"), 1)))
-        .mmapAppendix(MMAP.enabled(OperatingSystem.isWindows()))
+        .mmapAppendix(MMAP.enabled(OperatingSystem.isWindows(), ForceSave.disabled()))
         .appendixFlushCheckpointSize(mb(4)) //4.mb
         .sortedKeyIndex(
           SortedKeyIndex
@@ -131,7 +131,7 @@ public class ConfiguringLevels {
             .cacheSegmentBlocksOnCreate(true)
             .deleteSegmentsEventually(true)
             .pushForward(true)
-            .mmap(MMAP.disabled())
+            .mmap(MMAP.disabled(ForceSave.disabled()))
             .minSegmentSize(mb(4))
             .maxKeyValuesPerSegment(100000)
             .fileOpenIOStrategy(new IOStrategy.SynchronisedIO(true))
@@ -171,7 +171,7 @@ public class ConfiguringLevels {
         .withPersistentLevel0() //LEVEL 0
         .dir(Paths.get("myMap"))
         .mapSize(mb(4)) //4.mb
-        .mmap(MMAP.enabled(OperatingSystem.isWindows()))
+        .mmap(MMAP.enabled(OperatingSystem.isWindows(), ForceSave.disabled()))
         .recoveryMode(RecoveryMode.reportFailure())
         .compactionExecutionContext(new CompactionExecutionContext.Create(myTestSingleThreadExecutionContext))
         .acceleration(Accelerator::cruise)
