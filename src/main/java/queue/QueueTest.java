@@ -2,7 +2,7 @@ package queue;
 
 import org.junit.jupiter.api.Test;
 import swaydb.java.Queue;
-import swaydb.java.memory.QueueConfig;
+import swaydb.java.memory.MemoryQueue;
 
 import java.time.Duration;
 
@@ -14,7 +14,8 @@ class QueueTest {
   @Test
   void quickStart() {
     Queue<Integer> queue =
-      QueueConfig.config(intSerializer())
+      MemoryQueue
+        .config(intSerializer())
         .get();
 
     queue.push(1);

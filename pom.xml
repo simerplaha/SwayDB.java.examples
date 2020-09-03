@@ -59,7 +59,7 @@
         <dependency>
             <groupId>io.swaydb</groupId>
             <artifactId>java_2.13</artifactId>
-            <version>0.14.6</version>
+            <version>0.14.7</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>

@@ -5,6 +5,7 @@ import swaydb.java.Map;
 import swaydb.java.PureFunction;
 import swaydb.java.Return;
 import swaydb.java.Stream;
+import swaydb.java.memory.MemoryMap;
 
 import static swaydb.java.serializers.Default.intSerializer;
 
@@ -25,7 +26,7 @@ public class JavaApp {
 
   public JavaApp() {
     map =
-      swaydb.java.memory.MapConfig
+      MemoryMap
         .functionsOn(intSerializer(), intSerializer())
         .get();
 

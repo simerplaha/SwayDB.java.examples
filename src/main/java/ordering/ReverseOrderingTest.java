@@ -3,7 +3,7 @@ package ordering;
 
 import org.junit.jupiter.api.Test;
 import swaydb.java.Map;
-import swaydb.java.memory.MapConfig;
+import swaydb.java.memory.MemoryMap;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,7 +17,8 @@ class ReverseOrderingTest {
   @Test
   void reverse() {
     Map<Integer, Integer, Void> map =
-      MapConfig.functionsOff(intSerializer(), intSerializer())
+      MemoryMap
+        .functionsOff(intSerializer(), intSerializer())
         //provide a typed comparator that reverses ordering
         .setTypedComparator((Integer key1, Integer key2) -> key1.compareTo(key2) * -1)
         .get();

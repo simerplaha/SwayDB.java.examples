@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import swaydb.java.Map;
 import swaydb.java.PureFunction;
 import swaydb.java.Return;
-import swaydb.java.memory.MapConfig;
+import swaydb.java.memory.MemoryMap;
 
 import java.util.stream.IntStream;
 
@@ -24,7 +24,8 @@ class LikesTest {
         Return.update(currentLikes + 1);
 
     Map<String, Integer, PureFunction<String, Integer, Return.Map<Integer>>> likesMap =
-      MapConfig.functionsOn(stringSerializer(), intSerializer())
+      MemoryMap
+        .functionsOn(stringSerializer(), intSerializer())
         .registerFunction(incrementLikesFunction)
         .get();
 

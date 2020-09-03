@@ -5,7 +5,7 @@ import swaydb.java.Deadline;
 import swaydb.java.Map;
 import swaydb.java.PureFunction;
 import swaydb.java.Return;
-import swaydb.java.memory.MapConfig;
+import swaydb.java.memory.MemoryMap;
 
 import java.time.Duration;
 import java.util.Optional;
@@ -36,7 +36,8 @@ class DiscountApp {
 
     //create our map with functions enabled.
     Map<String, Double, PureFunction<String, Double, Return.Map<Double>>> products =
-      MapConfig.functionsOn(stringSerializer(), doubleSerializer())
+      MemoryMap
+        .functionsOn(stringSerializer(), doubleSerializer())
         .registerFunction(discount) //register the discount function
         .get();
 

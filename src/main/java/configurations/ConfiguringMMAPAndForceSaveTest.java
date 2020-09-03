@@ -6,7 +6,7 @@ import swaydb.data.config.ForceSave;
 import swaydb.data.config.MMAP;
 import swaydb.data.util.OperatingSystem;
 import swaydb.java.Map;
-import swaydb.java.persistent.MapConfig;
+import swaydb.java.persistent.PersistentMap;
 
 import java.nio.file.Paths;
 
@@ -37,7 +37,7 @@ public class ConfiguringMMAPAndForceSaveTest {
 
     //create map and apply the above MMAP setting to all files - maps, appendices and segments.
     Map<Integer, String, Void> map =
-      MapConfig
+      PersistentMap
         .functionsOff(Paths.get("target/mmap_force_save_test"), intSerializer(), stringSerializer())
         .setMmapMaps(mmapEnabled)
         .setMmapAppendix(mmapEnabled)

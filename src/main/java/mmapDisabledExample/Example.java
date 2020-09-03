@@ -5,7 +5,7 @@ import swaydb.data.config.ForceSave;
 import swaydb.data.config.MMAP;
 import swaydb.data.util.OperatingSystem;
 import swaydb.java.Map;
-import swaydb.java.persistent.MapConfig;
+import swaydb.java.persistent.PersistentMap;
 import swaydb.persistent.DefaultConfigs;
 
 import java.nio.file.Paths;
@@ -25,7 +25,7 @@ class Example {
   @Test
   void mmapDisabled() {
     Map<Integer, String, Void> map =
-      MapConfig
+      PersistentMap
         .functionsOff(Paths.get("target/myDatabase"), intSerializer(), stringSerializer())
         .setMmapAppendix(MMAP.enabled(OperatingSystem.isWindows(), ForceSave.beforeClean(true, false, false)))
         .setMmapMaps(MMAP.disabled(ForceSave.beforeClose(true, false, false)))
