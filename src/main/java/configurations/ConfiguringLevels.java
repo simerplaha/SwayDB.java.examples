@@ -1,11 +1,9 @@
 package configurations;
 
-import scala.concurrent.ExecutionContext;
 import scala.concurrent.duration.Duration;
 import scala.concurrent.duration.FiniteDuration;
 import swaydb.Compression;
 import swaydb.Pair;
-import swaydb.configs.level.SingleThreadFactory;
 import swaydb.data.accelerate.Accelerator;
 import swaydb.data.accelerate.LevelZeroMeter;
 import swaydb.data.compaction.CompactionExecutionContext;
@@ -20,9 +18,7 @@ import swaydb.data.util.OperatingSystem;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 import static swaydb.java.StorageUnits.gb;
@@ -41,21 +37,6 @@ import static swaydb.java.StorageUnits.mb;
 public class ConfiguringLevels {
 
   public static void main(String[] args) {
-
-    ExecutionContext myTestSingleThreadExecutionContext =
-      new ExecutionContext() {
-        ExecutorService threadPool = Executors.newSingleThreadExecutor((ThreadFactory) SingleThreadFactory.create(true));
-
-        @Override
-        public void reportFailure(Throwable cause) {
-          System.err.println("REPORT FAILURE!" + cause.getMessage());
-        }
-
-        @Override
-        public void execute(Runnable runnable) {
-          threadPool.execute(runnable);
-        }
-      };
 
     //sample configuration for a memory level
     MemoryLevelConfig memoryLevel =
@@ -173,7 +154,7 @@ public class ConfiguringLevels {
         .mapSize(mb(4)) //4.mb
         .mmap(MMAP.enabled(OperatingSystem.isWindows(), ForceSave.disabled()))
         .recoveryMode(RecoveryMode.reportFailure())
-        .compactionExecutionContext(new CompactionExecutionContext.Create(myTestSingleThreadExecutionContext))
+        .compactionExecutionContext(CompactionExecutionContext.create(Executors.newSingleThreadExecutor()))
         .acceleration(Accelerator::cruise)
         .throttle(
           (LevelZeroMeter meter) -> {
