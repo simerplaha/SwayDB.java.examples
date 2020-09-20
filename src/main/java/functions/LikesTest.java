@@ -2,11 +2,14 @@ package functions;
 
 
 import org.junit.jupiter.api.Test;
+import swaydb.Apply;
+import swaydb.PureFunction;
+import swaydb.PureFunctionJava;
+import swaydb.PureFunctionJava.OnValue;
 import swaydb.java.Map;
-import swaydb.java.PureFunction;
-import swaydb.java.Return;
 import swaydb.java.memory.MemoryMap;
 
+import java.util.Collections;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,14 +22,13 @@ class LikesTest {
   void likesCountTest() {
     //function that increments likes by 1
     //in SQL this would be "UPDATE LIKES_TABLE SET LIKES = LIKES + 1"
-    PureFunction.OnValue<String, Integer, Return.Map<Integer>> incrementLikesFunction =
-      currentLikes ->
-        Return.update(currentLikes + 1);
+    OnValue<String, Integer> incrementLikesFunction =
+      (Integer currentLikes) ->
+        Apply.update(currentLikes + 1);
 
-    Map<String, Integer, PureFunction<String, Integer, Return.Map<Integer>>> likesMap =
+    Map<String, Integer, PureFunction<String, Integer, Apply.Map<Integer>>> likesMap =
       MemoryMap
-        .functionsOn(stringSerializer(), intSerializer())
-        .registerFunction(incrementLikesFunction)
+        .functionsOn(stringSerializer(), intSerializer(), Collections.singleton(incrementLikesFunction))
         .get();
 
     likesMap.put("SwayDB", 0); //initial entry with 0 likes.

@@ -24,7 +24,7 @@ class QuickStart_Map_Simple {
     map.remove(1); //basic remove
 
     //atomic write a Stream of key-value
-    map.put(Stream.range(1, 100).map(KeyVal::create));
+    map.put(Stream.range(1, 100).map(KeyVal::of));
 
     //Create a stream that updates all values within range 10 to 90.
     Stream<KeyVal<Integer, Integer>> updatedKeyValues =
@@ -32,7 +32,7 @@ class QuickStart_Map_Simple {
         .stream()
         .from(10)
         .takeWhile(keyVal -> keyVal.key() <= 90)
-        .map(keyVal -> KeyVal.create(keyVal.key(), keyVal.value() + 5000000));
+        .map(keyVal -> KeyVal.of(keyVal.key(), keyVal.value() + 5000000));
 
     //submit the stream to update the key-values as a single transaction.
     map.put(updatedKeyValues);

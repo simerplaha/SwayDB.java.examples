@@ -20,7 +20,7 @@ class ReverseOrderingTest {
       MemoryMap
         .functionsOff(intSerializer(), intSerializer())
         //provide a typed comparator that reverses ordering
-        .setTypedComparator((Integer key1, Integer key2) -> key1.compareTo(key2) * -1)
+        .setTypedKeyComparator((Integer key1, Integer key2) -> key1.compareTo(key2) * -1)
         .get();
 
     //insert in natural ordering from 1 to 100
@@ -31,7 +31,6 @@ class ReverseOrderingTest {
     List<Integer> actual =
       map
         .keys()
-        .stream()
         .materialize();
 
     //print out the stream. Since ordering is in reverse this will print from 100 to 1.

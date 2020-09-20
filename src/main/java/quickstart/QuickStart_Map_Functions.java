@@ -1,10 +1,16 @@
 package quickstart;
 
-import java.time.Duration;
-
+import swaydb.Apply;
 import swaydb.KeyVal;
-import swaydb.java.*;
+import swaydb.PureFunction;
+import swaydb.PureFunctionJava;
+import swaydb.PureFunctionJava.OnKeyValueExpiration;
+import swaydb.java.Map;
+import swaydb.java.Stream;
 import swaydb.java.memory.MemoryMap;
+
+import java.time.Duration;
+import java.util.Collections;
 
 import static swaydb.java.serializers.Default.intSerializer;
 
@@ -13,23 +19,22 @@ class QuickStart_Map_Functions {
   public static void main(String[] args) {
 
     //create a function that reads key & value and applies modifications
-    PureFunction.OnKeyValue<Integer, Integer, Return.Map<Integer>> function =
-      (key, value, deadline) -> {
+    OnKeyValueExpiration<Integer, Integer> function =
+      (key, value, expiration) -> {
         if (key < 25) { //remove if key is less than 25
-          return Return.remove();
+          return Apply.removeFromMap();
         } else if (key < 50) { //expire after 2 seconds if key is less than 50
-          return Return.expire(Duration.ofSeconds(2));
+          return Apply.expireFromMap(Duration.ofSeconds(2));
         } else if (key < 75) { //update if key is < 75.
-          return Return.update(value + 10000000);
+          return Apply.update(value + 10000000);
         } else { //else do nothing
-          return Return.nothing();
+          return Apply.nothingOnMap();
         }
       };
 
-    Map<Integer, Integer, PureFunction<Integer, Integer, Return.Map<Integer>>> map =
+    Map<Integer, Integer, PureFunction<Integer, Integer, Apply.Map<Integer>>> map =
       MemoryMap
-        .functionsOn(intSerializer(), intSerializer())
-        .registerFunction(function)
+        .functionsOn(intSerializer(), intSerializer(), Collections.singleton(function))
         .get();
 
     map.put(1, 1); //basic put
@@ -38,7 +43,7 @@ class QuickStart_Map_Functions {
     map.remove(1); //basic remove
 
     //atomic write a Stream of key-value
-    map.put(Stream.range(1, 100).map(KeyVal::create));
+    map.put(Stream.range(1, 100).map(KeyVal::of));
 
     //Create a stream that updates all values within range 10 to 90.
     Stream<KeyVal<Integer, Integer>> updatedKeyValues =
@@ -46,7 +51,7 @@ class QuickStart_Map_Functions {
         .stream()
         .from(10)
         .takeWhile(keyVal -> keyVal.key() <= 90)
-        .map(keyVal -> KeyVal.create(keyVal.key(), keyVal.value() + 5000000));
+        .map(keyVal -> KeyVal.of(keyVal.key(), keyVal.value() + 5000000));
 
     //submit the stream to update the key-values as a single transaction.
     map.put(updatedKeyValues);

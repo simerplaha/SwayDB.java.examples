@@ -1,13 +1,16 @@
 package interop;
 
+import swaydb.Apply;
 import swaydb.KeyVal;
+import swaydb.PureFunction;
 import swaydb.java.Map;
-import swaydb.java.PureFunction;
-import swaydb.java.Return;
 import swaydb.java.Stream;
 import swaydb.java.memory.MemoryMap;
 
+import java.util.Collections;
+
 import static swaydb.java.serializers.Default.intSerializer;
+import static swaydb.PureFunctionJava.*;
 
 /**
  * Demos how Java SwayDB instances can be accessed in Scala.
@@ -18,19 +21,19 @@ import static swaydb.java.serializers.Default.intSerializer;
  */
 public class JavaApp {
 
-  PureFunction.OnValue<Integer, Integer, Return.Map<Integer>> incrementLikesFunction =
-    currentLikes ->
-      Return.update(currentLikes + 1);
+  OnValue<Integer, Integer> incrementLikesFunction =
+    (Integer currentLikes) ->
+      Apply.update(currentLikes + 1);
 
-  Map<Integer, Integer, PureFunction<Integer, Integer, Return.Map<Integer>>> map;
+  Map<Integer, Integer, PureFunction<Integer, Integer, Apply.Map<Integer>>> map;
 
   public JavaApp() {
     map =
       MemoryMap
-        .functionsOn(intSerializer(), intSerializer())
+        .functionsOn(intSerializer(), intSerializer(), Collections.singleton(incrementLikesFunction))
         .get();
 
-    map.put(Stream.range(1, 100).map(KeyVal::create));
+    map.put(Stream.range(1, 100).map(KeyVal::of));
   }
 
   void applyFunctionInJava() {
