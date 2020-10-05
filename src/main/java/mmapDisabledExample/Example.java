@@ -27,9 +27,9 @@ class Example {
     Map<Integer, String, Void> map =
       PersistentMap
         .functionsOff(Paths.get("target/myDatabase"), intSerializer(), stringSerializer())
-        .setMmapAppendix(MMAP.enabled(OperatingSystem.isWindows(), ForceSave.beforeClean(true, false, false)))
-        .setMmapMaps(MMAP.disabled(ForceSave.beforeClose(true, false, false)))
-        .setSegmentConfig(DefaultConfigs.segmentConfig(true).copyWithMmap(MMAP.disabled(ForceSave.beforeClose(true, false, true))))
+        .setMmapAppendix(MMAP.on(OperatingSystem.isWindows(), ForceSave.beforeClean(true, false, false)))
+        .setMmapMaps(MMAP.off(ForceSave.beforeClose(true, false, false)))
+        .setSegmentConfig(DefaultConfigs.segmentConfig(true).copyWithMmap(MMAP.off(ForceSave.beforeClose(true, false, true))))
         .get();
 
     map.put(42, "forty two");

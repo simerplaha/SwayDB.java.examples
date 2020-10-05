@@ -23,8 +23,8 @@ public class ConfiguringMMAPAndForceSaveTest {
   @Test
   void example_configuration_for_MMAP_and_ForceSave() {
 
-    MMAP.Enabled mmapEnabled =
-      MMAP.enabled(
+    MMAP.On mmapEnabled =
+      MMAP.on(
         //delete after MMAP are cleaned only on Windows.
         OperatingSystem.isWindows(),
         //enable force safe to run before cleaning MMAP files.
@@ -55,7 +55,7 @@ public class ConfiguringMMAPAndForceSaveTest {
 
     //disabled force save
     ForceSave forceSaveDisabled =
-      ForceSave.disabled();
+      ForceSave.off();
 
     //enables forceSave before clean
     ForceSave forceSaveBeforeClean =
